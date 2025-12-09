@@ -1,0 +1,25 @@
+<f:layout name="Default" />
+
+<f:section name="Title">Importieren</f:section>
+
+<f:section name="NavigationBar">
+    <ul class="nav navbar-nav">
+        <li>
+            <f:link.action action="index" controller="Standard">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                Rechnungsjournal
+            </f:link.action>
+        </li>
+    </ul>
+</f:section>
+
+<f:section name="Content">
+    <f:form action="review" object="{dto}" objectName="dto" method="post" enctype="multipart/form-data">
+        <f:render partial="Tools/Components/Panel" arguments="{heading:'Datei hochladen'}" contentAs="body">
+            <f:render partial="Form/Upload" arguments="{property:'originalResource', label:'Datev Datei', hint:'DTVF_Buchungsstapel*.csv'}"/>
+            <f:form.button class="btn btn-success pull-right">
+            Hochladen und prüfen
+        </f:form.button>
+        </f:render>
+    </f:form>
+</f:section>

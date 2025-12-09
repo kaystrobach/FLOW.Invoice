@@ -1,0 +1,20 @@
+{
+    "description": "",
+    "type": "neos-package",
+    "name": "kaystrobach/invoice",
+    "require": {
+        "neos/flow": "*",
+        "kaystrobach/backend": "*",
+        "moneyphp/money": "^4.6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "KayStrobach\\Invoice\\": "Classes/"
+        }
+    },
+    "extra": {
+        "neos": {
+            "package-key": "KayStrobach.Invoice"
+        }
+    }
+}

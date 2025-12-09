@@ -1,0 +1,71 @@
+Searches:
+  # ====================================================================================================================
+  KayStrobach_Invoice_Invoice:
+    search:
+      repository: KayStrobach\Invoice\Domain\Repository\InvoiceRepository
+    autocomplete:
+      searchtext:
+        label: "Suchtext"
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+        matches:
+          like:
+            - number
+            - deptor
+            - deptorNumber
+            - additionalInformation
+            - additionalText
+            - address
+            - numberComplete
+      address:
+        label: "Adresse / Name"
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+        matches:
+          like:
+            - address
+      deptor:
+        label: "Debitor"
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+        matches:
+          like:
+            - deptor
+            - deptorNumber
+      year:
+        label: "Jahr"
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+        matches:
+          like:
+            - year
+
+      performanceStart:
+        label: 'Leistungserbringung Beginn (dd.mm.YYYY)'
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+          dateFormat: 'd.m.Y'
+        matches:
+          sameday:
+            - periodOfPerformanceStart
+
+      performanceEnd:
+        label: 'Leistungserbringung Ende (dd.mm.YYYY)'
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+          dateFormat: 'd.m.Y'
+        matches:
+          sameday:
+            - periodOfPerformanceEnd

@@ -1,0 +1,18 @@
+KayStrobach:
+  Invoice:
+    Default:
+      Invoice:
+        numberPrefix: R
+        receiverBic:  BICMISSING
+        receiverName: Company
+        receiverIban: DE 12 34 5678990
+    Datev:
+      Mandant:       123456
+      Beraternummer: 1234567
+      WirtschaftsjahrBeginn: '%year%0101'
+      Sachkontennummernlaenge: 4
+      ExportiertVon: KayStrobach
+      Herkunft: RE
+      Bezeichnung: Rechnungen
+      Festschreibung: 1
+      WKZ: EUR

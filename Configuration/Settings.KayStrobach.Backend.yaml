@@ -1,0 +1,16 @@
+KayStrobach:
+  Backend:
+    Backend:
+      Menu:
+        Accounting:
+          label: 'Abrechnung'
+          icon: bootstrap-receipt
+          position: after CRM
+          subItems:
+            invoices:
+              label: Rechnungen
+              icon: bootstrap-receipt
+              iconBackground: '#00BD70'
+              package: KayStrobach.Invoice
+              controller: Standard
+              action: index

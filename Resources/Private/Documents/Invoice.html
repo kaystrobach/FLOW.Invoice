@@ -1,0 +1,216 @@
+<f:layout name="Pdf" />
+
+<f:section name="Content">
+    <table class="table">
+        <tr>
+            <td style="height: 30mm">
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 40mm;">
+                <br>
+                <br>
+                {invoice.address -> f:format.nl2br()}
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">
+                {invoice.date -> f:format.date(format: 'd.m.Y')}
+            </td>
+        </tr>
+    </table>
+
+    <h1>
+        {invoice.title} Nr. {invoice.numberPrefix}{invoice.number}
+        <f:if condition="{invoice.subTitle}">
+            <br>
+            <small>{invoice.subTitle}</small>
+        </f:if>
+    </h1>
+
+    <f:if condition="{invoice.preText}">
+        <p>
+            {invoice.preText -> f:format.nl2br()}
+        </p>
+    </f:if>
+
+    <table class="table">
+        <f:for each="{invoice.invoiceItems}" as="item">
+            <tr>
+                <td>
+                    {item.name}
+                </td>
+                <td class="text-right">
+                    <f:if condition="!{hideSinglePrice}">
+                        {item.singlePrice -> f:format.number(decimals: 2, decimalSeparator: ',', thousandsSeparator: '.')}
+                    </f:if>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="silver-border">
+                    <small>{item.description -> f:format.nl2br()}</small>
+                </td>
+            </tr>
+        </f:for>
+        <f:if condition="{invoice.totalNoTaxes}">
+            <tr>
+                <td class="silver-border">
+                    Rechnungsbetrag (Netto)
+                </td>
+                <td class="silver-border">
+                    {invoice.totalNoTaxes -> f:format.number(decimals: 2, decimalSeparator: ',', thousandsSeparator: '.')}
+                    €
+                </td>
+            </tr>
+        </f:if>
+        <f:if condition="{invoice.taxRecords}">
+            <f:for each="{invoice.taxRecords}" as="taxRecord" iteration="iteration">
+                <tr>
+                    <td class="{f:if(condition:iteration.isFirst, then:'silver-border')}">
+                        {taxRecord.taxRate}% Mehrwertsteuer
+                    </td>
+                    <td class="text-right {f:if(condition:iteration.isFirst, then:'silver-border')}">
+                        {taxRecord.sum -> f:format.number(decimals: 2, decimalSeparator: ',', thousandsSeparator: '.')}
+                        €
+                    </td>
+                </tr>
+            </f:for>
+        </f:if>
+        <tr>
+            <td class="silver-border">
+                <b>Rechnungsbetrag (Brutto)</b>
+            </td>
+            <td class="text-right silver-border">
+                <b>{invoice.total -> f:format.number(decimals: 2, decimalSeparator: ',', thousandsSeparator: '.')}</b>
+                €
+            </td>
+        </tr>
+        <f:for each="{invoice.settlementDates}" as="settlement">
+            <tr>
+                <td>
+                    Zahlung bis {settlement.dueDate -> f:format.date(format: 'd.m.Y')}
+                </td>
+                <td class="text-right">
+                    <b>
+                        {settlement.amount -> f:format.number(decimals: 2, decimalSeparator: ',', thousandsSeparator: '.')}
+                        €
+                    </b>
+                </td>
+            </tr>
+        </f:for>
+    </table>
+
+    <f:if condition="{invoice.additionalInformation}">
+        <p>
+            {invoice.additionalInformation -> f:format.nl2br()}
+        </p>
+    </f:if>
+
+    <f:if condition="{invoice.settlementDates}">
+        <p>
+            Bitte nutzen Sie zur Zahlung die beiliegenden Zahlscheine als Vorlage oder als Überweisungsträger zur Abgabe in der Bank.
+        </p>
+
+        <table class="table">
+            <tr>
+                <td>
+                    Kontoempfänger:
+                </td>
+                <td>
+                    {invoice.receiverName}
+                </td>
+                <td rowspan="4" class="text-right">
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    IBAN
+                </td>
+                <td>
+                    {invoice.receiverIban}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    BIC
+                </td>
+                <td>
+                    {invoice.receiverBic}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Verwendungszweck
+                </td>
+                <td>
+                    {invoice.numberComplete}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Kontoinhaber / Zahler
+                </td>
+                <td>
+                    {invoice.deptor}
+                </td>
+            </tr>
+        </table>
+    </f:if>
+
+    <f:if condition="{invoice.postText}">
+        <p>
+            {invoice.postText -> f:format.nl2br()}
+        </p>
+    </f:if>
+</f:section>
+
+<f:section name="ueberweisungstraeger">
+    <div style="width:14.99cm; height: 10.58cm; background-image: url({f:uri.resource(path: 'resource://KayStrobach.Invoice/Public/Images/SEPAueberweisungsvorlage.jpg')}); background-image-resize:6;margin-bottom: 1cm; border: 1px dotted black;">
+        <table style="width:14.99cm; margin-left: 0.5cm;">
+            <tr>
+                <td colspan="2" style="height:2.0cm">
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="font-family: Courier,monospace;letter-spacing: 0.4em;">
+                    {invoice.receiverName}
+                    <br>
+                    <br>
+                    {invoice.receiverIban}
+                    <br>
+                    <br>
+                    {invoice.receiverBic}
+                </td>
+            </tr>
+            <tr style="">
+                <td>
+                    &nbsp;
+                </td>
+                <td style="text-align: right; padding-top: 0.4cm; padding-right: 1cm; font-family: Courier,monospace;letter-spacing: 0.4em;">
+                    {settlement.amount -> f:format.number(decimals: 2, decimalSeparator: ',', thousandsSeparator: '')}
+                    <br>
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding-top: 0.35cm; font-family: Courier,monospace;letter-spacing: 0.4em;">
+                    {invoice.numberComplete}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding-top: 0.35cm; font-family: Courier,monospace;letter-spacing: 0.4em;">
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding-top: 0.35cm; font-family: Courier,monospace;letter-spacing: 0.4em;">
+                    {invoice.deptor}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</f:section>

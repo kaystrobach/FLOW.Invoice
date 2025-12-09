@@ -1,0 +1,112 @@
+Searches:
+  # ====================================================================================================================
+  KayStrobach_Invoice_AccountingRecord:
+    search:
+      repository: KayStrobach\Invoice\Domain\Repository\InvoiceRepository
+    autocomplete:
+      searchtext:
+        label: "Suchtext"
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+        matches:
+          like:
+            - invoice.number
+            - invoice.deptor
+            - invoice.deptorNumber
+            - invoice.additionalInformation
+            - invoice.additionalText
+            - invoice.address
+      address:
+        label: "Adresse / Name"
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+        matches:
+          like:
+            - invoice.address
+      deptor:
+        label: "Debitor"
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+        matches:
+          like:
+            - invoice.deptor
+            - invoice.deptorNumber
+      additional:
+        label: "Zusatzinformationen"
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+        matches:
+          like:
+            - invoice.additionalInformation
+            - invoice.additionalText
+      year:
+        label: "Jahr"
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+        matches:
+          like:
+            - invoice.year
+      due:
+        label: 'Fällig am (dd.mm.YYYY)'
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+          dateFormat: 'd.m.Y'
+        matches:
+          sameday:
+            - dueDate
+      belegdatum:
+        label: 'Belegdatum'
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+          dateFormat: 'd.m.Y'
+        matches:
+          sameday:
+            - invoice.date
+
+      paid:
+        label: bezahlt
+        selector:
+          conditions:
+            once: true
+          values:
+            0: nein
+            1: ja
+        matches:
+          equals:
+            - paid
+
+      performanceStart:
+        label: 'Leistungserbringung Beginn (dd.mm.YYYY)'
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+          dateFormat: 'd.m.Y'
+        matches:
+          sameday:
+            - invoice.periodOfPerformanceStart
+
+      performanceEnd:
+        label: 'Leistungserbringung Ende (dd.mm.YYYY)'
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+          dateFormat: 'd.m.Y'
+        matches:
+          sameday:
+            - invoice.periodOfPerformanceEnd

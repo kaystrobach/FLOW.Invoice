@@ -1,0 +1,16 @@
+Searches:
+  # ====================================================================================================================
+  KayStrobach_Invoice_DailyClosing:
+    search:
+      repository: KayStrobach\Invoice\Domain\Repository\DailyClosingRepository
+    autocomplete:
+      date:
+        label: 'Datum (dd.mm.YYYY)'
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+          dateFormat: 'd.m.Y'
+        matches:
+          sameday:
+            - date

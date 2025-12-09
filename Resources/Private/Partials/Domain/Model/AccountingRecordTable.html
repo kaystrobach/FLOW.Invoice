@@ -1,0 +1,71 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th class="text-right">
+            Betrag
+        </th>
+        <th>
+            Soll / Haben
+        </th>
+        <th>
+            Konto
+        </th>
+        <th>
+            Gegenkonto
+        </th>
+        <th>
+            Belegdatum
+        </th>
+        <th>
+            Belegfeld 1
+        </th>
+        <th>
+            Belegfeld 2 / Fälligkeit
+        </th>
+        <th>
+            Buchungstext
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <f:for each="{objects}" as="record">
+        <tr>
+            <td class="text-right">
+                {record.amount -> f:format.number(decimals: 2, decimalSeparator: ',', thousandsSeparator: '.')}
+            </td>
+            <td>
+                {record.shouldOrHave}
+            </td>
+            <td>
+                {record.account}
+            </td>
+            <td>
+                {record.offsetAccount}
+            </td>
+            <td>
+                {record.invoice.date -> f:format.date(format: 'd.m.Y')}
+            </td>
+            <td>
+                {record.belegfeld1}
+            </td>
+            <td>
+                <f:if condition="{record.belegfeld2AsDateTime}">
+                    <f:then>
+                        <span title="{record.belegfeld2AsDateTime -> f:format.date(format: 'd.m.Y')}">
+                            <span class="glyphicon glyphicon-warning-sign"></span>
+                            {record.belegfeld2}
+                        </span>
+                    </f:then>
+                    <f:else>
+                        {record.belegfeld2}
+                    </f:else>
+                </f:if>
+
+            </td>
+            <td>
+                {record.text}
+            </td>
+        </tr>
+    </f:for>
+    </tbody>
+</table>

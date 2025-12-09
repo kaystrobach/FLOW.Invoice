@@ -1,0 +1,14 @@
+privilegeTargets:
+  Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege:
+    KayStrobach_Invoice_AlleController:
+      matcher: 'method(KayStrobach\Invoice\Controller\.*->.*())'
+
+roles:
+  'KayStrobach.Invoice:AbstractAccountant':
+    abstract: 1
+    privileges:
+      - privilegeTarget: KayStrobach_Invoice_AlleController
+        permission: GRANT
+  'KayStrobach.Invoice:Accountant':
+    parentRoles:
+      - 'KayStrobach.Invoice:AbstractAccountant'

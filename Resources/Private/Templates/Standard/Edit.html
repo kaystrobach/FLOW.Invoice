@@ -1,0 +1,72 @@
+q<f:layout name="Default" />
+
+<f:section name="Title">Rechnung {object.numberPrefix}{object.number}</f:section>
+
+<f:section name="NavigationBar"></f:section>
+
+<f:section name="NavigationBar">
+    <ul class="nav navbar-nav">
+        <li>
+            <f:link.action action="index">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                Rechnungsjournal
+            </f:link.action>
+        </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        <f:if condition="{object.stornoInvoice}">
+            <li>
+                <f:link.action action="edit" arguments="{object:object.stornoInvoice}" class="bg-info">
+                    zur
+                    <span class="glyphicon glyphicon-ban-circle"></span>
+                    Stornorechnung: {object.stornoInvoice.numberComplete}
+                </f:link.action>
+            </li>
+        </f:if>
+        <f:if condition="{object.originalInvoice}">
+            <li>
+                <f:link.action action="edit" arguments="{object:object.originalInvoice}" class="bg-info">
+                    zur
+                    <span class="glyphicon glyphicon-ok-circle"></span>
+                    Rechnung: {object.originalInvoice.numberComplete}
+                </f:link.action>
+            </li>
+        </f:if>
+    </ul>
+</f:section>
+
+<f:section name="Content">
+
+    <f:if condition="{object.deliveryAuditInformation}">
+        <div class="alert alert-success">
+            {object.deliveryAuditInformation}
+        </div>
+    </f:if>
+
+    <f:if condition="!{object.changeable}">
+        <div class="alert alert-danger">
+            Die Rechnung kann nicht mehr bearbeitet werden.
+        </div>
+
+        <f:form action="update" enctype="multipart/form-data" object="{object}" objectName="object">
+            <f:render partial="Domain/Model/SettlementDates" arguments="{_all}"/>
+            <f:render partial="Domain/Model/BankTransferdocuments" arguments="{_all}"/>
+        </f:form>
+
+        <f:if condition="{object.accountingRecords}">
+            <f:render partial="Tools/Components/Panel" arguments="{heading:'Buchungssätze', object:object}" contentAs="direct">
+                <f:render partial="Domain/Model/AccountingRecordTable" arguments="{objects:object.accountingRecords}" />
+            </f:render>
+        </f:if>
+
+        <f:if condition="{object.originalResource}">
+            <f:render partial="Tools/Components/Panel" arguments="{heading:'Vorschau'}" contentAs="direct">
+                <iframe class="iframe" style="width:100%; height: 600px;" src="{f:uri.resource(resource: object.originalResource)}"></iframe>
+            </f:render>
+        </f:if>
+    </f:if>
+
+    <f:form action="update" enctype="multipart/form-data" object="{object}" objectName="object">
+        <f:render partial="Domain/Model/InvoiceFields" arguments="{_all}"/>
+    </f:form>
+</f:section>

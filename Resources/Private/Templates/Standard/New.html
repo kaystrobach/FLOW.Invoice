@@ -1,0 +1,11 @@
+<f:layout name="Default" />
+
+<f:section name="Title">Rechnungen anlegen</f:section>
+
+<f:section name="NavigationBar"></f:section>
+
+<f:section name="Content">
+    <f:form action="create" enctype="multipart/form-data" object="{object}" objectName="object" class="form-horizontal">
+        <f:render partial="Domain/Model/InvoiceFields" arguments="{object:object}"/>
+    </f:form>
+</f:section>

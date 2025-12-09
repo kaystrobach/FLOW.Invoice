@@ -1,0 +1,83 @@
+<html lang="de" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+			xmlns:="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+			xmlns:custom="http://typo3.org/ns/KayStrobach/Custom/ViewHelpers"
+			xmlns:media="http://typo3.org/ns/Neos/Media/ViewHelpers"
+			xmlns:b="http://typo3.org/ns/KayStrobach/Backend/ViewHelpers"
+			xmlns:cb="http://typo3.org/ns/FourViewture/KIS/CRM/Backend/ViewHelpers"
+			xmlns:search="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+			data-namespace-typo3-fluid="true"
+>
+
+<b:be.setTitle>Rechnungen</b:be.setTitle>
+
+<b:be.button.addButton action="new" label="Rechnung" icon="add"/>
+<b:be.button.addButton action="index" controller="SettlementDate" label="Fälligkeiten" icon="bootstrap-clock"/>
+<b:be.button.addButton action="index" controller="AccountingRecord" label="Buchungssätze" icon="bootstrap-list"/>
+<b:be.button.addButton action="index" controller="DailyClosing" label="Tagesjournal" icon="bootstrap-download"/>
+<b:be.button.addButton action="index" controller="AccountingRecordImport" label="Buchungssätze" icon="bootstrap-upload"/>
+
+    <f:render partial="Visualsearch/Search" arguments="{searchName:'KayStrobach_Invoice_Invoice', objects:objects}" contentAs="value">
+        <f:widget.paginate objects="{objects}" as="paginatedObjects" configuration="{itemsPerPage: 20, insertAbove: 1, insertBelow: 1, maximumNumberOfLinks: 15}">
+            <small class="pull-right">{objects -> f:count()} Einträge</small>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        Rechnung
+                    </th>
+                    <th>
+                        Debitor
+                    </th>
+                    <th>
+                        Datum
+                    </th>
+                    <th>
+                        Stornorechnung
+                    </th>
+                    <th>
+                        &nbsp;
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <f:for each="{paginatedObjects}" as="object">
+                    <tr class="{f:if(condition:object.paymentDelayed, then:'danger')}{f:if(condition:object.paid, then:'success')}">
+                        <td>
+                            <f:link.action action="edit" arguments="{object:object}">
+                                {object.numberComplete}
+                            </f:link.action>
+                        </td>
+                        <td>
+                            {object.deptor}
+                        </td>
+                        <td>
+                            {object.date -> f:format.date(format: 'd.m.Y')}
+                        </td>
+                        <td>
+                            <f:if condition="{object.stornoInvoice}">
+                                <f:link.action action="edit" arguments="{object:object.stornoInvoice}">
+                                    Stornorechnung: {object.stornoInvoice.numberComplete}
+                                </f:link.action>
+                            </f:if>
+                            <f:if condition="{object.originalInvoice}">
+                                <f:link.action action="edit" arguments="{object:object.originalInvoice}">
+                                    Originalrechnung: {object.originalInvoice.numberComplete}
+                                </f:link.action>
+                            </f:if>
+                        </td>
+                        <td class="text-right">
+                            <f:if condition="{object.originalResource}">
+                                <a href="{f:uri.resource(resource: object.originalResource)}" class="btn btn-success btn-xs">
+                                    <span class="glyphicon glyphicon-download"></span>
+                                    Download
+                                </a>
+                            </f:if>
+                        </td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </f:widget.paginate>
+    </f:render>
+
+</html>
