@@ -1,0 +1,21 @@
+DigiComp:
+  FlowSymfonyBridge:
+    Messenger:
+      transports:
+        "invoice-rendering-messages":
+          dsn: "flow-doctrine://default?table_name=messaging_kaystrobach_invoice_message"
+          options:
+            auto_setup: true
+            redeliver_timeout: 120
+          retry_strategy:
+            max_retries: 3
+            delay: 1000
+            multiplier: 4
+        "failed":
+          dsn: "flow-doctrine://default?table_name=messaging_failed"
+          options:
+            auto_setup: true
+      failureTransport: "failed"
+      routing:
+        KayStrobach\Invoice\Message\InvoiceRenderingMessage:
+          - "invoice-rendering-messages"

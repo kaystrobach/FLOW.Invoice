@@ -3,9 +3,13 @@
     "type": "neos-package",
     "name": "kaystrobach/invoice",
     "require": {
+        "digicomp/flow-symfony-bridge-messenger": "@dev",
         "horstoeko/zugferd": "^1.0.117",
         "neos/flow": "*",
         "kaystrobach/backend": "*",
+        "kaystrobach/bootstrap": "*",
+        "kaystrobach/crud": "*",
+        "kaystrobach/visualsearch": "*",
         "moneyphp/money": "^4.6.0"
     },
     "autoload": {
