@@ -3,7 +3,7 @@
     "type": "neos-package",
     "name": "kaystrobach/invoice",
     "require": {
-        "horstoeko/zugferd": "^1.117",
+        "horstoeko/zugferd": "^1.0.117",
         "neos/flow": "*",
         "kaystrobach/backend": "*",
         "moneyphp/money": "^4.6.0"
