@@ -1,11 +1,17 @@
-<f:layout name="Default" />
+<html lang="de" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+			xmlns:="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+			xmlns:custom="http://typo3.org/ns/KayStrobach/Custom/ViewHelpers"
+			xmlns:media="http://typo3.org/ns/Neos/Media/ViewHelpers"
+			xmlns:b="http://typo3.org/ns/KayStrobach/Backend/ViewHelpers"
+			xmlns:cb="http://typo3.org/ns/FourViewture/KIS/CRM/Backend/ViewHelpers"
+			xmlns:search="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+			data-namespace-typo3-fluid="true"
+>
 
-<f:section name="Title">Rechnungen anlegen</f:section>
+<b:be.setTitle>Rechnungen anlegen</b:be.setTitle>
 
-<f:section name="NavigationBar"></f:section>
+<b:be.button.closeButton action="index" />
 
-<f:section name="Content">
-    <f:form action="create" enctype="multipart/form-data" object="{object}" objectName="object" class="form-horizontal">
-        <f:render partial="Domain/Model/InvoiceFields" arguments="{object:object}"/>
-    </f:form>
-</f:section>
+<f:form action="create" enctype="multipart/form-data" object="{object}" objectName="object" class="form-horizontal">
+		<f:render partial="Domain/Model/InvoiceFields" arguments="{object:object}"/>
+</f:form>

@@ -1,0 +1,9 @@
+-
+  requestFilter: 'isPackage("KayStrobach.Invoice") && isFormat("html")'
+  options:
+    layoutRootPaths:
+      'KayStrobach.Invoice/Layouts':          'resource://KayStrobach.Invoice/Private/Layouts'
+    partialRootPaths:
+      'KayStrobach.Invoice/Partials':         'resource://KayStrobach.Invoice/Private/Partials'
+      'KayStrobach.VisualSearch/Partials':    'resource://KayStrobach.VisualSearch/Private/Partials'
+      'KayStrobach.Bootstrap':                'resource://KayStrobach.Bootstrap/Private/Partials'

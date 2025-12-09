@@ -1,4 +1,5 @@
-q<f:layout name="Default" />
+
+<f:layout name="Default" />
 
 <f:section name="Title">Rechnung {object.numberPrefix}{object.number}</f:section>
 
@@ -54,13 +55,13 @@ q<f:layout name="Default" />
         </f:form>
 
         <f:if condition="{object.accountingRecords}">
-            <f:render partial="Tools/Components/Panel" arguments="{heading:'Buchungssätze', object:object}" contentAs="direct">
+            <f:render partial="Components/Panel" arguments="{heading:'Buchungssätze', object:object}" contentAs="direct">
                 <f:render partial="Domain/Model/AccountingRecordTable" arguments="{objects:object.accountingRecords}" />
             </f:render>
         </f:if>
 
         <f:if condition="{object.originalResource}">
-            <f:render partial="Tools/Components/Panel" arguments="{heading:'Vorschau'}" contentAs="direct">
+            <f:render partial="Components/Panel" arguments="{heading:'Vorschau'}" contentAs="direct">
                 <iframe class="iframe" style="width:100%; height: 600px;" src="{f:uri.resource(resource: object.originalResource)}"></iframe>
             </f:render>
         </f:if>

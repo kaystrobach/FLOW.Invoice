@@ -1,5 +1,5 @@
 <f:if condition="{object.settlementDates}">
-    <f:render partial="Tools/Components/Panel" arguments="{heading:'Fälligkeiten', object:object}" contentAs="direct">
+    <f:render partial="Components/Panel" arguments="{heading:'Fälligkeiten', object:object}" contentAs="direct">
         <table class="table">
             <thead>
             <tr>
@@ -24,7 +24,7 @@
                         {settlementDate.comment}
                     </td>
                     <td class="text-center">
-                        <f:render partial="Tools/Form/Checkbox" arguments="{property:'settlementDates.{iteration.index}.paid', checked:settlementDate.paid}"/>
+                        <f:render partial="Form/Checkbox" arguments="{property:'settlementDates.{iteration.index}.paid', checked:settlementDate.paid}"/>
                     </td>
                     <td class="text-right">
                         {settlementDate.amount -> f:format.number(decimalSeparator: ',', decimals: '2', thousandsSeparator: '.')} €
@@ -44,7 +44,7 @@
             </tfoot>
         </table>
         <div class="panel-footer text-right">
-            <f:render partial="Tools/Form/Button" arguments="{_all}"/>
+            <f:render partial="Form/Button" arguments="{_all}"/>
         </div>
     </f:render>
 </f:if>

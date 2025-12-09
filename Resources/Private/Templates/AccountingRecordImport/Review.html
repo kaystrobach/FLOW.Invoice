@@ -23,7 +23,7 @@
                 <f:for each="{dto.accountingRecords}" as="ar" iteration="iteration">
                     <f:form.hidden property="accountingRecords.{iteration.index}" value="{ar}"/>
                 </f:for>
-                <f:render partial="Tools/Components/Panel" arguments="{heading:'Vorschau'}" contentAs="direct">
+                <f:render partial="Components/Panel" arguments="{heading:'Vorschau'}" contentAs="direct">
                     <f:render partial="Domain/Model/AccountingRecordTable" arguments="{objects:dto.accountingRecords}" />
                     <div class="panel-footer text-right">
                         <f:form.button type="submit" class="btn btn-success">

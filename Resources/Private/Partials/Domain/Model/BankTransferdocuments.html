@@ -1,6 +1,6 @@
 
 
-<f:render partial="Tools/Components/Panel" arguments="{heading:'Überweisungsträger', object:object}" contentAs="direct">
+<f:render partial="Components/Panel" arguments="{heading:'Überweisungsträger', object:object}" contentAs="direct">
     <f:if condition="{object.bankTransferDocuments -> f:count()} > 0">
         <table class="table">
             <thead>
