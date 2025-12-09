@@ -17,5 +17,6 @@
         "neos": {
             "package-key": "KayStrobach.Invoice"
         }
-    }
+    },
+    "license": "MIT"
 }
