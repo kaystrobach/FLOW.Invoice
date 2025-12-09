@@ -9,10 +9,16 @@ use KayStrobach\Backend\Controller\AbstractPageRendererController;
 use KayStrobach\Crud\Controller\Traits\CrudTrait;
 use KayStrobach\Invoice\Domain\Model\Invoice;
 use KayStrobach\Invoice\Domain\Model\InvoiceItem;
+use KayStrobach\Invoice\Messenger\Message\InvoiceFinalizedMessage;
 use Neos\Flow\Annotations as Flow;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class StandardController extends AbstractPageRendererController
 {
+
+    #[Flow\Inject]
+    protected MessageBusInterface $messageBus;
+
     //later use CrudTrait;
     use CrudTrait;
 
@@ -70,6 +76,7 @@ class StandardController extends AbstractPageRendererController
     {
         $object->setChangeable(false);
         $this->getRepository()->update($object);
+        $this->messageBus->dispatch(new InvoiceFinalizedMessage($object));
         $this->redirect(
             'edit',
             null,

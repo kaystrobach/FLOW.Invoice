@@ -1,0 +1,63 @@
+{namespace inv=KayStrobach\Invoice\ViewHelpers}
+<html lang="de">
+    <head>
+        <title>
+            Reisevertrag
+        </title>
+
+        <style type="text/css">
+            @page <f:format.raw>{</f:format.raw>
+                margin-top: 1cm;
+                margin-bottom: 1cm;
+                margin-left: 2.35cm;
+                margin-right: 2cm;
+                font-family: Helvetica, Arial, sans-serif;
+                header: html_Header;
+                footer: html_Footer;
+            <f:format.raw>}</f:format.raw>
+            @page :first <f:format.raw>{</f:format.raw>
+                background-image-resize: 4;
+                margin-bottom: 6cm;
+                margin-left: 2cm;
+           <f:format.raw>}</f:format.raw>
+            body {
+                font-family: Helvetica, Arial, sans-serif;
+                font-size: 10pt;
+            }
+            .table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            .table td {
+                padding-top: 2mm;
+                padding-bottom: 2mm;
+            }
+            .silver-border {
+                border-bottom: 1px solid silver;
+            }
+            .smaller {
+                font-size: 8pt;
+            }
+            .text-right {
+                text-align: right;
+            }
+        </style>
+    </head>
+    <body>
+
+        <f:render section="Content" optional="1"/>
+
+        <htmlpagefooter name="Footer">
+            <f:if condition="{f:render(section:'footer', optional:true)}">
+                <f:then>
+                    <f:render section="footer" optional="1" />
+                </f:then>
+                <f:else>
+                    <div style="text-align:center;">
+                        <small>Seite {PAGENO} von {nbpg}</small>
+                    </div>
+                </f:else>
+            </f:if>
+        </htmlpagefooter>
+    </body>
+</html>

@@ -1,0 +1,6 @@
+DigiComp:
+  FlowSymfonyBridge:
+    Messenger:
+      transports:
+        "invoice-rendering-messages":
+          dsn: "sync://"

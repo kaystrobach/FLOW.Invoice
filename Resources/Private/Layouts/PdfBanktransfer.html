@@ -1,0 +1,72 @@
+{namespace i=KayStrobach\Invoice\ViewHelpers}
+<html lang="de">
+<head>
+    <title>
+        Reisevertrag
+    </title>
+
+    <style type="text/css">
+         @page <f:format.raw>{</f:format.raw>
+             margin-top: 2.5cm;
+             margin-bottom: 1cm;
+             margin-left: 2.35cm;
+             margin-right: 2cm;
+             font-family: Helvetica, Arial, sans-serif;
+             header: html_Header;
+             footer: html_Footer;
+         }
+         body {
+             font-family: Helvetica, Arial, sans-serif;
+             font-size: 8pt;
+         }
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .table td {
+            border-collapse: collapse;
+            padding-top: 2mm;
+            padding-bottom: 2mm;
+        }
+        .silver-border {
+            border-bottom: 1px solid silver;
+        }
+        .smaller {
+            font-size: 8pt;
+        }
+        .text-right {
+            text-align: right;
+        }
+         .text-center {
+             text-align: center;
+         }
+         .large-header {
+             font-size: 12pt;
+         }
+         .small-header {
+             font-size: 10pt;
+         }
+         p {
+             padding-bottom:1em;
+         }
+         span.char {
+             font-family: 'Courier New', Courier, monospace;
+             font-size: 14pt;
+             display: inline-block;
+             text-align: center;
+             overflow:hidden;
+         }
+         span.char5 {
+             width:0.5mm;
+         }
+         span.char4 {
+             width:0.4mm;
+         }
+    </style>
+</head>
+<body>
+
+<f:render section="Content" optional="1"/>
+
+</body>
+</html>

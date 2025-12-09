@@ -9,6 +9,7 @@
         "kaystrobach/backend": "*",
         "kaystrobach/bootstrap": "*",
         "kaystrobach/crud": "*",
+        "kaystrobach/pdf": "*",
         "kaystrobach/visualsearch": "*",
         "moneyphp/money": "^4.6.0"
     },
