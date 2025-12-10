@@ -26,8 +26,8 @@ class SettlementDateRepository extends SearchableRepository
      */
     protected $defaultOrderings = [
         'dueDate' => QueryInterface::ORDER_DESCENDING,
-        'invoice.numberPrefix' => QueryInterface::ORDER_DESCENDING,
-        'invoice.number' => QueryInterface::ORDER_DESCENDING
+        'invoice.number.prefix' => QueryInterface::ORDER_DESCENDING,
+        'invoice.number.combinedNumber' => QueryInterface::ORDER_DESCENDING
     ];
 
     /**
@@ -51,7 +51,7 @@ class SettlementDateRepository extends SearchableRepository
             $q->logicalAnd(
                 [
                     $q->equals(
-                        'invoice.numberComplete',
+                        'invoice.number.combinedNumber',
                         $numberComplete
                     ),
                     $q->equals(

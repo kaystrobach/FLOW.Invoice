@@ -275,8 +275,8 @@ class AccountingRecord
         $accountingRecord->setInvoice($invoice);
         $accountingRecord->setAmount($invoice->getTotal());
         $accountingRecord->setShouldOrHave(AccountingRecord::SHOULD);
-        $accountingRecord->belegfeld1 = $invoice->getOriginalInvoice()->getNumberComplete();
-        $accountingRecord->belegfeld2 = $invoice->getNumberComplete();
+        $accountingRecord->belegfeld1 = $invoice->getOriginalInvoice()->getNumber()->getCombinedNumber();
+        $accountingRecord->belegfeld2 = $invoice->getNumber()->getCombinedNumber();
         return $accountingRecord;
     }
 }

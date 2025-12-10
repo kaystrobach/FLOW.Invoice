@@ -27,8 +27,8 @@ class AccountingRecordRepository extends SearchableRepository
      */
     protected $defaultOrderings = [
         'dueDate' => QueryInterface::ORDER_DESCENDING,
-        'invoice.numberPrefix' => QueryInterface::ORDER_DESCENDING,
-        'invoice.number' => QueryInterface::ORDER_DESCENDING
+        'invoice.number.prefix' => QueryInterface::ORDER_DESCENDING,
+        'invoice.number.number' => QueryInterface::ORDER_DESCENDING
     ];
 
     /**
@@ -83,7 +83,7 @@ class AccountingRecordRepository extends SearchableRepository
             $q->logicalAnd(
                 [
                     $q->equals(
-                        'invoice.numberComplete',
+                        'invoice.number.combinedNumber',
                         $belegfeld1
                     ),
                     $q->greaterThanOrEqual(

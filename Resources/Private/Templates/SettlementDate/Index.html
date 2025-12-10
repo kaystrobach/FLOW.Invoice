@@ -54,7 +54,7 @@
                             <tr class="{f:if(condition:object.paymentDelayed, then:'danger')}{f:if(condition:object.paid, then:'success')}">
                                 <td>
                                     <f:link.action action="edit" arguments="{object:object.invoice}" controller="Standard">
-                                        {object.invoice.numberPrefix}-{object.invoice.number}
+                                        {object.invoice.number}
                                     </f:link.action>
                                 </td>
                                 <td>

@@ -49,7 +49,12 @@ class CreateInvoicePdfService
 
         $content = $view->render();
         $now = new DateTime('now');
-        $filename = 'Rechnung.' . $invoice->getNumberPrefix() . $now->format('Y-m-d') . '-' . $invoice->getNumber() . '.pdf';
+        $filename = sprintf(
+            'Rechnung.%s.%s.%s.pdf',
+            $invoice->getNumber()->getPrefix(),
+            $now->format('Y-m-d'),
+            $invoice->getNumber()
+        );
         if ($content !== null) {
             $resource = $this->resourceManager->importResourceFromContent(
                 $content,

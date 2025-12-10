@@ -37,7 +37,7 @@ class StandardController extends AbstractPageRendererController
     {
         $invoice = new Invoice();
         $invoice->setChangeable(true);
-        $invoice->setNumberPrefix($this->defaultNumberPrefix);
+        $invoice->getNumber()->setPrefix($this->defaultNumberPrefix);
         $this->view->assign('object', $invoice);
     }
 

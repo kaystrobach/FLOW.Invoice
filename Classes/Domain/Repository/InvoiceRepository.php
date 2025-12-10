@@ -30,15 +30,16 @@ class InvoiceRepository extends SearchableRepository
      */
     protected $defaultOrderings = [
         'date' => QueryInterface::ORDER_DESCENDING,
-        'numberPrefix' => QueryInterface::ORDER_DESCENDING,
-        'number' => QueryInterface::ORDER_DESCENDING
+        'number.prefix' => QueryInterface::ORDER_DESCENDING,
+        'number.combinedNumber' => QueryInterface::ORDER_DESCENDING
     ];
 
     public function newWithPrefix(string $prefix): Invoice
     {
         $invoice = new Invoice();
-        $invoice->setNumberPrefix($prefix);
-        return $this->add($invoice);
+        $invoice->getNumber()->setPrefix($prefix);
+        $this->add($invoice);
+        return $invoice;
     }
 
     public function add($object): void
@@ -49,15 +50,15 @@ class InvoiceRepository extends SearchableRepository
                 static function (EntityManager $em) use ($object) {
                     try {
                         $maxId = $em->createQueryBuilder()
-                            ->select('MAX(e.number)')
+                            ->select('MAX(e.number.combinedNumber)')
                             ->from(Invoice::class, 'e')
-                            ->where('e.numberPrefix = ?1')
-                            ->setParameter(1, $object->getNumberPrefix())
+                            ->where('e.number.prefix = ?1')
+                            ->setParameter(1, $object->getNumber()->getPrefix())
                             ->getQuery()
                             ->getSingleScalarResult();
-                        $object->setNumber(1 + (int)$maxId);
+                        $object->getNumber()->setNumber(1 + (int)$maxId);
                     } catch (NoResultException $exception) {
-                        $object->setNumber(1);
+                        $object->getNumber()->setNumber(1);
                     }
                     $em->persist($object);
                     $em->flush($object);

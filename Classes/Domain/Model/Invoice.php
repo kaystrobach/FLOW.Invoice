@@ -9,6 +9,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use KayStrobach\Invoice\Domain\Model\Invoice\BankTransferDocument;
+use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\NumberingEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\TaxRecord;
 use KayStrobach\Invoice\Domain\Repository\InvoiceRepository;
 use KayStrobach\Invoice\Service\CreateInvoicePdfService;
@@ -26,21 +27,9 @@ use Neos\Flow\ResourceManagement\PersistentResource;
 class Invoice
 {
     /**
-     * @var string
+     * @ORM\Embedded(columnPrefix="number_")
      */
-    protected $numberPrefix;
-
-    /**
-     * @ORM\Column(nullable=true)
-     * @var int
-     */
-    protected $number = null;
-
-    /**
-     * @ORM\Column(nullable=true)
-     * @var string
-     */
-    protected $numberComplete;
+    protected ?NumberingEmbeddable $number = null;
 
     /**
      * @ORM\Column(nullable=true)
@@ -249,6 +238,7 @@ class Invoice
 
     public function __construct()
     {
+        $this->number = new NumberingEmbeddable();
         $this->settlementDates = new ArrayCollection();
         $this->invoiceItems = new ArrayCollection();
         $this->accountingRecords = new ArrayCollection();
@@ -259,51 +249,34 @@ class Invoice
     }
 
     /**
+     * @deprecated
      * @return string
      */
     public function getNumberPrefix()
     {
-        return $this->numberPrefix;
+        return $this->number->getPrefix();
     }
 
     /**
-     * @param string $numberPrefix
+     * @return NumberingEmbeddable
      */
-    public function setNumberPrefix($numberPrefix)
-    {
-        $this->numberPrefix = $numberPrefix;
-        $this->makeNumberComplete();
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumber()
+    public function getNumber(): NumberingEmbeddable
     {
         return $this->number;
     }
 
     /**
-     * @param int $number
+     * @param NumberingEmbeddable $number
      */
-    public function setNumber($number)
+    public function setNumber(NumberingEmbeddable $number)
     {
         $this->number = $number;
-        $this->makeNumberComplete();
+        $this->number->updateCombinedNumber();
     }
 
     public function getNumberComplete(): ?string
     {
-        return $this->numberComplete;
-    }
-
-    public function setNumberComplete(string $numberComplete = null) {
-        $this->numberComplete = $numberComplete;
-    }
-
-    public function makeNumberComplete()
-    {
-        $this->setNumberComplete($this->numberPrefix . $this->number);
+        return $this->number->getCombinedNumber() ?? '';
     }
 
     /**
@@ -899,7 +872,7 @@ class Invoice
         $newInvoice->setTotal($this->total * -1);
         $newInvoice->setTotalNoTaxes($this->totalNoTaxes * -1);
         $newInvoice->setTitle('Stornorechnung');
-        $newInvoice->setSubTitle('zu ' . $this->getNumberComplete());
+        $newInvoice->setSubTitle('zu ' . $this->getNumber()->getCombinedNumber());
 
         $this->invoiceRepository->add($newInvoice);
 
@@ -925,8 +898,8 @@ class Invoice
             $newAccountingRecord->setShouldOrHave('S');
             $newAccountingRecord->setInvoice($newInvoice);
             $newAccountingRecord->setDueDate(null);
-            $newAccountingRecord->setBelegfeld2($newInvoice->getNumberComplete());
-            $newAccountingRecord->setText($accountingRecord->getText() . ',Storno ' . $this->numberComplete);
+            $newAccountingRecord->setBelegfeld2($newInvoice->getNumber()->getCombinedNumber());
+            $newAccountingRecord->setText($accountingRecord->getText() . ',Storno ' . $this->getNumber()->getCombinedNumber());
             $newInvoice->getAccountingRecords()->add($newAccountingRecord);
         }
 
@@ -945,7 +918,7 @@ class Invoice
 
     public function __clone()
     {
-        $this->number = null;
+        $this->number = new NumberingEmbeddable();
         $this->date = new DateTime('now');
         $this->settlementDates->clear();
     }
@@ -954,7 +927,8 @@ class Invoice
     {
         $now = new DateTime('now');
         $clone = new Invoice();
-        $clone->setNumberPrefix($this->numberPrefix);
+        $clone->getNumber()->setPrefix($this->getNumber()->getPrefix());
+        $clone->getNumber()->setPostfix($this->getNumber()->getPostfix());
         $clone->setAddress($this->address);
         $clone->setCurrency($this->currency);
         $clone->setDeptor($this->deptor);
