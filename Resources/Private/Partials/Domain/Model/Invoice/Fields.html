@@ -54,5 +54,30 @@
 	</bs:tab.tabPane>
 </bs:tab.tabWrapper>
 
-<f:render partial="Domain/Model/InvoiceItem/Table" arguments="{_all}" />
+	<f:if condition="{object.invoiceItems}">
+		<f:then>
+			<f:render partial="Domain/Model/InvoiceItem/Table" arguments="{_all}" />
+		</f:then>
+		<f:else>
+			<div class="alert alert-info mt-3">
+				<f:if condition="!{object.notChangeable}">
+					<f:if condition="!{objectIsNew}">
+						<f:then>
+							<f:form.button class="btn btn-success btn-xs pull-right" formaction="{f:uri.action(action: 'addInvoiceItem')}">
+								<i:icon name="add"/>
+								Rechnungsposition hinzufügen
+							</f:form.button>
+						</f:then>
+						<f:else>
+							<f:form.button class="btn btn-success btn-xs pull-right" formaction="{f:uri.action(action: 'addInvoiceItem')}" disabled="disabled" title="Erst speichern">
+								<i:icon name="add"/>
+								Rechnungsposition hinzufügen
+							</f:form.button>
+						</f:else>
+					</f:if>
+				</f:if>
+			</div>
+		</f:else>
+	</f:if>
+
 
