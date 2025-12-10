@@ -2,6 +2,7 @@
 namespace KayStrobach\Invoice\Domain\Model\Invoice;
 
 use KayStrobach\Invoice\Domain\Model\Invoice;
+use Money\Exception;
 use Neos\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,9 +23,15 @@ class TaxRecord
     protected $taxRate;
 
     /**
-     * @var float
+     * @ORM\Embedded(columnPrefix="sum_")
+     * @var Invoice\Embeddable\MoneyEmbeddable
      */
     protected $sum;
+
+    public function __construct()
+    {
+        $this->sum = new Invoice\Embeddable\MoneyEmbeddable();
+    }
 
     /**
      * @return Invoice
@@ -59,17 +66,17 @@ class TaxRecord
     }
 
     /**
-     * @return float
+     * @return Invoice\Embeddable\MoneyEmbeddable
      */
-    public function getSum(): float
+    public function getSum(): Invoice\Embeddable\MoneyEmbeddable
     {
-        return $this->sum ?? 0.0;
+        return $this->sum;
     }
 
     /**
-     * @param float $sum
+     * @param Invoice\Embeddable\MoneyEmbeddable $sum
      */
-    public function setSum(float $sum): void
+    public function setSum(Invoice\Embeddable\MoneyEmbeddable $sum): void
     {
         $this->sum = $sum;
     }

@@ -33,12 +33,13 @@ class StandardController extends AbstractPageRendererController
         return Invoice::class;
     }
 
-    public function preNewAction()
+    public function preNewAction(): void
     {
         $invoice = new Invoice();
         $invoice->setChangeable(true);
         $invoice->getNumber()->setPrefix($this->defaultNumberPrefix);
         $this->view->assign('object', $invoice);
+        $this->view->assign('objectIsNew', true);
     }
 
     public function addInvoiceItemAction(Invoice $object)

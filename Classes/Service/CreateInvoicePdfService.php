@@ -79,7 +79,7 @@ class CreateInvoicePdfService
             $invoice->getReceiverBic(),  // Empfänger BIX
             $invoice->getReceiverName(), // Empfänger Name
             $invoice->getReceiverIban(), // Empfänger IBAN
-            'EUR' . number_format($amount ?? $invoice->getTotal(), 2, '.', ''), // Komplett Betrag für die Überweisung
+            'EUR' . number_format($amount ?? $invoice->getTotal()->getValue(), 2, '.', ''), // Komplett Betrag für die Überweisung
             '',                   // Zweck vierstelliger Code
             '',
             $invoice->getNumberComplete()

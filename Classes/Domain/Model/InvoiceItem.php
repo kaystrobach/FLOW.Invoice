@@ -234,6 +234,7 @@ class InvoiceItem
         $clone->setDescription($this->description);
         $clone->setTotal($this->total);
         $clone->setDiscount($this->discount);
+        $clone->setTotal(clone $this->total);
         return $clone;
     }
 }

@@ -46,6 +46,8 @@ class CurrencyInput extends HTMLElement {
         this.visibleInput.autocomplete = 'off';
         this.visibleInput.className = 'form-control currency-input-field';
 
+        this.visibleInput.disabled = this.currencyField.disabled || this.valueField.disabled;
+
         // rechtsbündig + Monospace
         this.visibleInput.style.textAlign = 'right';
         this.visibleInput.style.fontFamily = 'monospace';

@@ -36,6 +36,7 @@
       this.visibleInput.inputMode = "decimal";
       this.visibleInput.autocomplete = "off";
       this.visibleInput.className = "form-control currency-input-field";
+      this.visibleInput.disabled = this.currencyField.disabled || this.valueField.disabled;
       this.visibleInput.style.textAlign = "right";
       this.visibleInput.style.fontFamily = "monospace";
       wrapper.appendChild(this.visibleInput);

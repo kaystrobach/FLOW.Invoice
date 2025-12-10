@@ -69,6 +69,7 @@ class InvoiceRepository extends SearchableRepository
 
     public function update($object): void
     {
+
         if ($object instanceof Invoice) {
             $object->calculateTotal();
         }

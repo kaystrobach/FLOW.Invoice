@@ -9,6 +9,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use KayStrobach\Invoice\Domain\Model\Invoice\BankTransferDocument;
+use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\MoneyEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\NumberingEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\TaxRecord;
 use KayStrobach\Invoice\Domain\Repository\InvoiceRepository;
@@ -181,14 +182,14 @@ class Invoice
     protected $bankTransferDocuments;
 
     /**
-     * @ORM\Column(nullable=true)
-     * @var float
+     * @ORM\Embedded(columnPrefix="total_")
+     * @var MoneyEmbeddable
      */
     protected $total;
 
     /**
-     * @ORM\Column(nullable=true)
-     * @var float
+     * @ORM\Embedded(columnPrefix="totalnotaxes_")
+     * @var MoneyEmbeddable
      */
     protected $totalNoTaxes;
 
@@ -235,6 +236,7 @@ class Invoice
 
     /**
      * @ORM\OneToMany (mappedBy="invoice", cascade={"all"})
+     * @ORM\OrderBy({"taxRate": "ASC"})
      * @var Collection<TaxRecord>
      */
     protected $taxRecords;
@@ -249,6 +251,8 @@ class Invoice
         $this->year = $this->date->format('Y');
         $this->taxRecords = new ArrayCollection();
         $this->bankTransferDocuments = new ArrayCollection();
+        $this->total = new MoneyEmbeddable();
+        $this->totalNoTaxes = new MoneyEmbeddable();
     }
 
     /**
@@ -379,19 +383,12 @@ class Invoice
     }
 
     /**
+     * @deprecated
      * @return string
      */
     public function getCurrency()
     {
-        return $this->currency;
-    }
-
-    /**
-     * @param string $currency
-     */
-    public function setCurrency($currency)
-    {
-        $this->currency = $currency;
+        return $this->total->getCurrency();
     }
 
     /**
@@ -659,17 +656,17 @@ class Invoice
     }
 
     /**
-     * @return float
+     * @return MoneyEmbeddable
      */
-    public function getTotal(): float
+    public function getTotal(): MoneyEmbeddable
     {
-        return $this->total ?? 0.0;
+        return $this->total;
     }
 
     /**
-     * @param float $total
+     * @param MoneyEmbeddable $total
      */
-    public function setTotal(float $total): void
+    public function setTotal(MoneyEmbeddable $total): void
     {
         $this->total = $total;
     }
@@ -679,13 +676,22 @@ class Invoice
         if (!$this->isChangeable()) {
             return false;
         }
+
+        $this->updateTaxRecords();
+
         $sum = 0;
         /** @var InvoiceItem $invoiceItem */
         foreach ($this->getInvoiceItems() as $invoiceItem) {
             $invoiceItem->calculateTotal();
             $sum += $invoiceItem->getTotal()->getValue();
         }
-        $this->total = $sum;
+        $this->totalNoTaxes->setValue($sum);
+
+        foreach ($this->taxRecords as $taxRecord)
+        {
+            $sum += $taxRecord->getSum()->getValue();
+        }
+        $this->total->setValue($sum);
     }
 
     /**
@@ -827,32 +833,55 @@ class Invoice
     {
         $tr = new TaxRecord();
         $tr->setInvoice($this);
-        $tr->setSum($sum);
+        $tr->getSum()->setValue($sum);
         $tr->setTaxRate($rate);
         $this->getTaxRecords()->add($tr);
 
-        $total = $this->total;
+        $total = $this->total->getValue();
         /** @var TaxRecord $record */
         foreach ($this->taxRecords as $record) {
-            $total = $total - $record->getSum();
+            $total = $total - $record->getSum()->getValue();
         }
-        $this->totalNoTaxes = $total;
+        $this->totalNoTaxes->setValue($total ?? 0);
 
         return $tr;
     }
 
+    public function updateTaxRecords()
+    {
+        $taxRecords = [];
+        foreach ($this->invoiceItems as $invoiceItem) {
+            $tax = $invoiceItem->getTax();
+            if (!is_float($tax)) {
+                continue;
+            }
+            if (!isset($taxRecords[$tax])) {
+                $taxRecords[$tax] = 0;
+            }
+            $taxRecords[$invoiceItem->getTax()] += $invoiceItem->getTotal()->getValue() * ($tax/100);
+            $this->totalNoTaxes->setCurrency($invoiceItem->getTotal()->getCurrency() ?? 'EUR');
+        }
+
+        $this->taxRecords->clear();
+        foreach ($taxRecords as $rate => $sum) {
+            $this->taxRecords->add(
+                $this->createTaxRecord($sum, $rate)
+            );
+        }
+    }
+
     /**
-     * @return float
+     * @return MoneyEmbeddable
      */
-    public function getTotalNoTaxes(): ?float
+    public function getTotalNoTaxes(): MoneyEmbeddable
     {
         return $this->totalNoTaxes;
     }
 
     /**
-     * @param float $totalNoTaxes
+     * @param MoneyEmbeddable $totalNoTaxes
      */
-    public function setTotalNoTaxes(float $totalNoTaxes): void
+    public function setTotalNoTaxes(MoneyEmbeddable $totalNoTaxes): void
     {
         $this->totalNoTaxes = $totalNoTaxes;
     }
@@ -871,9 +900,17 @@ class Invoice
             return null;
         }
 
+        $newTotal = new MoneyEmbeddable();
+        $newTotal->setValue($this->total->getValue() * -1);
+        $newTotal->setCurrency($this->total->getCurrency());
+
+        $newTotalNoTaxes = new MoneyEmbeddable();
+        $newTotalNoTaxes->setValue($this->totalNoTaxes->getValue() * -1);
+        $newTotalNoTaxes->setCurrency($this->totalNoTaxes->getCurrency());
+
         $newInvoice = $this->makePartialClone();
-        $newInvoice->setTotal($this->total * -1);
-        $newInvoice->setTotalNoTaxes($this->totalNoTaxes * -1);
+        $newInvoice->setTotal($newTotal);
+        $newInvoice->setTotalNoTaxes($newTotalNoTaxes);
         $newInvoice->setTitle('Stornorechnung');
         $newInvoice->setSubTitle('zu ' . $this->getNumber()->getCombinedNumber());
 
@@ -890,7 +927,7 @@ class Invoice
         /** @var InvoiceItem $invoiceItem */
         foreach ($this->invoiceItems as $invoiceItem) {
             $newInvoiceItem = $invoiceItem->makePartialClone();
-            $newInvoiceItem->setSinglePrice($invoiceItem->getSinglePrice() * -1);
+            $newInvoiceItem->getSinglePrice()->setValue($invoiceItem->getSinglePrice() * -1);
             $newInvoiceItem->setInvoice($newInvoice);
             $newInvoice->invoiceItems->add($newInvoiceItem);
         }
