@@ -1,79 +1,77 @@
-<f:layout name="Default" />
+<html lang="de" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+			xmlns:="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+			xmlns:custom="http://typo3.org/ns/KayStrobach/Custom/ViewHelpers"
+			xmlns:media="http://typo3.org/ns/Neos/Media/ViewHelpers"
+			xmlns:b="http://typo3.org/ns/KayStrobach/Backend/ViewHelpers"
+			xmlns:cb="http://typo3.org/ns/FourViewture/KIS/CRM/Backend/ViewHelpers"
+			xmlns:search="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+			data-namespace-typo3-fluid="true"
+>
 
-<f:section name="Title">Tagesjournal</f:section>
+<b:be.setTitle>Tagesjournal</b:be.setTitle>
 
-<f:section name="NavigationBar">
-    <ul class="nav navbar-nav">
-        <li>
-            <f:link.action action="index" controller="Standard">
-                <span class="glyphicon glyphicon-chevron-left"></span>
-                Rechnungsjournal
-            </f:link.action>
-        </li>
-    </ul>
-</f:section>
+<b:be.button.closeButton action="index" controller="Standard"/>
 
-<f:section name="Content">
-    <f:render partial="Visualsearch/Search" arguments="{searchName:'KayStrobach_Invoice_DailyClosing', objects:objects}" contentAs="value">
-        <f:widget.paginate objects="{objects}" as="paginatedObjects" configuration="{itemsPerPage: 20, insertAbove: 1, insertBelow: 1, maximumNumberOfLinks: 15}">
-            <small class="pull-right">{objects -> f:count()} Einträge</small>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>
-                        Datum
-                    </th>
-                    <th>
-                        Erstellt am
-                    </th>
-                    <th>
-                        Dateiname
-                    </th>
-                    <th>
-                        Downloads
-                    </th>
-                    <th class="text-right">
-                        Summe
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <f:for each="{paginatedObjects}" as="object">
-                    <tr class="{f:if(condition:object.downloads, then:'success', else:'danger')}">
-                        <td>
-                            <f:link.action action="download" arguments="{object:object}">
-                                {object.date -> f:format.date(format: 'd.m.Y')}
-                            </f:link.action>
-                        </td>
-                        <td>
-                            <f:if condition="{object.created}">
-                                <f:then>
-                                    {object.created -> f:format.date(format: 'd.m.Y H:i:s')}
-                                </f:then>
-                                <f:else>
-                                    -
-                                </f:else>
-                            </f:if>
-                        </td>
-                        <td>
-                            {object.originalResource.fileName}
-                        </td>
-                        <td>
-                            <ul class="list-unstyled">
-                                <f:for each="{object.downloads}" as="download">
-                                    <li>
-                                        {download.account.accountIdentifier} - {download.date -> f:format.date(format: 'd.m.Y H:i:s')}
-                                    </li>
-                                </f:for>
-                            </ul>
-                        </td>
-                        <td class="text-right">
-                            {object.sum -> f:format.number(thousandsSeparator: '.', decimalSeparator: ',', decimals: '2')} €
-                        </td>
-                    </tr>
-                </f:for>
-                </tbody>
-            </table>
-        </f:widget.paginate>
-    </f:render>
-</f:section>
+
+<f:render partial="Visualsearch/Search" arguments="{searchName:'KayStrobach_Invoice_DailyClosing', objects:objects}" contentAs="value">
+		<f:widget.paginate objects="{objects}" as="paginatedObjects" configuration="{itemsPerPage: 20, insertAbove: 1, insertBelow: 1, maximumNumberOfLinks: 15}">
+				<small class="pull-right">{objects -> f:count()} Einträge</small>
+				<table class="table">
+						<thead>
+						<tr>
+								<th>
+										Datum
+								</th>
+								<th>
+										Erstellt am
+								</th>
+								<th>
+										Dateiname
+								</th>
+								<th>
+										Downloads
+								</th>
+								<th class="text-right">
+										Summe
+								</th>
+						</tr>
+						</thead>
+						<tbody>
+						<f:for each="{paginatedObjects}" as="object">
+								<tr class="{f:if(condition:object.downloads, then:'success', else:'danger')}">
+										<td>
+												<f:link.action action="download" arguments="{object:object}">
+														{object.date -> f:format.date(format: 'd.m.Y')}
+												</f:link.action>
+										</td>
+										<td>
+												<f:if condition="{object.created}">
+														<f:then>
+																{object.created -> f:format.date(format: 'd.m.Y H:i:s')}
+														</f:then>
+														<f:else>
+																-
+														</f:else>
+												</f:if>
+										</td>
+										<td>
+												{object.originalResource.fileName}
+										</td>
+										<td>
+												<ul class="list-unstyled">
+														<f:for each="{object.downloads}" as="download">
+																<li>
+																		{download.account.accountIdentifier} - {download.date -> f:format.date(format: 'd.m.Y H:i:s')}
+																</li>
+														</f:for>
+												</ul>
+										</td>
+										<td class="text-right">
+												{object.sum -> f:format.number(thousandsSeparator: '.', decimalSeparator: ',', decimals: '2')} €
+										</td>
+								</tr>
+						</f:for>
+						</tbody>
+				</table>
+		</f:widget.paginate>
+</f:render>
