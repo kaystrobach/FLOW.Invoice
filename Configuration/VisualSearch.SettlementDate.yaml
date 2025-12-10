@@ -12,7 +12,7 @@ Searches:
           freeInput: true
         matches:
           like:
-            - invoice.number
+            - invoice.number.number
             - invoice.deptor
             - invoice.deptorNumber
             - invoice.additionalInformation
