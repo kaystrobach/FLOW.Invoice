@@ -1,0 +1,13 @@
+export { default as boldIcon } from '../../node_modules/bootstrap-icons/icons/type-bold.svg';
+export { default as italicIcon } from '../../node_modules/bootstrap-icons/icons/type-italic.svg';
+export { default as strikeIcon } from '../../node_modules/bootstrap-icons/icons/type-strikethrough.svg';
+export { default as bulletListIcon } from '../../node_modules/bootstrap-icons/icons/list-ul.svg';
+export { default as orderedListIcon } from '../../node_modules/bootstrap-icons/icons/list-ol.svg';
+export { default as taskListIcon } from '../../node_modules/bootstrap-icons/icons/list-check.svg';
+export { default as imageIcon } from '../../node_modules/bootstrap-icons/icons/card-image.svg';
+export { default as quoteIcon } from '../../node_modules/bootstrap-icons/icons/quote.svg';
+export { default as undoIcon } from '../../node_modules/bootstrap-icons/icons/arrow-counterclockwise.svg';
+export { default as redoIcon } from '../../node_modules/bootstrap-icons/icons/arrow-clockwise.svg';
+export { default as codeIcon } from '../../node_modules/bootstrap-icons/icons/code.svg';
+export { default as linkIcon } from '../../node_modules/bootstrap-icons/icons/link-45deg.svg';
+export { default as markdownIcon } from '../../node_modules/bootstrap-icons/icons/markdown.svg';

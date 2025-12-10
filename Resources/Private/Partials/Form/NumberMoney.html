@@ -1,0 +1,46 @@
+{namespace custom=KayStrobach\Custom\ViewHelpers}
+{namespace bs=KayStrobach\Bootstrap\ViewHelpers}
+
+<f:variable name="label">{f:translate(id:labelId, value:label)}</f:variable>
+<f:variable name="hint">{f:translate(id:hintId, value:hint)}</f:variable>
+<f:variable name="errorClass">{f:validation.ifHasErrors(for: '{bs:form.fieldNamePrefix(fieldName: property)}', then: 'is-invalid')}</f:variable>
+
+<div class="form-group mb-3">
+	<f:if condition="{label}">
+		<label class="form-label">{label}</label>
+	</f:if>
+
+	<f:render partial="Form/Wrapper/InputGroup" arguments="{_all}" contentAs="content">
+		<f:if condition="{noEdit}">
+			<f:then>
+				<fucodo-form-currency currency="EUR">
+					<f:form.hidden additionalAttributes="{slot:'currency'}" property="{property}.currency" />
+					<custom:form.numberTextfield name="_disabled_{property}.value"
+																			 value="{bs:form.fieldValue(fieldName: '{property}.value')}"
+																			 class="form-control {errorClass} {cssClassField}"
+																			 placeholder="{placeholder}"
+																			 disabled="disabled"
+																			 decimals="{decimals}"
+																			 decimalSeparator=","
+																			 readonly="readonly"
+																			 additionalAttributes="{slot:'value'}"
+					/>
+				</fucodo-form-currency>
+			</f:then>
+			<f:else>
+				<fucodo-form-currency currency="EUR">
+					<f:form.hidden additionalAttributes="{slot:'currency'}" property="{property}.currency" />
+					<custom:form.numberTextfield property="{property}.value"
+																			 class="form-control {errorClass} {cssClassField}"
+																			 decimals="{decimals}"
+																			 decimalSeparator=","
+																			 placeholder="{placeholder}"
+																			 additionalAttributes="{slot:'value'}"
+					/>
+				</fucodo-form-currency>
+			</f:else>
+		</f:if>
+	</f:render>
+
+	<f:render partial="Form/Validation/ValidationMessagesForField" arguments="{property:property, hint:hint}"/>
+</div>

@@ -5,6 +5,8 @@ namespace KayStrobach\Invoice\Domain\Model;
  * This file is part of the KayStrobach.Invoice package.
  */
 
+use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\MoneyEmbeddable;
+use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\NumberingEmbeddable;
 use Neos\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 class InvoiceItem
 {
     /**
-     * @ORM\ManyToOne(cascade={"all"}, inversedBy="invoiceItems")
+     * @ORM\ManyToOne(cascade={"persist"}, inversedBy="invoiceItems")
      * @var Invoice
      */
     protected $invoice;
@@ -38,10 +40,10 @@ class InvoiceItem
     protected $tax;
 
     /**
-     * @ORM\Column(nullable=true)
-     * @var float
+     * @ORM\Embedded(columnPrefix="singleprice_")
+     * @var MoneyEmbeddable
      */
-    protected $singlePrice;
+    protected MoneyEmbeddable $singlePrice;
 
     /**
      * @ORM\Column(nullable=true)
@@ -57,16 +59,22 @@ class InvoiceItem
     protected $description;
 
     /**
-     * @ORM\Column(nullable=true)
-     * @var float
+     * @ORM\Embedded(columnPrefix="total_")
+     * @var MoneyEmbeddable
      */
-    protected $total;
+    protected MoneyEmbeddable $total;
 
     /**
      * @ORM\Column(nullable=true)
      * @var float
      */
     protected $discount;
+
+    public function __construct()
+    {
+        $this->total = new MoneyEmbeddable();
+        $this->singlePrice = new MoneyEmbeddable();
+    }
 
     /**
      * @return Invoice
@@ -130,17 +138,17 @@ class InvoiceItem
     }
 
     /**
-     * @return float
+     * @return MoneyEmbeddable
      */
-    public function getSinglePrice(): ?float
+    public function getSinglePrice(): MoneyEmbeddable
     {
         return $this->singlePrice;
     }
 
     /**
-     * @param float $singlePrice
+     * @param MoneyEmbeddable $singlePrice
      */
-    public function setSinglePrice($singlePrice = null)
+    public function setSinglePrice(MoneyEmbeddable $singlePrice)
     {
         $this->singlePrice = $singlePrice;
     }
@@ -178,24 +186,24 @@ class InvoiceItem
     }
 
     /**
-     * @return float
+     * @return MoneyEmbeddable
      */
-    public function getTotal(): ?float
+    public function getTotal(): MoneyEmbeddable
     {
         return $this->total;
     }
 
     /**
-     * @param float $total
+     * @param MoneyEmbeddable $total
      */
-    public function setTotal($total = null)
+    public function setTotal(MoneyEmbeddable $total)
     {
         $this->total = $total;
     }
 
     public function calculateTotal()
     {
-        $this->total = $this->getAmount() * $this->getSinglePrice();
+        $this->total->setValue($this->getAmount() * $this->getSinglePrice()->getValue());
     }
 
     /**

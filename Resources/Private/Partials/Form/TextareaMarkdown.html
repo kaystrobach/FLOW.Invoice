@@ -1,0 +1,41 @@
+{namespace bs=KayStrobach\Bootstrap\ViewHelpers}
+
+<f:variable name="label">{f:translate(id:labelId, value:label)}</f:variable>
+<f:variable name="hint">{f:translate(id:hintId, value:hint)}</f:variable>
+<f:variable name="errorClass">{f:validation.ifHasErrors(for: '{bs:form.fieldNamePrefix(fieldName: property)}', then: 'is-invalid')}</f:variable>
+
+<div class="form-group mb-3">
+	<f:if condition="{label}">
+		<label class="form-label">{label}</label>
+	</f:if>
+
+	<f:render partial="Form/Wrapper/InputGroup" arguments="{_all}" contentAs="content">
+		<f:if condition="{noEdit}">
+			<f:then>
+				<fucodo-editor class="form-control">
+					<f:form.textarea name="_disabled_{property}"
+													 value="{bs:form.fieldValue(fieldName: property)}"
+													 class="form-control {errorClass} {cssClassField}"
+													 rows="5"
+													 placeholder="{placeholder}"
+													 disabled="disabled"
+					/>
+				</fucodo-editor>
+			</f:then>
+			<f:else>
+				<fucodo-editor class="form-control">
+					<f:form.textarea
+						property="{property}"
+						class="form-control {errorClass} {cssClassField}"
+						rows="5"
+						placeholder="{placeholder}"
+						additionalAttributes="{autocapitalize:'off', autocomplete='off'}"
+						data="{data}"
+					/>
+				</fucodo-editor>
+			</f:else>
+		</f:if>
+	</f:render>
+
+	<f:render partial="Form/Validation/ValidationMessagesForField" arguments="{property:property, hint:hint}"/>
+</div>

@@ -1,0 +1,31 @@
+{
+  "name": "fucodo.editor",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fucodo/fucodo.editor.git"
+  },
+  "author": "fucodo GmbH - Jonas Knobloch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fucodo/fucodo.editor/issues"
+  },
+  "homepage": "https://github.com/fucodo/fucodo.editor#readme",
+  "description": "",
+  "dependencies": {
+    "@tiptap/core": "^2.10.3",
+    "@tiptap/extension-code-block": "^2.10.4",
+    "@tiptap/extension-image": "^2.10.4",
+    "@tiptap/extension-link": "^2.10.4",
+    "@tiptap/extension-task-item": "^2.10.3",
+    "@tiptap/extension-task-list": "^2.10.3",
+    "@tiptap/starter-kit": "^2.10.3",
+    "bootstrap-icons": "^1.11.3",
+    "lit": "^3.2.1",
+    "tiptap-markdown": "^0.8.10"
+  }
+}

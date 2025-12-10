@@ -1,0 +1,23 @@
+KayStrobach:
+  Backend:
+    PageRenderer:
+      Defaults:
+        jsFiles:
+          fucodo-form-number:
+            file: 'resource://KayStrobach.Invoice/Public/WebComponents/fucodo-form-number/dist/index.js'
+            type: module
+            section: head
+            forceOnTop: true
+            async: false
+            integrity: null
+            defer: null
+            crossorigin: null
+          fucodo-editor:
+            file: 'resource://KayStrobach.Invoice/Public/WebComponents/fucodo-editor/dist/index.js'
+            type: module
+            section: head
+            forceOnTop: true
+            async: false
+            integrity: null
+            defer: null
+            crossorigin: null

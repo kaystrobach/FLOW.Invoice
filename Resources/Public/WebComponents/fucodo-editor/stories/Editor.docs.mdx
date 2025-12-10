@@ -1,0 +1,45 @@
+import { Meta, Title, Subtitle, Description, Primary, Source, Stories } from '@storybook/addon-docs/blocks';
+import * as EditorStories from './Editor.stories';
+
+<Meta of={EditorStories} />
+
+<Title>Markdown Editor</Title>
+<Subtitle>Lightweight web component for editing Markdown</Subtitle>
+
+## Description
+
+The `fucodo-editor` web component provides a simple Markdown editing experience. It renders
+an editor UI for the content inside its inner `<textarea>`. In the demo story, a Save button
+reads the current Markdown via the component\'s JS API and displays it below the editor.
+
+This documentation page is powered by the same stories used in the canvas/controls, so the
+interactive example reflects the live configuration.
+
+Tag name: `fucodo-editor`
+
+## Usage
+
+<Source
+  language="html"
+  code={`<fucodo-editor class="custom">
+  <textarea>
+# Hello World!
+This is a simple markdown editor.
+- foo
+- bar
+  </textarea>
+</fucodo-editor>`}
+/>
+
+## Interactive example
+
+<Primary />
+
+## Notes
+
+- The demo story shows how to access the current Markdown using the element\'s `getMarkdown()` method.
+- You can style the host element with your own CSS classes (e.g., add borders or rounded corners).
+
+## All stories
+
+<Stories includePrimary={false} />

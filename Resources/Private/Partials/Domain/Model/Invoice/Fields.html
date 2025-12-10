@@ -1,0 +1,54 @@
+<html lang="de" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+			xmlns:="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+			xmlns:custom="http://typo3.org/ns/KayStrobach/Custom/ViewHelpers"
+			xmlns:media="http://typo3.org/ns/Neos/Media/ViewHelpers"
+			xmlns:b="http://typo3.org/ns/KayStrobach/Backend/ViewHelpers"
+			xmlns:bs="http://typo3.org/ns/KayStrobach/Bootstrap/ViewHelpers"
+			xmlns:cb="http://typo3.org/ns/FourViewture/KIS/CRM/Backend/ViewHelpers"
+			xmlns:search="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+			xmlns:i="http://typo3.org/ns/KayStrobach/IconRegistry/ViewHelpers"
+			data-namespace-typo3-fluid="true"
+>
+	<f:if condition="{object.changeable}">
+		<b:be.button.saveButton />
+		<f:if condition="!{objectIsNew}">
+			<b:be.button.addButton type="submit" action="finalize" icon="bootstrap-check" label="Rechnung festschreiben" arguments="{object:object}"/>
+			<f:form.hidden property="changeable" />
+			<f:form.hidden property="number.prefix" />
+		</f:if>
+	</f:if>
+
+<bs:tab.tabWrapper>
+	<bs:tab.tabPane title="Allgemein">
+		<f:render partial="Form/Text" arguments="{label:'Titel', property:'title', noEdit:object.notChangeable}"/>
+		<f:render partial="Form/TextareaMarkdown" arguments="{label:'Zusatzinformationen', property:'additionalInformation', noEdit:object.notChangeable}"/>
+	</bs:tab.tabPane>
+	<bs:tab.tabPane title="Kunde">
+		<f:render partial="Form/Textarea" arguments="{label:'Adresse', property:'address', noEdit:object.notChangeable}"/>
+		<f:render partial="Form/Text" arguments="{label:'E-Mail', property:'email', noEdit:object.notChangeable}"/>
+		<f:render partial="Form/Textarea" arguments="{label:'Debitor', property:'deptor', noEdit:object.notChangeable}"/>
+		<f:render partial="Form/Text" arguments="{label:'Debitorennummer', property:'deptorNumber', noEdit:object.notChangeable}"/>
+	</bs:tab.tabPane>
+	<bs:tab.tabPane title="Verkäufer">
+		<div class="alert alert-info">
+			Die Informationen hier werden zentral verwaltet, müssen jedoch an jeder Rechnung persistiert werden.
+		</div>
+	</bs:tab.tabPane>
+	<bs:tab.tabPane title="Leistungszeitraum">
+		<div class="row">
+			<div class="col-sm-6">
+				<f:render partial="Form/TextareaMarkdown" arguments="{label:'Leistungszeitraum', property:'periodOfPerformanceComment', noEdit:object.notChangeable}"/>
+			</div>
+			<div class="col-sm-6">
+				<f:render partial="Form/DateTime" arguments="{label: 'Start', property:'periodOfPerformanceStart', noEdit:object.notChangeable}" />
+				<f:render partial="Form/DateTime" arguments="{label: 'Ende', property:'periodOfPerformanceEnd', noEdit:object.notChangeable}" />
+			</div>
+		</div>
+	</bs:tab.tabPane>
+	<bs:tab.tabPane title="Zusatzinformationen">
+		<f:render partial="Form/TextareaMarkdown" arguments="{label:'Freitext', property:'additionalText', noEdit:object.notChangeable}"/>
+	</bs:tab.tabPane>
+</bs:tab.tabWrapper>
+
+<f:render partial="Domain/Model/InvoiceItem/Table" arguments="{_all}" />
+
