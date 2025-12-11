@@ -1,0 +1,49 @@
+import { Meta, Title, Subtitle, Description, Primary, ArgTypes, Source, Stories } from '@storybook/addon-docs/blocks';
+import * as LazyLoadStories from './LazyLoad.stories';
+
+<Meta of={LazyLoadStories} />
+
+<Title>fucodo-lazy-load</Title>
+<Subtitle>Fetch and inject remote HTML fragments lazily</Subtitle>
+
+## Description
+
+The `fucodo-lazy-load` web component fetches HTML from a `url` and injects it into itself once
+loaded. Optionally, you can provide one or more CSS `selectors` to extract only specific parts of
+the fetched HTML. Any children you place inside the element serve as initial fallback/placeholder
+content until the network content has been loaded (e.g., a loading indicator).
+
+Tag name: `fucodo-lazy-load`
+
+## Usage
+
+<Source
+  language="html"
+  code={`<fucodo-lazy-load url="/partials/lazy.html" selectors="main .article">
+  <span aria-busy="true">Loading...</span>
+</fucodo-lazy-load>`}
+/>
+
+## Interactive example
+
+<Primary />
+
+## Properties / Attributes
+
+- `url` (string): The URL to fetch. The fetched HTML content will be injected into the element.
+- `selectors` (string): Optional CSS selector(s). If provided, only matching elements from the
+  fetched HTML will be inserted. Multiple selectors can be separated by commas.
+
+<ArgTypes of={LazyLoadStories.Default} />
+
+## Notes
+
+- Child nodes of `fucodo-lazy-load` act as placeholders until the remote content arrives; you can
+  show a spinner or a text like `Loading...` with `aria-busy="true"` for accessibility.
+- If `selectors` is empty, the entire fetched document (or its `<body>` content) will be inserted.
+- Ensure the target server allows fetching these resources (CORS), especially when serving from a
+  different origin.
+
+## All stories
+
+<Stories includePrimary={false} />

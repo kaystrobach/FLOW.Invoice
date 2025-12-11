@@ -21,3 +21,12 @@ KayStrobach:
             integrity: null
             defer: null
             crossorigin: null
+          fucodo-lazy-load:
+            file: 'resource://KayStrobach.Invoice/Public/WebComponents/fucodo-lazy-load/dist/index.js'
+            type: module
+            section: head
+            forceOnTop: true
+            async: false
+            integrity: null
+            defer: null
+            crossorigin: null
