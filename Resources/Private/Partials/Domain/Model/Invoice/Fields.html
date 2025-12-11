@@ -94,4 +94,34 @@
     </f:else>
 </f:if>
 
+<f:if condition="{object.settlementDates}">
+    <f:then>
+        <f:render partial="Domain/Model/SettlementDates/Table" arguments="{_all}"/>
+    </f:then>
+    <f:else>
+        <div class="alert alert-info mt-3">
+            <f:if condition="!{object.notChangeable}">
+                <f:if condition="!{objectIsNew}">
+                    <f:then>
+                        <f:form.button class="btn btn-success btn-xs pull-right"
+                                       formaction="{f:uri.action(action: 'addSettlementDate')}">
+                            <i:icon name="add"/>
+                            Fälligkeitsdatum hinzufügen
+                        </f:form.button>
+                    </f:then>
+                    <f:else>
+                        <f:form.button class="btn btn-success btn-xs pull-right"
+                                       formaction="{f:uri.action(action: 'addSettlementDate')}" disabled="disabled"
+                                       title="Erst speichern">
+                            <i:icon name="add"/>
+                            Fälligkeitsdatum hinzufügen
+                        </f:form.button>
+                    </f:else>
+                </f:if>
+            </f:if>
+        </div>
+    </f:else>
+</f:if>
+
+
 

@@ -99,16 +99,4 @@
             <b>{invoice.total}</b>
         </td>
     </tr>
-    <f:for each="{invoice.settlementDates}" as="settlement">
-        <tr>
-            <td>
-                Zahlung bis {settlement.dueDate -> f:format.date(format: 'd.m.Y')}
-            </td>
-            <td class="text-right">
-                <b>
-                    {settlement.amount}
-                </b>
-            </td>
-        </tr>
-    </f:for>
 </table>

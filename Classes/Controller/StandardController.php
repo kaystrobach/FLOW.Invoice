@@ -9,6 +9,7 @@ use KayStrobach\Backend\Controller\AbstractPageRendererController;
 use KayStrobach\Crud\Controller\Traits\CrudTrait;
 use KayStrobach\Invoice\Domain\Model\Invoice;
 use KayStrobach\Invoice\Domain\Model\InvoiceItem;
+use KayStrobach\Invoice\Domain\Model\SettlementDate;
 use KayStrobach\Invoice\Messenger\Message\InvoiceFinalizedMessage;
 use KayStrobach\Invoice\View\InvoiceView;
 use Neos\Flow\Annotations as Flow;
@@ -61,6 +62,9 @@ class StandardController extends AbstractPageRendererController
         $invoiceItem = new InvoiceItem();
         $invoiceItem->setInvoice($object);
         $invoiceItem->setUnit('Pcs');
+        $invoiceItem->setSort($object->getInvoiceItems()->count() + 1);
+        $invoiceItem->setAmount(1);
+        $invoiceItem->setTax(19);
         $object->getInvoiceItems()->add($invoiceItem);
         $this->getRepository()->update($object);
         $this->redirect(
@@ -76,6 +80,22 @@ class StandardController extends AbstractPageRendererController
     public function removeInvoiceItemAction(Invoice $object, InvoiceItem $item)
     {
         $object->getInvoiceItems()->removeElement($item);
+        $this->getRepository()->update($object);
+        $this->redirect(
+            'edit',
+            null,
+            null,
+            [
+                'object' => $object
+            ]
+        );
+    }
+
+    public function addSettlementDateAction(Invoice $object)
+    {
+        $sd = new SettlementDate();
+        $sd->setInvoice($object);
+        $object->getSettlementDates()->add($sd);
         $this->getRepository()->update($object);
         $this->redirect(
             'edit',

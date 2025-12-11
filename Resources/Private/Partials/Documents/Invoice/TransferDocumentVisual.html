@@ -1,0 +1,45 @@
+<div style="width:14.99cm; height: 10.58cm; background-image: url({f:uri.resource(path: 'resource://KayStrobach.Invoice/Public/Images/SEPAueberweisungsvorlage.jpg')}); background-image-resize:6;margin-bottom: 1cm; border: 1px dotted black;">
+    <table style="width:14.99cm; margin-left: 0.5cm;">
+        <tr>
+            <td colspan="2" style="height:2.0cm">
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="font-family: Courier,monospace;letter-spacing: 0.4em;">
+                {invoice.receiverName}
+                <br>
+                <br>
+                {invoice.receiverIban}
+                <br>
+                <br>
+                {invoice.receiverBic}
+            </td>
+        </tr>
+        <tr style="">
+            <td>
+                &nbsp;
+            </td>
+            <td style="text-align: right; padding-top: 0.4cm; padding-right: 1cm; font-family: Courier,monospace;letter-spacing: 0.4em;">
+                {settlement.amount -> f:format.number(decimals: 2, decimalSeparator: ',', thousandsSeparator: '')}
+                <br>
+                <br>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding-top: 0.35cm; font-family: Courier,monospace;letter-spacing: 0.4em;">
+                {invoice.numberComplete}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding-top: 0.35cm; font-family: Courier,monospace;letter-spacing: 0.4em;">
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding-top: 0.35cm; font-family: Courier,monospace;letter-spacing: 0.4em;">
+                {invoice.deptor}
+            </td>
+        </tr>
+    </table>
+</div>

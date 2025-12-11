@@ -38,6 +38,7 @@ body {
 
 .invoice-table th {
     text-align: left;
+    border-bottom: 1px solid silver;
 }
 .invoice-table th, .invoice-table td {
     padding-left: 0.5rem;

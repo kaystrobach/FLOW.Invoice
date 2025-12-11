@@ -1,0 +1,39 @@
+<html lang="de"
+      xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+      xmlns:inv="http://typo3.org/ns/KayStrobach/Invoice/ViewHelpers"
+      xmlns:media="http://typo3.org/ns/Neos/Media/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
+
+<f:if condition="{invoice.settlementDates}">
+    <f:then>
+        <table class="table invoice-table">
+            <thead>
+            <tr>
+                <th>
+                    Fälligkeit
+                </th>
+                <th class="text-right">
+                    Summe
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <f:for each="{invoice.settlementDates}" as="settlement">
+                <tr>
+                    <td>
+                        Zahlung bis {settlement.dueDate -> f:format.date(format: 'd.m.Y')}
+                    </td>
+                    <td class="text-right">
+                        <b>
+                            {settlement.amount}
+                        </b>
+                    </td>
+                </tr>
+            </f:for>
+            </tbody>
+        </table>
+    </f:then>
+</f:if>
+
+

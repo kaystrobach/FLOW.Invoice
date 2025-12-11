@@ -22,6 +22,11 @@ class InvoiceItem
     protected $invoice;
 
     /**
+     * @var int
+     */
+    protected int $sort = 0;
+
+    /**
      * @ORM\Column(nullable=true)
      * @var int
      */
@@ -49,14 +54,20 @@ class InvoiceItem
      * @ORM\Column(nullable=true)
      * @var string
      */
-    protected $name;
+    protected $articleReference = '';
+
+    /**
+     * @ORM\Column(nullable=true)
+     * @var string
+     */
+    protected $name = '';
 
     /**
      * @var string
      * @Flow\Validate(type="text")
      * @ORM\Column(type="text", length=21844, nullable=true)
      */
-    protected $description;
+    protected $description = '';
 
     /**
      * @ORM\Embedded(columnPrefix="total_")
@@ -103,6 +114,26 @@ class InvoiceItem
     public function setAmount($amount = null)
     {
         $this->amount = $amount;
+    }
+
+    public function getSort(): int
+    {
+        return $this->sort;
+    }
+
+    public function setSort(int $sort): void
+    {
+        $this->sort = $sort;
+    }
+
+    public function getArticleReference(): string
+    {
+        return $this->articleReference ?? '';
+    }
+
+    public function setArticleReference(string $articleReference): void
+    {
+        $this->articleReference = $articleReference;
     }
 
     /**

@@ -46,7 +46,7 @@ class MoneyEmbeddable implements Stringable
     {
         return sprintf(
             '%s %s',
-            number_format($this->getValue() / 100, 2),
+            number_format($this->getValue() / 100, 2, ',', '.'),
             $this->getCurrency()
         );
     }

@@ -5,6 +5,7 @@ namespace KayStrobach\Invoice\Domain\Model;
  * This file is part of the KayStrobach.Invoice package.
  */
 
+use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\MoneyEmbeddable;
 use Neos\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,9 +26,10 @@ class SettlementDate
     protected $dueDate;
 
     /**
-     * @var float
+     * @ORM\Embedded(columnPrefix="amount_")
+     * @var MoneyEmbeddable
      */
-    protected $amount = 0;
+    protected $amount;
 
     /**
      * @var string
@@ -47,6 +49,7 @@ class SettlementDate
     public function __construct()
     {
         $this->dueDate = new \DateTime('+14days');
+        $this->amount = new MoneyEmbeddable();
     }
 
     /**

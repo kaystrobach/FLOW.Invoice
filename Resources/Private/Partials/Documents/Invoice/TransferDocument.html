@@ -1,0 +1,51 @@
+<f:if condition="{invoice.settlementDates}">
+    <p>
+        Bitte nutzen Sie zur Zahlung die beiliegenden Zahlscheine als Vorlage oder als Überweisungsträger zur Abgabe in der Bank.
+    </p>
+
+    <table class="table">
+        <tr>
+            <td>
+                Kontoempfänger:
+            </td>
+            <td>
+                {invoice.receiverName}
+            </td>
+            <td rowspan="4" class="text-right">
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td>
+                IBAN
+            </td>
+            <td>
+                {invoice.receiverIban}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                BIC
+            </td>
+            <td>
+                {invoice.receiverBic}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Verwendungszweck
+            </td>
+            <td>
+                {invoice.numberComplete}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Kontoinhaber / Zahler
+            </td>
+            <td>
+                {invoice.deptor}
+            </td>
+        </tr>
+    </table>
+</f:if>

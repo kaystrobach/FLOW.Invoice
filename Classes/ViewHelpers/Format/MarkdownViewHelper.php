@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace KayStrobach\Invoice\Format\ViewHelpers;
+namespace KayStrobach\Invoice\ViewHelpers\Format;
 
 use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment\Environment;

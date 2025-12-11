@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use KayStrobach\Invoice\Domain\Model\Invoice\BankTransferDocument;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\MoneyEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\NumberingEmbeddable;
+use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\PeriodEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\TaxRecord;
 use KayStrobach\Invoice\Domain\Repository\InvoiceRepository;
 use KayStrobach\Invoice\Domain\Traits\CollectionBugfixTrait;
@@ -104,23 +105,10 @@ class Invoice
     protected $year;
 
     /**
-     * @var string
-     * @Flow\Validate(type="text")
-     * @ORM\Column(type="text", length=65532, nullable=true)
+     * @ORM\Embedded(columnPrefix="period_of_performance_")
+     * @var PeriodEmbeddable
      */
-    protected $periodOfPerformanceComment;
-
-    /**
-     * @ORM\Column(nullable=true)
-     * @var DateTime
-     */
-    protected $periodOfPerformanceStart;
-
-    /**
-     * @ORM\Column(nullable=true)
-     * @var DateTime
-     */
-    protected $periodOfPerformanceEnd;
+    protected PeriodEmbeddable $periodOfPerformance;
 
     /**
      * @var string
@@ -144,7 +132,8 @@ class Invoice
     protected $additionalText;
 
     /**
-     * @var @ORM\OneToMany(cascade={"all"}, mappedBy="invoice")
+     * @ORM\OrderBy({"sort":"ASC"})
+     * @ORM\OneToMany(cascade={"all"}, mappedBy="invoice")
      * @var \Doctrine\Common\Collections\ArrayCollection<\KayStrobach\Invoice\Domain\Model\InvoiceItem>
      */
     protected $invoiceItems;
@@ -249,6 +238,7 @@ class Invoice
         $this->accountingRecords = new ArrayCollection();
         $this->date = new DateTime('now');
         $this->year = $this->date->format('Y');
+        $this->periodOfPerformance = new PeriodEmbeddable();
         $this->taxRecords = new ArrayCollection();
         $this->bankTransferDocuments = new ArrayCollection();
         $this->total = new MoneyEmbeddable();
@@ -382,6 +372,16 @@ class Invoice
         $this->year = $year;
     }
 
+    public function getPeriodOfPerformance(): PeriodEmbeddable
+    {
+        return $this->periodOfPerformance;
+    }
+
+    public function setPeriodOfPerformance(PeriodEmbeddable $periodOfPerformance): void
+    {
+        $this->periodOfPerformance = $periodOfPerformance;
+    }
+
     /**
      * @deprecated
      * @return string
@@ -490,54 +490,6 @@ class Invoice
     /**
      * @return string
      */
-    public function getPeriodOfPerformanceComment()
-    {
-        return $this->periodOfPerformanceComment;
-    }
-
-    /**
-     * @param string $periodOfPerformanceComment
-     */
-    public function setPeriodOfPerformanceComment($periodOfPerformanceComment)
-    {
-        $this->periodOfPerformanceComment = $periodOfPerformanceComment;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getPeriodOfPerformanceStart(): ?DateTime
-    {
-        return $this->periodOfPerformanceStart;
-    }
-
-    /**
-     * @param DateTime $periodOfPerformanceStart
-     */
-    public function setPeriodOfPerformanceStart(DateTime $periodOfPerformanceStart = null): void
-    {
-        $this->periodOfPerformanceStart = $periodOfPerformanceStart;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getPeriodOfPerformanceEnd(): ?DateTime
-    {
-        return $this->periodOfPerformanceEnd;
-    }
-
-    /**
-     * @param DateTime $periodOfPerformanceEnd
-     */
-    public function setPeriodOfPerformanceEnd(DateTime $periodOfPerformanceEnd = null): void
-    {
-        $this->periodOfPerformanceEnd = $periodOfPerformanceEnd;
-    }
-
-    /**
-     * @return string
-     */
     public function getAdditionalText()
     {
         return $this->additionalText;
@@ -580,7 +532,7 @@ class Invoice
      */
     public function setSettlementDates($settlementDates)
     {
-        $this->settlementDates = $settlementDates;
+        $this->settlementDates = $this->mergeCollections($this->settlementDates, $settlementDates);
     }
 
     public function getSettlementDatesSum()
@@ -680,18 +632,17 @@ class Invoice
             return false;
         }
 
-        $this->updateTaxRecords();
-
         $sum = 0;
         /** @var InvoiceItem $invoiceItem */
         foreach ($this->getInvoiceItems() as $invoiceItem) {
             $invoiceItem->calculateTotal();
             $sum += $invoiceItem->getTotal()->getValue();
         }
-        $this->totalNoTaxes->setValue($sum);
 
-        foreach ($this->taxRecords as $taxRecord)
-        {
+        $this->getTotalNoTaxes()->setValue($sum);
+        $this->updateTaxRecords();
+
+        foreach ($this->taxRecords as $taxRecord) {
             $sum += $taxRecord->getSum()->getValue();
         }
         $this->total->setValue($sum);
@@ -843,13 +794,6 @@ class Invoice
         $tr->setTaxRate($rate);
         $this->getTaxRecords()->add($tr);
 
-        $total = $this->total->getValue();
-        /** @var TaxRecord $record */
-        foreach ($this->taxRecords as $record) {
-            $total = $total - $record->getSum()->getValue();
-        }
-        $this->totalNoTaxes->setValue($total ?? 0);
-
         return $tr;
     }
 
@@ -857,22 +801,22 @@ class Invoice
     {
         $taxRecords = [];
         foreach ($this->invoiceItems as $invoiceItem) {
-            $tax = $invoiceItem->getTax();
-            if (!is_float($tax)) {
+            $tax = (string)round($invoiceItem->getTax(), 2);
+            if (($tax === '') || ($tax === '0.00')) {
                 continue;
             }
             if (!isset($taxRecords[$tax])) {
                 $taxRecords[$tax] = 0;
             }
-            $taxRecords[$invoiceItem->getTax()] += $invoiceItem->getTotal()->getValue() * ($tax/100);
+            $taxRecords[$tax] += $invoiceItem->getTotal()->getValue() * ($tax/100);
             $this->totalNoTaxes->setCurrency($invoiceItem->getTotal()->getCurrency() ?? 'EUR');
         }
 
         $this->taxRecords->clear();
         foreach ($taxRecords as $rate => $sum) {
-            $this->taxRecords->add(
-                $this->createTaxRecord($sum, $rate)
-            );
+            if ($sum !== 0) {
+                $this->createTaxRecord($sum, $rate);
+            }
         }
     }
 

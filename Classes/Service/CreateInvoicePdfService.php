@@ -66,7 +66,7 @@ class CreateInvoicePdfService
         );
         $view->assign(
             'invoice',
-            $this
+            $invoice
         );
         $view->assign(
             'qrCodeData',
