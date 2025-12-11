@@ -1,52 +1,19 @@
-{namespace inv=KayStrobach\Invoice\ViewHelpers}
-<html lang="de">
+<html lang="de"
+      xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+      xmlns:inv="http://typo3.org/ns/KayStrobach/Invoice/ViewHelpers"
+      xmlns:media="http://typo3.org/ns/Neos/Media/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
     <head>
         <title>
-            Reisevertrag
+            Rechnung {invoice.number}
         </title>
-
         <style type="text/css">
-            @page <f:format.raw>{</f:format.raw>
-                margin-top: 1cm;
-                margin-bottom: 1cm;
-                margin-left: 2.35cm;
-                margin-right: 2cm;
-                font-family: Helvetica, Arial, sans-serif;
-                header: html_Header;
-                footer: html_Footer;
-            <f:format.raw>}</f:format.raw>
-            @page :first <f:format.raw>{</f:format.raw>
-                background-image-resize: 4;
-                margin-bottom: 6cm;
-                margin-left: 2cm;
-           <f:format.raw>}</f:format.raw>
-            body {
-                font-family: Helvetica, Arial, sans-serif;
-                font-size: 10pt;
-            }
-            .table {
-                border-collapse: collapse;
-                width: 100%;
-            }
-            .table td {
-                padding-top: 2mm;
-                padding-bottom: 2mm;
-            }
-            .silver-border {
-                border-bottom: 1px solid silver;
-            }
-            .smaller {
-                font-size: 8pt;
-            }
-            .text-right {
-                text-align: right;
-            }
+            {inv:fileContent(file:'resource://KayStrobach.Invoice/Public/Css/Pdf/index.css')}
         </style>
     </head>
     <body>
-
         <f:render section="Content" optional="1"/>
-
         <htmlpagefooter name="Footer">
             <f:if condition="{f:render(section:'footer', optional:true)}">
                 <f:then>

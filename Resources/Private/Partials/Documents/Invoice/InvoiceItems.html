@@ -1,0 +1,114 @@
+<html lang="de"
+      xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+      xmlns:inv="http://typo3.org/ns/KayStrobach/Invoice/ViewHelpers"
+      xmlns:media="http://typo3.org/ns/Neos/Media/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
+
+<table class="table invoice-table">
+    <cols>
+        <col width="5%">
+        <col width="5%">
+        <col width="5%">
+        <col width="*">
+        <col width="7%">
+        <col width="7%">
+    </cols>
+    <thead>
+        <tr>
+            <th>
+                Pos
+            </th>
+            <th>
+                Artikel
+            </th>
+            <th class="text-right">
+                Menge
+            </th>
+            <th>
+                Leistungsmerkmal
+            </th>
+            <th class="text-right">
+                Einzelpreis
+            </th>
+            <th class="text-right">
+                Gesamtpreis
+            </th>
+        </tr>
+    </thead>
+    <f:for each="{invoice.invoiceItems}" as="item" iteration="iteration">
+        <tr class="item-first-row">
+            <td>
+                {item.sort}
+            </td>
+            <td>
+                {item.articleReference}
+            </td>
+            <td class="text-right">
+                {item.amount}
+            </td>
+            <td>
+                {item.name}
+            </td>
+            <td class="text-right">
+                <f:if condition="!{hideSinglePrice}">
+                    {item.singlePrice}
+                </f:if>
+            </td>
+            <td class="text-right">
+                <f:if condition="!{hideSinglePrice}">
+                    {item.total}
+                </f:if>
+            </td>
+        </tr>
+        <tr class="item-last-row">
+            <td>&nbsp;</td>
+            <td colspan="4" class="silver-border">
+                <small>{item.description -> inv:format.markdown()}</small>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+    </f:for>
+    <f:if condition="{invoice.totalNoTaxes}">
+        <tr>
+            <td class="silver-border text-right" colspan="5">
+                Rechnungsbetrag (Netto)
+            </td>
+            <td class="text-right silver-border">
+                {invoice.totalNoTaxes}
+            </td>
+        </tr>
+    </f:if>
+    <f:if condition="{invoice.taxRecords}">
+        <f:for each="{invoice.taxRecords}" as="taxRecord" iteration="iteration">
+            <tr>
+                <td class="{f:if(condition:iteration.isFirst, then:'silver-border')} text-right" colspan="5" >
+                    {taxRecord.taxRate}% Mehrwertsteuer
+                </td>
+                <td class="text-right {f:if(condition:iteration.isFirst, then:'silver-border')}">
+                    {taxRecord.sum}
+                </td>
+            </tr>
+        </f:for>
+    </f:if>
+    <tr>
+        <td class="silver-border text-right" colspan="5">
+            <b>Rechnungsbetrag (Brutto)</b>
+        </td>
+        <td class="text-right silver-border">
+            <b>{invoice.total}</b>
+        </td>
+    </tr>
+    <f:for each="{invoice.settlementDates}" as="settlement">
+        <tr>
+            <td>
+                Zahlung bis {settlement.dueDate -> f:format.date(format: 'd.m.Y')}
+            </td>
+            <td class="text-right">
+                <b>
+                    {settlement.amount}
+                </b>
+            </td>
+        </tr>
+    </f:for>
+</table>

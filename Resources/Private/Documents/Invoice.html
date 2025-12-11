@@ -1,3 +1,10 @@
+<html lang="de"
+      xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+      xmlns:inv="http://typo3.org/ns/KayStrobach/Invoice/ViewHelpers"
+      xmlns:media="http://typo3.org/ns/Neos/Media/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
+
 <f:layout name="Pdf" />
 
 <f:section name="Content">
@@ -29,82 +36,24 @@
         </f:if>
     </h1>
 
-    <f:if condition="{invoice.preText}">
-        <p>
-            {invoice.preText -> f:format.nl2br()}
-        </p>
+    <f:if condition="{invoice.additionalInformation}">
+        {invoice.additionalInformation -> inv:format.markdown()}
+    </f:if>
+    <f:if condition="{invoice.periodOfPerformance.start}">
+        Leistungzeitraum:
+        {invoice.periodOfPerformance.start -> f:format.date(format: 'd.m.Y')}
+        -
+        {invoice.periodOfPerformance.end -> f:format.date(format: 'd.m.Y')}
     </f:if>
 
-    <table class="table">
-        <f:for each="{invoice.invoiceItems}" as="item">
-            <tr>
-                <td>
-                    {item.name}
-                </td>
-                <td class="text-right">
-                    <f:if condition="!{hideSinglePrice}">
-                        {item.singlePrice -> f:format.number(decimals: 2, decimalSeparator: ',', thousandsSeparator: '.')}
-                    </f:if>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" class="silver-border">
-                    <small>{item.description -> f:format.nl2br()}</small>
-                </td>
-            </tr>
-        </f:for>
-        <f:if condition="{invoice.totalNoTaxes}">
-            <tr>
-                <td class="silver-border">
-                    Rechnungsbetrag (Netto)
-                </td>
-                <td class="silver-border">
-                    {invoice.totalNoTaxes -> f:format.number(decimals: 2, decimalSeparator: ',', thousandsSeparator: '.')}
-                    €
-                </td>
-            </tr>
-        </f:if>
-        <f:if condition="{invoice.taxRecords}">
-            <f:for each="{invoice.taxRecords}" as="taxRecord" iteration="iteration">
-                <tr>
-                    <td class="{f:if(condition:iteration.isFirst, then:'silver-border')}">
-                        {taxRecord.taxRate}% Mehrwertsteuer
-                    </td>
-                    <td class="text-right {f:if(condition:iteration.isFirst, then:'silver-border')}">
-                        {taxRecord.sum -> f:format.number(decimals: 2, decimalSeparator: ',', thousandsSeparator: '.')}
-                        €
-                    </td>
-                </tr>
-            </f:for>
-        </f:if>
-        <tr>
-            <td class="silver-border">
-                <b>Rechnungsbetrag (Brutto)</b>
-            </td>
-            <td class="text-right silver-border">
-                <b>{invoice.total -> f:format.number(decimals: 2, decimalSeparator: ',', thousandsSeparator: '.')}</b>
-                €
-            </td>
-        </tr>
-        <f:for each="{invoice.settlementDates}" as="settlement">
-            <tr>
-                <td>
-                    Zahlung bis {settlement.dueDate -> f:format.date(format: 'd.m.Y')}
-                </td>
-                <td class="text-right">
-                    <b>
-                        {settlement.amount -> f:format.number(decimals: 2, decimalSeparator: ',', thousandsSeparator: '.')}
-                        €
-                    </b>
-                </td>
-            </tr>
-        </f:for>
-    </table>
+    <f:if condition="{invoice.preText}">
+        {invoice.preText -> inv:format.markdown()}
+    </f:if>
 
-    <f:if condition="{invoice.additionalInformation}">
-        <p>
-            {invoice.additionalInformation -> f:format.nl2br()}
-        </p>
+    <f:render partial="Documents/Invoice/InvoiceItems" arguments="{invoice:invoice}" />
+
+    <f:if condition="{invoice.postText}">
+        {invoice.postText -> inv:format.markdown()}
     </f:if>
 
     <f:if condition="{invoice.settlementDates}">
@@ -157,12 +106,6 @@
                 </td>
             </tr>
         </table>
-    </f:if>
-
-    <f:if condition="{invoice.postText}">
-        <p>
-            {invoice.postText -> f:format.nl2br()}
-        </p>
     </f:if>
 </f:section>
 

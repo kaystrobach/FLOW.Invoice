@@ -1,0 +1,66 @@
+@page {
+</f:format.raw>
+margin-top: 1cm;
+    margin-bottom: 1cm;
+    margin-left: 2.35cm;
+    margin-right: 2cm;
+    font-family: Helvetica, Arial, sans-serif;
+    header: html_Header;
+    footer: html_Footer;
+}
+
+@page :first {
+    background-image-resize: 4;
+    margin-bottom: 6cm;
+    margin-left: 2cm;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 10pt;
+}
+
+.table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table td {
+    padding-top: 2mm;
+    padding-bottom: 2mm;
+    vertical-align: top;
+}
+
+.invoice-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.invoice-table th {
+    text-align: left;
+}
+.invoice-table th, .invoice-table td {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+
+}
+
+.invoice-table .item-first-row td {
+    border-top: 1px solid silver;
+}
+
+.invoice-table .item-last-row td {
+    border-bottom: 1px solid silver;
+}
+
+.silver-border {
+    border-bottom: 1px solid silver;
+}
+
+.smaller {
+    font-size: 8pt;
+}
+
+.text-right, .invoice-table th.text-right {
+    text-align: right;
+}
