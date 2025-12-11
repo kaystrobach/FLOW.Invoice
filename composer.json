@@ -11,6 +11,7 @@
         "kaystrobach/crud": "*",
         "kaystrobach/pdf": "*",
         "kaystrobach/visualsearch": "*",
+        "league/commonmark": "^2.4.1",
         "moneyphp/money": "^4.6.0"
     },
     "autoload": {
