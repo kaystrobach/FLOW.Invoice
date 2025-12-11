@@ -18,13 +18,39 @@ class CreateInvoicePdfService
 
     public function render(Invoice $invoice, bool $hideSinglePrice = false)
     {
-        $this->renderPdf($invoice, $hideSinglePrice);
+        $this->addRenderedPdfToInvoice(
+            $invoice,
+            $this->renderPdf($invoice, $hideSinglePrice)
+        );
     }
 
-    public function renderPdf(Invoice $invoice, bool $hideSinglePrice = false)
+    public function addRenderedPdfToInvoice(Invoice $invoice, string $content)
+    {
+        $now = new DateTime('now');
+        $filename = sprintf(
+            'Rechnung.%s.%s.%s.pdf',
+            $invoice->getNumber()->getPrefix(),
+            $now->format('Y-m-d'),
+            $invoice->getNumber()
+        );
+        if ($content !== null) {
+            $resource = $this->resourceManager->importResourceFromContent(
+                $content,
+                $filename
+            );
+            $invoice->setOriginalResource($resource);
+        } else {
+            throw new \RuntimeException('Es gab ein Problem beim Erstellen der Rechnung, die Rechnung war leer');
+        }
+    }
+
+    public function renderPdf(Invoice $invoice, bool $hideSinglePrice = false, ?string $watermark = null): string
     {
         $view = new PdfTemplateView();
         $view->setTemplatePathAndFilename('resource://KayStrobach.Invoice/Private/Documents/Invoice.html');
+        if ($watermark !== null) {
+            $view->setOption('watermarkText', $watermark);
+        }
         $view->setLayoutRootPaths(
             ['resource://KayStrobach.Invoice/Private/Layouts']
         );
@@ -47,23 +73,7 @@ class CreateInvoicePdfService
             $this->getEpcQrCodeData($invoice)
         );
 
-        $content = $view->render();
-        $now = new DateTime('now');
-        $filename = sprintf(
-            'Rechnung.%s.%s.%s.pdf',
-            $invoice->getNumber()->getPrefix(),
-            $now->format('Y-m-d'),
-            $invoice->getNumber()
-        );
-        if ($content !== null) {
-            $resource = $this->resourceManager->importResourceFromContent(
-                $content,
-                $filename
-            );
-            $invoice->setOriginalResource($resource);
-        } else {
-            throw new \RuntimeException('Es gab ein Problem beim Erstellen der Rechnung, die Rechnung war leer');
-        }
+        return $view->render();
     }
 
     /**
