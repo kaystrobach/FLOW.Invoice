@@ -10,6 +10,7 @@ use KayStrobach\Crud\Controller\Traits\CrudTrait;
 use KayStrobach\Invoice\Domain\Model\Invoice;
 use KayStrobach\Invoice\Domain\Model\InvoiceItem;
 use KayStrobach\Invoice\Messenger\Message\InvoiceFinalizedMessage;
+use KayStrobach\Pdf\View\PdfTemplateView;
 use Neos\Flow\Annotations as Flow;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -27,6 +28,19 @@ class StandardController extends AbstractPageRendererController
      * @var string
      */
     protected $defaultNumberPrefix;
+
+    /**
+     * A list of formats and object names of the views which should render them.
+     *
+     * Example:
+     *
+     * array('html' => 'MyCompany\MyApp\MyHtmlView', 'json' => 'MyCompany\...
+     *
+     * @var array
+     */
+    protected $viewFormatToObjectNameMap = [
+        'pdf' => PdfTemplateView::class
+    ];
 
     public function getModelClassName()
     {
@@ -107,4 +121,8 @@ class StandardController extends AbstractPageRendererController
         );
     }
 
+    public function renderInvoiceAction(Invoice $object)
+    {
+        $this->view->assign('object', $object);
+    }
 }

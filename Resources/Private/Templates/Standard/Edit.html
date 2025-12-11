@@ -3,6 +3,7 @@
 			xmlns:custom="http://typo3.org/ns/KayStrobach/Custom/ViewHelpers"
 			xmlns:media="http://typo3.org/ns/Neos/Media/ViewHelpers"
 			xmlns:b="http://typo3.org/ns/KayStrobach/Backend/ViewHelpers"
+			xmlns:i="http://typo3.org/ns/KayStrobach/IconRegistry/ViewHelpers"
 			xmlns:cb="http://typo3.org/ns/FourViewture/KIS/CRM/Backend/ViewHelpers"
 			xmlns:search="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
 			data-namespace-typo3-fluid="true"
@@ -31,6 +32,17 @@
 		</div>
 </f:if>
 
+<f:if condition="{object.changeable}">
+	<div class="mb-3">
+		<fucodo-class-toggle target="body" toggle-class="module-edit-mode">
+			<button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+				<i:icon name="bootstrap-ui-checks" />
+				<f:translate>Vorschau</f:translate>
+			</button>
+		</fucodo-class-toggle>
+	</div>
+</f:if>
+
 <f:if condition="!{object.changeable}">
 		<div class="alert alert-danger">
 				Die Rechnung kann nicht mehr bearbeitet werden.
@@ -57,3 +69,26 @@
 <f:form action="update" enctype="multipart/form-data" object="{object}" objectName="object" id="globalForm">
 		<f:render partial="Domain/Model/Invoice/Fields" arguments="{_all}"/>
 </f:form>
+
+<f:render section="offcanvas" arguments="{_all}"/>
+
+<f:section name="offcanvas">
+	<div class="offcanvas w-75 offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" data-bs-scroll="true" data-bs-backdrop="false">
+		<div class="offcanvas-header">
+			<h5 class="offcanvas-title" id="offcanvasRightLabel">
+				<f:translate>Vorschau Rechnung</f:translate>
+			</h5>
+			<fucodo-class-toggle target="body" toggle-class="module-edit-mode" class="btn-close" style="display: contents;">
+				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+			</fucodo-class-toggle>
+		</div>
+		<div class="offcanvas-body">
+			<div class="alert alert-info">
+				Werte werden erst nach dem Speichern aktualisiert
+			</div>
+			<fucodo-lazy-load url="{f:uri.action(action: 'renderInvoice', arguments: {object:object})}" selectors="main .invoice">
+				<span>Lade Entwurf</span>
+			</fucodo-lazy-load>
+		</div>
+	</div>
+</f:section>

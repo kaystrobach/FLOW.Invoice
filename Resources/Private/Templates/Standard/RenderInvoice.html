@@ -1,0 +1,16 @@
+<html lang="de" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+			xmlns:="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+			xmlns:custom="http://typo3.org/ns/KayStrobach/Custom/ViewHelpers"
+			xmlns:media="http://typo3.org/ns/Neos/Media/ViewHelpers"
+			xmlns:b="http://typo3.org/ns/KayStrobach/Backend/ViewHelpers"
+			xmlns:i="http://typo3.org/ns/KayStrobach/IconRegistry/ViewHelpers"
+			xmlns:cb="http://typo3.org/ns/FourViewture/KIS/CRM/Backend/ViewHelpers"
+			xmlns:search="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+			data-namespace-typo3-fluid="true"
+>
+
+<b:be.setTitle>Rechnung {object.numberPrefix}</b:be.setTitle>
+
+<main class="invoice">
+	<iframe src="{f:uri.action(action: 'renderInvoice', arguments: {object:object}, format:'pdf')}" style="width: 100%; height: 100%"></iframe>
+</main>
