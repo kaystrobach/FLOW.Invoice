@@ -604,6 +604,9 @@ class Invoice
 
         /** @var AccountingRecord $accountingRecord */
         foreach ($this->accountingRecords as $accountingRecord) {
+            if ($accountingRecord->getDueDate() === null) {
+                continue;
+            }
             if ($accountingRecord->getDueDate()->format('Y-m-d') === $date->format('Y-m-d')) {
                 $accountingRecord->setPaid($paid);
             }
@@ -671,7 +674,7 @@ class Invoice
         $this->total = $total;
     }
 
-    public function calculateTotal()
+    public function calculateTotal(): ?bool
     {
         if (!$this->isChangeable()) {
             return false;
@@ -692,6 +695,7 @@ class Invoice
             $sum += $taxRecord->getSum()->getValue();
         }
         $this->total->setValue($sum);
+        return true;
     }
 
     /**
@@ -740,7 +744,7 @@ class Invoice
 
     }
 
-    public function isPaymentDelayed()
+    public function isPaymentDelayed(): bool
     {
         $now = new DateTime('now');
         $delayed = false;
@@ -748,18 +752,20 @@ class Invoice
         foreach($this->getSettlementDates() as $settlementDate) {
             if (($settlementDate->getDueDate() < $now) && (!$settlementDate->isPaid())) {
                 $delayed = true;
+                break;
             }
         }
         return $delayed;
     }
 
-    public function isPaid()
+    public function isPaid(): bool
     {
         $paid = true;
         /** @var SettlementDate $settlementDate */
         foreach($this->getSettlementDates() as $settlementDate) {
             if (!$settlementDate->isPaid()) {
                 $paid = false;
+                break;
             }
         }
         return $paid;
@@ -920,7 +926,7 @@ class Invoice
             $newTaxRecord = new TaxRecord();
             $newTaxRecord->setInvoice($newInvoice);
             $newTaxRecord->setTaxRate($taxRecord->getTaxRate());
-            $newTaxRecord->setSum($taxRecord->getSum() * -1);
+            $newTaxRecord->getSum()->setValue($taxRecord->getSum()->getValue() * -1);
             $newInvoice->getTaxRecords()->add($newTaxRecord);
         }
 
@@ -970,7 +976,6 @@ class Invoice
         $clone->getNumber()->setPrefix($this->getNumber()->getPrefix());
         $clone->getNumber()->setPostfix($this->getNumber()->getPostfix());
         $clone->setAddress($this->address);
-        $clone->setCurrency($this->currency);
         $clone->setDeptor($this->deptor);
         $clone->setDeptorNumber($this->deptorNumber);
         $clone->setAdditionalInformation($this->additionalInformation);
