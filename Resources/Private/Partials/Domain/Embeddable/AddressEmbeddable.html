@@ -1,0 +1,51 @@
+<html lang="de" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+			xmlns:="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+			xmlns:custom="http://typo3.org/ns/KayStrobach/Custom/ViewHelpers"
+			xmlns:media="http://typo3.org/ns/Neos/Media/ViewHelpers"
+			xmlns:b="http://typo3.org/ns/KayStrobach/Backend/ViewHelpers"
+			xmlns:cb="http://typo3.org/ns/FourViewture/KIS/CRM/Backend/ViewHelpers"
+			xmlns:search="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+			data-namespace-typo3-fluid="true"
+>
+
+<div class="row">
+    <div class="col-sm-6">
+        <f:render partial="Form/Text" arguments="{property:'{prefix}.name', noEdit:noEdit, label:'Name'}" />
+        <f:render partial="Form/Text" arguments="{property:'{prefix}.personName', noEdit:noEdit, label:'Ansprechpartner'}" />
+        <div class="row">
+            <div class="col">
+                <f:render partial="Form/Text" arguments="{property:'{prefix}.street', noEdit:noEdit, label:'Straße'}" />
+            </div>
+            <div class="col">
+                <f:render partial="Form/Text" arguments="{property:'{prefix}.houseNumber', noEdit:noEdit, label:'Hausnummer'}" />
+            </div>
+            <div class="col">
+                <f:render partial="Form/Text" arguments="{property:'{prefix}.addressAddon', noEdit:noEdit, label:'Zusatz'}" />
+            </div>
+            <div class="col">
+                <f:render partial="Form/Text" arguments="{property:'{prefix}.roomNumber', noEdit:noEdit, label:'Zimmer'}" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <f:render partial="Form/Text" arguments="{property:'{prefix}.zipCode', noEdit:noEdit, label:'Postleitzahl'}" />
+            </div>
+            <div class="col">
+                <f:render partial="Form/Text" arguments="{property:'{prefix}.city', noEdit:noEdit, label:'Stadt'}" />
+            </div>
+            <div class="col">
+                <f:render partial="Form/Text" arguments="{property:'{prefix}.country', noEdit:noEdit, label:'Land'}" />
+            </div>
+            <div class="col">
+                <f:render partial="Form/Text" arguments="{property:'{prefix}.countryCode', noEdit:noEdit, label:'Ländercode'}" />
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <f:render partial="Form/Textarea" arguments="{property:'{prefix}.combinedAddress', noEdit:noEdit, label:'Kombinierte Adresse', hint:'Wird aus den anderen Adressfeldern erzeugt, bzw. überschreibt diese'}" />
+    </div>
+</div>
+
+<f:render partial="Form/Text" arguments="{property:'{prefix}.vatID', noEdit:noEdit, label:'Umsatzsteuer ID (Ust-IdNr.)', hint:'@todo validator anpassen, ggf. Formatfelder, Pflichtfeld im Kundenstamm'}" />
+<f:render partial="Form/Text" arguments="{property:'{prefix}.email', noEdit:noEdit, label:'E-Mail-Adresse', hint:'Kann für den Versand genutzt werden.'}" />

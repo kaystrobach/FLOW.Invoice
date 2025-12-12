@@ -72,6 +72,7 @@ class InvoiceRepository extends SearchableRepository
 
         if ($object instanceof Invoice) {
             $object->calculateTotal();
+            $object->prePersistHandler();
         }
         parent::update($object);
     }

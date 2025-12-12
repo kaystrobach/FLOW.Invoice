@@ -14,9 +14,9 @@
 	<div class="mb-3 mt-3">
 		<details {f:if(condition:object.preText, then:'open')}>
 			<summary>
-				Text vor der Produktliste
+				Zusatzttext vor der Produktliste
 			</summary>
-			<f:render partial="Form/TextareaMarkdown" arguments="{label:'Text vor der Produktliste', property:'preText', noEdit:object.notChangeable}"/>
+			<f:render partial="Form/TextareaMarkdown" arguments="{label:'Zusatzttext vor der Produktliste', property:'preText', noEdit:object.notChangeable}"/>
 		</details>
 	</div>
 	<div class="table-responsive-lg">
@@ -38,7 +38,8 @@
 					Pos
 				</th>
                 <th>
-                    Artikelreferenz
+                    Artikel-Nr.
+                    <span>@todo neue Spalte Umsatzerlösschlüssel</span>
                 </th>
 				<th>
 					Artikel / Beschreibung
@@ -51,6 +52,7 @@
 				</th>
 				<th class="text-right">
 					Steuersatz
+                    @todo fest aus den vorgaben erstellen
 				</th>
 				<th class="text-right">
 					Einzelpreis
@@ -164,9 +166,9 @@
 	<div class="mb-3 mt-3">
 		<details {f:if(condition:object.postText, then:'open')}>
 		<summary>
-			Text nach der Produktliste
+            Zusatzttext nach der Produktliste
 		</summary>
-		<f:render partial="Form/TextareaMarkdown" arguments="{label:'Text nach der Produktliste', property:'postText', noEdit:object.notChangeable}"/>
+		<f:render partial="Form/TextareaMarkdown" arguments="{label:'Zusatzttext nach der Produktliste', property:'postText', noEdit:object.notChangeable}"/>
 		</details>
 	</div>
 </f:render>

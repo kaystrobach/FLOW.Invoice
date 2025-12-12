@@ -18,23 +18,21 @@
             <td style="height: 40mm;">
                 <br>
                 <br>
-                {invoice.address -> f:format.nl2br()}
+                {invoice.customer.combinedAddress -> f:format.nl2br()}
             </td>
         </tr>
         <tr>
             <td class="text-right">
+                {invoice.title} Nr. {invoice.number}
+                <f:if condition="{invoice.subTitle}">
+                    <br>
+                    <small>{invoice.subTitle}</small>
+                </f:if>
+
                 {invoice.date -> f:format.date(format: 'd.m.Y')}
             </td>
         </tr>
     </table>
-
-    <h1>
-        {invoice.title} Nr. {invoice.number}
-        <f:if condition="{invoice.subTitle}">
-            <br>
-            <small>{invoice.subTitle}</small>
-        </f:if>
-    </h1>
 
     <f:if condition="{invoice.additionalInformation}">
         {invoice.additionalInformation -> inv:format.markdown()}

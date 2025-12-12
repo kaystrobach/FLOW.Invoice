@@ -44,7 +44,14 @@
                     <tr class="{f:if(condition:object.paymentDelayed, then:'danger')}{f:if(condition:object.paid, then:'success')}">
                         <td>
                             <f:link.action action="edit" arguments="{object:object}">
-                                > {object.numberComplete}
+                                <f:if condition="{object.numberComplete}">
+                                    <f:then>
+                                        {object.numberComplete}
+                                    </f:then>
+                                    <f:else>
+                                        Entwurf
+                                    </f:else>
+                                </f:if>
                             </f:link.action>
                         </td>
                         <td>

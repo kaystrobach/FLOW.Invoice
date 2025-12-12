@@ -92,7 +92,7 @@ class CreateInvoicePdfService
             'EUR' . number_format($amount ?? $invoice->getTotal()->getValue(), 2, '.', ''), // Komplett Betrag für die Überweisung
             '',                   // Zweck vierstelliger Code
             '',
-            $invoice->getNumberComplete()
+            $invoice->getNumber()->getCombinedNumber()
         ];
         return implode('\n', $data);
     }

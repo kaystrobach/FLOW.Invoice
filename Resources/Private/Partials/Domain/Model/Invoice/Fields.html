@@ -19,6 +19,18 @@
     </f:if>
 </f:if>
 
+<pre>
+    * @todo standard mail text
+    * @todo Zahlungsbedinung vom Kunden auslesen
+    * @todo Angebotsnummer
+    * @todo Beauftragungsdatum
+    * @todo Kundenreferenz
+    * @todo Fälligkeitautomatisch erstellen und dann mit dem Rechnungsbetrag befüllen, das Fälligkeitsdatum wird mit dem Rechnungsdatum erstellt
+    * kopie an ausgangsrechnungsjournal@4viewture.de
+    * reply-to an?
+    * Bei Typ Dauerrechnung auch den Ersatz angeben
+</pre>
+
 <bs:tab.tabWrapper>
     <bs:tab.tabPane title="Allgemein">
         <f:render partial="Form/Text" arguments="{label:'Titel', property:'title', noEdit:object.notChangeable}"/>
@@ -28,18 +40,19 @@
                   arguments="{label:'Zusatzinformationen', property:'additionalInformation', noEdit:object.notChangeable}"/>
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Kunde">
-        <f:render partial="Form/Textarea"
-                  arguments="{label:'Adresse', property:'address', noEdit:object.notChangeable}"/>
-        <f:render partial="Form/Text" arguments="{label:'E-Mail', property:'email', noEdit:object.notChangeable}"/>
-        <f:render partial="Form/Textarea"
-                  arguments="{label:'Debitor', property:'deptor', noEdit:object.notChangeable}"/>
-        <f:render partial="Form/Text"
-                  arguments="{label:'Debitorennummer', property:'deptorNumber', noEdit:object.notChangeable}"/>
+        <pre>
+            @todo Kundennummer
+            @todo bearbeiter
+            @todo rechnungskreis auswählen
+            @todo text dauerrechnungen
+        </pre>
+        <f:render partial="Domain/Embeddable/AddressEmbeddable" arguments="{prefix:'customer'}" />
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Verkäufer">
         <div class="alert alert-info">
             Die Informationen hier werden zentral verwaltet, müssen jedoch an jeder Rechnung persistiert werden.
         </div>
+        <f:render partial="Domain/Embeddable/AddressEmbeddable" arguments="{prefix:'seller'}" />
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Leistungszeitraum">
         <div class="row">
@@ -51,13 +64,13 @@
             </div>
             <div class="col-sm-9">
                 <f:render partial="Form/TextareaMarkdown"
-                          arguments="{label:'Leistungszeitraum', property:'periodOfPerformance.comment', noEdit:object.notChangeable}"/>
+                          arguments="{label:'Leistungszeitraum', property:'periodOfPerformance.comment', noEdit:object.notChangeable, hint:'@todo entfernen'}"/>
             </div>
         </div>
     </bs:tab.tabPane>
-    <bs:tab.tabPane title="Zusatzinformationen">
+    <bs:tab.tabPane title="Zusatztexte">
         <f:render partial="Form/TextareaMarkdown"
-                  arguments="{label:'Freitext', property:'additionalText', noEdit:object.notChangeable}"/>
+                  arguments="{label:'Zusatztext', property:'additionalText', noEdit:object.notChangeable, hint:'@todo wird aus der Registry befüllt, ggf. auch auswahl erlauben'}"/>
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Statusinformationen">
         <f:render partial="Form/Textarea"

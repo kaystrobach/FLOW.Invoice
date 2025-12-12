@@ -1,21 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Invoice\Domain\Model\Invoice\Embeddable;
 
 use Doctrine\ORM\Mapping as ORM;
+use KayStrobach\Invoice\Service\AddressEmbeddableService;
 use Neos\Flow\Annotations as Flow;
 
-/**
- * @ORM\Embeddable()
- *
- */
-class AddressEmbeddable
+abstract class AddressEmbeddable
 {
     /**
      * @ORM\Column(type="text")
      * @var string
      */
     protected $name = '';
+
+    /**
+     * @ORM\Column(type="text")
+     * @var string
+     */
+    protected $personName = '';
 
     /**
      * @ORM\Column(type="text")
@@ -69,7 +74,7 @@ class AddressEmbeddable
      * @Flow\Validate(type="StringLength", options={ "minimum"=1, "maximum"=255},validationGroups={"ContactAddress"})
      * @var string
      */
-    protected $country = '';
+    protected $country = 'Deutschland';
 
     /**
      * https://de.wikipedia.org/wiki/ISO-3166-1-Kodierliste
@@ -79,7 +84,7 @@ class AddressEmbeddable
      * @Flow\Validate(type="StringLength", options={ "minimum"=1, "maximum"=2},validationGroups={"ContactAddress"})
      * @var string
      */
-    protected $countryCode = '';
+    protected $countryCode = 'DE';
 
     /**
      * @Flow\Validate(type="String")
@@ -90,10 +95,9 @@ class AddressEmbeddable
     /**
      * @Flow\Validate(type="String")
      * @Flow\Validate(type="StringLength", options={"minimum"=1, "maximum"=255},validationGroups={"ContactAddress"})
-     * @Flow\Validate(type="Email")
-     * @var ?string
+     * @var string
      */
-    protected ?string $email = null;
+    protected string $email = '';
 
     public function getCombinedAddress(): string
     {
@@ -217,35 +221,53 @@ class AddressEmbeddable
         $this->country = $country;
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @return void
-     */
-    public function updateCombinedAdress(string $personname): void
+    public function getName(): string
     {
-        if ($this->getStreet() === '') {
-            return;
-        }
-        $data = [
-            $personname,
-            '',
-            $this->street . ' ' . $this->houseNumber,
-            $this->roomNumber,
-            $this->addressAddon,
-            $this->zipCode . ' ' . $this->city . ' - ' . $this->country . ' (' . $this->countryCode . ')'
-        ];
+        return $this->name;
+    }
 
-        // Trimme alle Zeilen und filtere leere Zeilen heraus
-        $filteredData = array_filter(
-            array_map('trim', $data),
-            function ($value) {
-                return $value !== '';
-            }
-        );
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
 
-        $this->combinedAddress = implode(
-            PHP_EOL,
-            $filteredData
-        );
+    public function getPersonName(): string
+    {
+        return $this->personName;
+    }
+
+    public function setPersonName(string $personName): void
+    {
+        $this->personName = $personName;
+    }
+
+    public function getCountryCode(): string
+    {
+        return $this->countryCode;
+    }
+
+    public function setCountryCode(string $countryCode): void
+    {
+        $this->countryCode = $countryCode;
+    }
+
+    public function getVatID(): string
+    {
+        return $this->vatID;
+    }
+
+    public function setVatID(string $vatID): void
+    {
+        $this->vatID = $vatID;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
     }
 }

@@ -21,8 +21,8 @@ class SettlementDatesExcelView extends AbstractExcelView
          */
         foreach ($this->variables['objects'] as $record) {
             $rows[] = [
-                $record->getInvoice()->getNumberComplete(),
-                $record->getInvoice()->getDeptor(),
+                $record->getInvoice()->getNumber()->getCombinedNumber()(),
+                $record->getInvoice()->getCustomer()->getDeptorNumber(),
                 $record->getDueDate()->format('d.m.Y'),
                 $record->isPaid() ? 'ja' : 'nein',
                 $record->isPaymentDelayed() ? 'ja' : 'nein',

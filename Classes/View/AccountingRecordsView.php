@@ -31,7 +31,7 @@ class AccountingRecordsView extends AbstractExcelView
                 $record->getOffsetAccount(),
                 '', # BU Schlüssel
                 $this->date($record->getInvoice()->getDate()),
-                $record->getInvoice()->getNumberComplete(),
+                $record->getInvoice()->getNumber()->getCombinedNumber(),
                 $this->date($record->getDueDate()),
                 '', # Skonto
                 $record->getText()
