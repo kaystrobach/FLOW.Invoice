@@ -13,7 +13,8 @@
         "kaystrobach/tags": "*",
         "kaystrobach/visualsearch": "*",
         "league/commonmark": "^2.4.1",
-        "moneyphp/money": "^4.6.0"
+        "moneyphp/money": "^4.6.0",
+        "symfony/messenger": "*"
     },
     "autoload": {
         "psr-4": {
