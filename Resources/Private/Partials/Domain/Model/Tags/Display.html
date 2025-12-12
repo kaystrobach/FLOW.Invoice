@@ -1,0 +1,63 @@
+{namespace i=KayStrobach\IconRegistry\ViewHelpers}
+
+<f:for each="{tags}" as="tag">
+	<f:variable name="colorCode">#000000</f:variable>
+	<f:if condition="{tag.colorCode}">
+		<f:variable name="colorCode">{tag.colorCode}</f:variable>
+	</f:if>
+
+	<span class="tag tag-scoped"
+				style="--label-background-color:{colorCode};--label-label-scoped-text-color:{colorCode};--label-inset-border: inset 0 0 0 2px {colorCode}"
+	>
+		<f:if condition="{tag.nameScope}">
+			<f:then>
+				<span class="tag-text">
+					{tag.nameScope}
+				</span>
+				<span class="tag-text-scoped">
+					<f:if condition="{tag.iconIdentifier}">
+						<i:icon name="{tag.iconIdentifier}" size="8" />
+					</f:if>
+					{tag.nameWithoutScope}
+				</span>
+			</f:then>
+			<f:else>
+				<span class="tag-text">
+					<f:if condition="{tag.iconIdentifier}">
+						<i:icon name="{tag.iconIdentifier}" size="8" />
+					</f:if>
+					{tag.nameWithoutScope}
+				</span>
+			</f:else>
+		</f:if>
+	</span>
+</f:for>
+
+<style>
+	:root {
+		--label-background-color: green;
+		--label-label-scoped-text-color: green;
+		--label-background-color-default: white;
+		--label-inset-border: inset 0 0 0 2px #428bca;
+	}
+	.tag {
+		align-items: center;
+		background-color: var(--label-background-color-default);
+		overflow: hidden;
+		display: inline-flex;
+		filter: brightness(0.9) contrast(1.1);
+		box-shadow: var(--label-inset-border) !important;
+		border-radius: .75rem;
+		font-size: 10px;
+	}
+	.tag-scoped .tag-text {
+		background-color: var(--label-background-color);
+		padding: .125rem .375rem;
+		color: var(--label-background-color-default);
+	}
+	.tag-text-scoped {
+		color: var(--label-label-scoped-text-color);
+		padding: .125rem .375rem;
+	}
+</style>
+

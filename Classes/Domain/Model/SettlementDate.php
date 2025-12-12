@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 class SettlementDate
 {
     /**
-     * @ORM\ManyToOne(cascade={"all"}, inversedBy="settlementDates")
+     * @ORM\ManyToOne(cascade={"persist"}, inversedBy="settlementDates")
      * @var Invoice
      */
     protected $invoice;

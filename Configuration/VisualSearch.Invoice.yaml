@@ -19,6 +19,17 @@ Searches:
             - additionalText
             - address
             - numberComplete
+      tags:
+        label: "Tag / Markierung"
+        selector:
+          repository: KayStrobach\Tags\Domain\Repository\TagRepository
+          labelProperty: name
+          labelMatcher: contains
+          orderBy: name
+          limit: 15
+        matches:
+          KayStrobach\VisualSearch\Demands\ContainsDemand:
+            - tags
       address:
         label: "Adresse / Name"
         selector:

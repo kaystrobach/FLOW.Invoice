@@ -5,6 +5,7 @@ namespace KayStrobach\Invoice\Controller;
  * This file is part of the KayStrobach.Invoice package.
  */
 
+use FourViewture\KIS\CRM\Domain\Traits\Tags\TagsControllerTrait;
 use KayStrobach\Backend\Controller\AbstractPageRendererController;
 use KayStrobach\Crud\Controller\Traits\CrudTrait;
 use KayStrobach\Invoice\Domain\Model\Invoice;
@@ -17,12 +18,11 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class StandardController extends AbstractPageRendererController
 {
+    use CrudTrait;
+    use TagsControllerTrait;
 
     #[Flow\Inject]
     protected MessageBusInterface $messageBus;
-
-    //later use CrudTrait;
-    use CrudTrait;
 
     /**
      * @Flow\InjectConfiguration(path="Default.Invoice.numberPrefix")
@@ -46,6 +46,12 @@ class StandardController extends AbstractPageRendererController
     public function getModelClassName()
     {
         return Invoice::class;
+    }
+
+    protected function renderView(): void
+    {
+        $this->initializeTagsForView($this->view);
+        parent::renderView();
     }
 
     public function preNewAction(): void
@@ -96,6 +102,21 @@ class StandardController extends AbstractPageRendererController
         $sd = new SettlementDate();
         $sd->setInvoice($object);
         $object->getSettlementDates()->add($sd);
+        $this->getRepository()->update($object);
+        $this->redirect(
+            'edit',
+            null,
+            null,
+            [
+                'object' => $object
+            ]
+        );
+    }
+
+    public function removesettlementdateAction(SettlementDate $item)
+    {
+        $object = $item->getInvoice();
+        $object->getSettlementDates()->removeElement($item);
         $this->getRepository()->update($object);
         $this->redirect(
             'edit',

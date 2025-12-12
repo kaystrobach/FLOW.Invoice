@@ -1,0 +1,24 @@
+{namespace i=KayStrobach\IconRegistry\ViewHelpers}
+
+<f:for each="{tags}" as="tag">
+	<span class="tag tag-scoped" style="border: 2px solid {tag.colorCode};margin-right: 12px; display: inline-block;">
+		<f:if condition="{tag.nameScope}">
+			<f:then>
+				<span class="tag-text" style="background-color:{tag.colorCode}; color:white; border-color:{tag.colorCode};padding:2mm;border: 2px solid {tag.colorCode};">
+					{tag.nameScope}
+				</span>
+				<span class="tag-text-scoped" style="color:{tag.colorCode}; padding:2mm;">
+					{tag.nameWithoutScope}
+				</span>
+			</f:then>
+			<f:else>
+				<span class="tag-text">
+					{tag.nameWithoutScope}
+				</span>
+			</f:else>
+		</f:if>
+	</span>&nbsp;
+</f:for>
+
+
+

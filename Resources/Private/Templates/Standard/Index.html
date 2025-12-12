@@ -49,6 +49,7 @@
                         </td>
                         <td>
                             {object.deptor}
+                            <f:render partial="Domain/Model/Tags/Display" arguments="{tags:object.tags}" />
                         </td>
                         <td>
                             {object.date -> f:format.date(format: 'd.m.Y')}

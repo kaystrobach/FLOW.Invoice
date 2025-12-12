@@ -63,6 +63,9 @@
         <f:render partial="Form/Textarea"
                   arguments="{label:'Versandstatus', property:'additionalText', noEdit:object.notChangeable, noEdit:1}"/>
     </bs:tab.tabPane>
+    <bs:tab.tabPane title="Tags ({object.tags -> f:count()})">
+        <f:render partial="Domain/Model/Tags/Edit" arguments="{tags:tags}" />
+    </bs:tab.tabPane>
 </bs:tab.tabWrapper>
 
 <f:if condition="{object.invoiceItems}">

@@ -10,6 +10,7 @@
         "kaystrobach/bootstrap": "*",
         "kaystrobach/crud": "*",
         "kaystrobach/pdf": "*",
+        "kaystrobach/tags": "*",
         "kaystrobach/visualsearch": "*",
         "league/commonmark": "^2.4.1",
         "moneyphp/money": "^4.6.0"
