@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\AddressEmbeddable;
 use Neos\Flow\Annotations as Flow;
 
-class AddressEmbeddableService
+class AddressEmbeddableConversionService
 {
     public function updateFields(AddressEmbeddable $addressEmbeddable)
     {

@@ -4,6 +4,7 @@
     "name": "kaystrobach/invoice",
     "require": {
         "digicomp/flow-symfony-bridge-messenger": "@dev",
+        "fucodo/registry-editor": "dev-main",
         "horstoeko/zugferd": "^1.0.117",
         "neos/flow": "*",
         "kaystrobach/backend": "*",

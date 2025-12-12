@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace KayStrobach\Invoice\Domain\Model\Invoice\Embeddable;
 
 use Doctrine\ORM\Mapping as ORM;
-use KayStrobach\Invoice\Service\AddressEmbeddableService;
+use KayStrobach\Invoice\Service\AddressEmbeddableConversionService;
 use Neos\Flow\Annotations as Flow;
 
 abstract class AddressEmbeddable
