@@ -119,4 +119,16 @@ class InvoiceFactory
         $object = ObjectAccess::getPropertyPath($invoice, $objectPath);
         ObjectAccess::setProperty($object, $propName, $value);
     }
+
+    public function triggerThirdPartyProcessesOnUpdate(Invoice $invoice): void
+    {
+        $this->emitInvoiceCreated($invoice);
+    }
+
+    /**
+     * @param Invoice $invoice
+     * @return void
+     * @Flow\Signal
+     */
+    protected function emitInvoiceCreated(Invoice $invoice): void {}
 }

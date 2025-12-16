@@ -29,7 +29,7 @@
     * reply-to an?
     * Bei Typ Dauerrechnung auch den Ersatz angeben
     * todo text dauerrechnungen
-
+    * auftragsnummer und co noch ergänzen
 </pre>
 
 <bs:tab.tabWrapper>
@@ -42,34 +42,36 @@
         <f:render partial="Domain/Model/Tags/Edit" arguments="{tags:tags}" />
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Auftrag">
-        <h2 class="h6">Angebot</h2>
-        <f:render partial="Form/Text"
-                  arguments="{label:'Angebotsnummer', property:'offerNumber', noEdit:object.notChangeable}"/>
-        <h2 class="h6">Auftrag</h2>
-        <div class="row">
-            <div class="col-sm-6">
-                <f:render partial="Form/Date"
-                          arguments="{label: 'Start', property:'periodOfPerformance.start', noEdit:object.notChangeable}"/>
+        <f:render partial="Components/Panel" arguments="{heading:'Angebot'}" contentAs="body">
+            <f:render partial="Form/Text"
+                      arguments="{label:'Angebotsnummer', property:'offerNumber', noEdit:object.notChangeable}"/>
+        </f:render>
+        <f:render partial="Components/Panel" arguments="{heading:'Auftrag'}" contentAs="body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <f:render partial="Form/Date"
+                              arguments="{label: 'Start', property:'periodOfPerformance.start', noEdit:object.notChangeable}"/>
+                </div>
+                <div class="col-sm-6">
+                    <f:render partial="Form/Date"
+                              arguments="{label: 'Ende', property:'periodOfPerformance.end', noEdit:object.notChangeable}"/>
+                </div>
             </div>
-            <div class="col-sm-6">
-                <f:render partial="Form/Date"
-                          arguments="{label: 'Ende', property:'periodOfPerformance.end', noEdit:object.notChangeable}"/>
-            </div>
-        </div>
+        </f:render>
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Kunde">
-        <pre>
-        </pre>
         <f:render partial="Form/Text" arguments="{property:'customer.deptorNumber', label:'Kundennummer'}" />
         <f:render partial="Domain/Embeddable/AddressEmbeddable" arguments="{prefix:'customer'}" />
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Zusatztexte">
-        <h2 class="h6">Generell</h2>
-        <f:render partial="Form/TextareaMarkdown"
-                  arguments="{label:'Zusatztext', property:'additionalText', noEdit:object.notChangeable, hint:'@todo wird aus der Registry befüllt, ggf. auch auswahl erlauben'}"/>
-        <h2 class="h6">Rechnungspositionen</h2>
-        <f:render partial="Form/TextareaMarkdown" arguments="{label:'Zusatzttext vor der Produktliste', property:'preText', noEdit:object.notChangeable}"/>
-        <f:render partial="Form/TextareaMarkdown" arguments="{label:'Zusatzttext nach der Produktliste', property:'postText', noEdit:object.notChangeable}"/>
+        <f:render partial="Components/Panel" arguments="{heading:'Generel'}" contentAs="body">
+            <f:render partial="Form/TextareaMarkdown"
+                     arguments="{label:'Zusatztext', property:'additionalText', noEdit:object.notChangeable, hint:'@todo wird aus der Registry befüllt, ggf. auch auswahl erlauben'}"/>
+        </f:render>
+        <f:render partial="Components/Panel" arguments="{heading:'Rechnungspositionen'}" contentAs="body">
+            <f:render partial="Form/TextareaMarkdown" arguments="{label:'Zusatzttext vor der Produktliste', property:'preText', noEdit:object.notChangeable}"/>
+            <f:render partial="Form/TextareaMarkdown" arguments="{label:'Zusatzttext nach der Produktliste', property:'postText', noEdit:object.notChangeable}"/>
+        </f:render>
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Verkäufer">
         <f:render partial="Domain/Embeddable/AddressEmbeddable" arguments="{prefix:'seller', noEdit:1}" />

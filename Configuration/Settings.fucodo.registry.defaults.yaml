@@ -5,11 +5,12 @@ fucodo:
   registry:
     defaults:
       KayStrobach.Invoice.General:
-        invoice.series:
-          type: Textarea
-          label: Rechnungskreise (Achtung, braucht JSON als Input)
-          default: '[{"identifier":"default", "name":"Standard", "prefix":"R-%year-", "postfix":"", "type":"KayStrobach\\Invoice\\Domain\\Model\\Invoice", "description":"Standardrechnung, hier werden einige Werte automatisch gesetzt"}, {"identifier":"recurringBilling", "name":"Dauerrechnung", "prefix":"DR-%year-", "postfix":"", "type":"KayStrobach\\Invoice\\Domain\\Model\\Invoice", "description":"Dauerrechnung, hier werden einige Werte automatisch gesetzt, die es ermöglichen die Rechnung als Dauerrechnung zu verwenden"}]'
-          description:
+        items:
+          invoice.series:
+            type: Textarea
+            label: Rechnungskreise (Achtung, braucht JSON als Input)
+            default: '[{"identifier":"default", "name":"Standard", "prefix":"R-%year-", "postfix":"", "type":"KayStrobach\\Invoice\\Domain\\Model\\Invoice", "description":"Standardrechnung, hier werden einige Werte automatisch gesetzt"}, {"identifier":"recurringBilling", "name":"Dauerrechnung", "prefix":"DR-%year-", "postfix":"", "type":"KayStrobach\\Invoice\\Domain\\Model\\Invoice", "description":"Dauerrechnung, hier werden einige Werte automatisch gesetzt, die es ermöglichen die Rechnung als Dauerrechnung zu verwenden"}]'
+            description:
       KayStrobach.Invoice.NormalInvoiceSettings:
         items:
           ################################################################################################################

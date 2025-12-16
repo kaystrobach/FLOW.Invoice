@@ -48,7 +48,7 @@ class InvoiceWizardController extends AbstractPageRendererController
         $invoice->setChangeable(true);
 
         // emit the signal, maybe used by crm to add even more data to the invoice
-        $this->emitInvoiceCreated($invoice);
+        $this->invoiceFactory->triggerThirdPartyProcessesOnUpdate($invoice);
 
         $this->invoiceRepository->add($invoice);
         $this->redirect(
@@ -61,10 +61,5 @@ class InvoiceWizardController extends AbstractPageRendererController
         );
     }
 
-    /**
-     * @param Invoice $invoice
-     * @return void
-     * @Flow\Signal
-     */
-    protected function emitInvoiceCreated(Invoice $invoice) {}
+
 }
