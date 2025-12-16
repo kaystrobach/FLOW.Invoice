@@ -46,24 +46,7 @@ class InvoiceRepository extends SearchableRepository
     {
         if ($object instanceof Invoice) {
             $object->calculateTotal();
-            $this->_em->transactional(
-                static function (EntityManager $em) use ($object) {
-                    try {
-                        $maxId = $em->createQueryBuilder()
-                            ->select('MAX(e.number.combinedNumber)')
-                            ->from(Invoice::class, 'e')
-                            ->where('e.number.prefix = ?1')
-                            ->setParameter(1, $object->getNumber()->getPrefix())
-                            ->getQuery()
-                            ->getSingleScalarResult();
-                        $object->getNumber()->setNumber(1 + (int)$maxId);
-                    } catch (NoResultException $exception) {
-                        $object->getNumber()->setNumber(1);
-                    }
-                    $em->persist($object);
-                    $em->flush($object);
-                }
-            );
+            parent::add($object);
         }
     }
 

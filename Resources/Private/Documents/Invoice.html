@@ -1,5 +1,6 @@
 <html lang="de"
       xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+      xmlns:fr="http://typo3.org/ns/fucodo/registry/ViewHelpers"
       xmlns:inv="http://typo3.org/ns/KayStrobach/Invoice/ViewHelpers"
       xmlns:media="http://typo3.org/ns/Neos/Media/ViewHelpers"
       data-namespace-typo3-fluid="true"
@@ -8,26 +9,73 @@
 <f:layout name="Pdf" />
 
 <f:section name="Content">
-    <table class="table">
+    <table class="table table-structure table-border">
         <tr>
-            <td style="height: 30mm">
+            <td>
                 &nbsp;
             </td>
         </tr>
         <tr>
-            <td style="height: 40mm;">
-                <br>
+            <td style="width: 120mm;">
+                <f:if condition="{invoice.customer.email}">
+                    gesendet an: {invoice.customer.email}
+                </f:if>
+                <hr>
+                <p>
+                    {invoice.seller.combinedAddressOneLine}
+                </p>
                 <br>
                 {invoice.customer.combinedAddress -> f:format.nl2br()}
             </td>
-        </tr>
-        <tr>
             <td class="text-right">
-                {invoice.title} Nr. {invoice.number}
+                {invoice.title}
                 <f:if condition="{invoice.subTitle}">
                     <br>
-                    <small>{invoice.subTitle}</small>
+                    {invoice.subTitle}
                 </f:if>
+                <table>
+                    <tr>
+                        <th class="text-start">
+                            Nr.
+                        </th>
+                        <td class="text-end">
+                            {invoice.number}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">
+                            Datum
+                        </th>
+                        <td class="text-end">
+                            {invoice.date -> f:format.date(format: 'd.m.Y')}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">
+                            Kd. Nr.
+                        </th>
+                        <td class="text-end">
+                            {invoice.customer.number}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">
+                            Angebot
+                        </th>
+                        <td class="text-end">
+                            {invoice.order.offerNumber}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">
+                            Beauftragt am
+                        </th>
+                        <td class="text-end">
+                            {invoice.order.date -> f:format.date(format: 'd.m.Y')}
+                        </td>
+                    </tr>
+
+                </table>
 
                 {invoice.date -> f:format.date(format: 'd.m.Y')}
             </td>

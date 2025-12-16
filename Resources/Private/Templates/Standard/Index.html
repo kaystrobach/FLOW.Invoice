@@ -10,7 +10,7 @@
 
 <b:be.setTitle>Rechnungen</b:be.setTitle>
 
-<b:be.button.addButton action="new" label="Rechnung" icon="add"/>
+<b:be.button.addButton action="new" controller="InvoiceWizard" label="Rechnung" icon="add"/>
 <b:be.button.addButton action="index" controller="SettlementDate" label="Fälligkeiten" icon="bootstrap-clock"/>
 <b:be.button.addButton action="index" controller="AccountingRecord" label="Buchungssätze" icon="bootstrap-list"/>
 <b:be.button.addButton action="index" controller="DailyClosing" label="Tagesjournal" icon="bootstrap-download"/>
@@ -44,9 +44,9 @@
                     <tr class="{f:if(condition:object.paymentDelayed, then:'danger')}{f:if(condition:object.paid, then:'success')}">
                         <td>
                             <f:link.action action="edit" arguments="{object:object}">
-                                <f:if condition="{object.numberComplete}">
+                                <f:if condition="{object.number}">
                                     <f:then>
-                                        {object.numberComplete}
+                                        {object.number}
                                     </f:then>
                                     <f:else>
                                         Entwurf

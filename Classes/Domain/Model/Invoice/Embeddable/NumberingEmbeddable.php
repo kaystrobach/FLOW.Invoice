@@ -40,7 +40,7 @@ class NumberingEmbeddable
 
     public function setPrefix(string $prefix): void
     {
-        $this->prefix = $prefix;
+        $this->prefix = $this->replacePlaceHolders($prefix);
         $this->updateCombinedNumber();
     }
 
@@ -62,7 +62,7 @@ class NumberingEmbeddable
 
     public function setPostfix(string $postfix): void
     {
-        $this->postfix = $postfix;
+        $this->postfix = $this->replacePlaceHolders($postfix);
         $this->updateCombinedNumber();
     }
 
@@ -74,6 +74,12 @@ class NumberingEmbeddable
     public function setCombinedNumber(string $combinedNumber): void
     {
         $this->combinedNumber = $combinedNumber;
+    }
+
+    protected function replacePlaceHolders(string $string): string
+    {
+        $now = new \DateTime('now');
+        return str_replace(array('%year', '%month'), array($now->format('Y'), $now->format('m')), $string);
     }
 
     public function updateCombinedNumber(): void

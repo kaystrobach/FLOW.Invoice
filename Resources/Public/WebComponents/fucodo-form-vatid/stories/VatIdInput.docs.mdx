@@ -1,0 +1,44 @@
+import { Meta, Title, Subtitle, Description, Primary, ArgTypes, Source, Stories } from '@storybook/addon-docs/blocks';
+import * as VatIdStories from './VatIdInput.stories.js';
+
+<Meta of={VatIdStories} />
+
+<Title />
+<Subtitle>Web Component: <code>&lt;fucodo-form-vatid&gt;</code></Subtitle>
+
+<Description>
+Format-only EU VAT ID input with optional enforced country prefix via a <code>slot="country"</code> field.
+It normalizes the hidden <code>slot="value"</code> input and presents a friendly visible input with basic feedback.
+
+Notes:
+- Validation is format-based only (no VIES or checksum lookup).
+- Greece supports both <code>EL</code> and <code>GR</code> prefixes. If a country slot is provided, that prefix is enforced.
+</Description>
+
+### Attributes/Args
+
+<ArgTypes of={VatIdStories.Basic} />
+
+### Basic example
+
+```html
+<fucodo-form-vatid placeholder="e.g. DE123456789" hint="Enter your EU VAT ID">
+  <input slot="value" name="vat_id" value="DE123456789" />
+</fucodo-form-vatid>
+```
+
+### With country selector
+
+```html
+<fucodo-form-vatid>
+  <select slot="country" name="country">
+    <option value="DE">DE</option>
+  </select>
+  <input slot="value" name="vat_id" value="" />
+</fucodo-form-vatid>
+```
+
+### Stories
+
+<Primary />
+<Stories includePrimary={false} />

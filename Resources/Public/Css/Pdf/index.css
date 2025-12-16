@@ -30,6 +30,15 @@ body {
     vertical-align: top;
 }
 
+.table-border, .table-border td, .table-border th {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.table-structure {
+    width: 200mm;
+}
+
 .invoice-table {
     border-collapse: collapse;
     width: 100%;

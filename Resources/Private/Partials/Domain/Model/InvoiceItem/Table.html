@@ -11,14 +11,6 @@
 >
 
 <f:render partial="Components/Panel" arguments="{heading:'Positionen', object:object}" contentAs="body">
-	<div class="mb-3 mt-3">
-		<details {f:if(condition:object.preText, then:'open')}>
-			<summary>
-				Zusatzttext vor der Produktliste
-			</summary>
-			<f:render partial="Form/TextareaMarkdown" arguments="{label:'Zusatzttext vor der Produktliste', property:'preText', noEdit:object.notChangeable}"/>
-		</details>
-	</div>
 	<div class="table-responsive-lg">
 		<table class="table table-striped table-bordered ">
 			<cols>
@@ -161,14 +153,5 @@
 			</tr>
 			</tfoot>
 		</table>
-	</div>
-
-	<div class="mb-3 mt-3">
-		<details {f:if(condition:object.postText, then:'open')}>
-		<summary>
-            Zusatzttext nach der Produktliste
-		</summary>
-		<f:render partial="Form/TextareaMarkdown" arguments="{label:'Zusatzttext nach der Produktliste', property:'postText', noEdit:object.notChangeable}"/>
-		</details>
 	</div>
 </f:render>

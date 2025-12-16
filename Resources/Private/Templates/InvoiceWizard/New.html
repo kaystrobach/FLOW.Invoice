@@ -1,0 +1,54 @@
+<html lang="de" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+      xmlns:="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+      xmlns:custom="http://typo3.org/ns/KayStrobach/Custom/ViewHelpers"
+      xmlns:media="http://typo3.org/ns/Neos/Media/ViewHelpers"
+      xmlns:b="http://typo3.org/ns/KayStrobach/Backend/ViewHelpers"
+      xmlns:i="http://typo3.org/ns/KayStrobach/IconRegistry/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/FourViewture/KIS/CRM/Backend/ViewHelpers"
+      xmlns:search="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
+
+<b:be.setTitle>Rechnung anlegen</b:be.setTitle>
+
+<b:be.button.saveButton />
+<b:be.button.closeButton controller="Standard"/>
+
+
+<f:form action="create" object="{dto}" objectName="dto" id="globalForm" method="post" enctype="multipart/form-data">
+    <f:render partial="Components/Panel" contentAs="body" arguments="{_all}">
+        <div class="list-group mb-3">
+            <f:for each="{dto.possibleTypes}" as="type">
+                <label class="list-group-item d-flex align-items-center">
+                    <div class="flex-shrink-0 me-3">
+                        <f:form.radio value="{type.identifier}" property="type"/>
+                    </div>
+                    <div>
+                        <span class="h5">{type.name}</span>
+                        <p>
+                            Rechnungskreis <code>{type.prefix}<strong>NR</strong>{type.postfix}</code>
+                        </p>
+                        <f:if condition="{type.description}">
+                            <p>
+                                {type.description}
+                            </p>
+                        </f:if>
+                    </div>
+                </label>
+            </f:for>
+        </div>
+    </f:render>
+    <f:render partial="Components/Panel" contentAs="body" arguments="{_all}">
+        <f:render partial="Form/Text" arguments="{property:'offerNumber', label:'Angebotsnummer'}" />
+        <f:render partial="Form/Text" arguments="{property:'customerNumber', label:'Kundennummer'}" />
+    </f:render>
+</f:form>
+
+<style>
+    .list-group-item:has(input:checked) {
+        z-index: 2;
+        color: var(--bs-list-group-active-color);
+        background-color: var(--bs-list-group-active-bg);
+        border-color: var(--bs-list-group-active-border-color);
+    }
+</style>

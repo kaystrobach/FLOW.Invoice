@@ -109,6 +109,19 @@ abstract class AddressEmbeddable
         $this->combinedAddress = $combinedAddress;
     }
 
+    public function getCombinedAddressOneLine(): string
+    {
+        return sprintf(
+            '%s · %s %s · %s %s · %s',
+            $this->name,
+            $this->getStreet(),
+            $this->getHouseNumber(),
+            $this->getZipCode(),
+            $this->getCity(),
+            $this->getCountry()
+        );
+    }
+
     /**
      * @return string
      */

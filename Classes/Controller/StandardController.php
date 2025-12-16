@@ -5,14 +5,15 @@ namespace KayStrobach\Invoice\Controller;
  * This file is part of the KayStrobach.Invoice package.
  */
 
-use FourViewture\KIS\CRM\Domain\Traits\Tags\TagsControllerTrait;
 use KayStrobach\Backend\Controller\AbstractPageRendererController;
 use KayStrobach\Crud\Controller\Traits\CrudTrait;
+use KayStrobach\Invoice\Domain\Factory\InvoiceFactory;
 use KayStrobach\Invoice\Domain\Model\Invoice;
 use KayStrobach\Invoice\Domain\Model\InvoiceItem;
 use KayStrobach\Invoice\Domain\Model\SettlementDate;
 use KayStrobach\Invoice\Messenger\Message\InvoiceFinalizedMessage;
 use KayStrobach\Invoice\View\InvoiceView;
+use KayStrobach\Tags\Traits\TagsControllerTrait;
 use Neos\Flow\Annotations as Flow;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -143,8 +144,17 @@ class StandardController extends AbstractPageRendererController
         );
     }
 
+
+    /**
+     * @todo do this while creating the first invoice object before saving
+     * @Flow\Inject
+     * @var InvoiceFactory
+     */
+    protected InvoiceFactory $invoiceFactory;
+
     public function preUpdateAction(Invoice $object)
     {
+        $this->invoiceFactory->setInvoiceDefaultsFromEnv($object);
         $this->getRepository()->update($object);
     }
 

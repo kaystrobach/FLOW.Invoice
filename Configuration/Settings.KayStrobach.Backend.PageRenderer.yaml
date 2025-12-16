@@ -3,6 +3,15 @@ KayStrobach:
     PageRenderer:
       Defaults:
         jsFiles:
+          fucodo-form-vatid:
+            file: 'resource://KayStrobach.Invoice/Public/WebComponents/fucodo-form-vatid/dist/index.js'
+            type: module
+            section: head
+            forceOnTop: true
+            async: false
+            integrity: null
+            defer: null
+            crossorigin: null
           fucodo-form-number:
             file: 'resource://KayStrobach.Invoice/Public/WebComponents/fucodo-form-number/dist/index.js'
             type: module
