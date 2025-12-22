@@ -52,7 +52,7 @@ fucodo:
     defaults:
       KayStrobach_Invoice_General:
         items:
-          invoice_series:
+          invoiceSeries:
             type: Textarea
             label: Rechnungskreise (Achtung, braucht JSON als Input)
             default: 'Default,RecurringBilling'

@@ -40,7 +40,7 @@ class CreateInvoiceDto
 
     public function getPossibleTypes(): array
     {
-        $entryList = explode(',', $this->registryEntryRepository->getValue('KayStrobach_Invoice_General', 'invoice_series'));
+        $entryList = explode(',', $this->registryEntryRepository->getValue('KayStrobach_Invoice_General', 'invoiceSeries'));
         $entries = [];
         foreach($entryList as $entry) {
             $namespace = InvoiceFactory::REGISTRY_NAMESPACE_PREFIX . $entry;
