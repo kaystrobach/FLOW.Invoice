@@ -12,6 +12,7 @@ use KayStrobach\Invoice\Domain\Model\Invoice\BankTransferDocument;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\CustomerEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\MoneyEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\NumberingEmbeddable;
+use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\OrderEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\PeriodEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\SellerEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\TaxRecord;
@@ -104,6 +105,12 @@ class Invoice
      * @var PeriodEmbeddable
      */
     protected PeriodEmbeddable $periodOfPerformance;
+
+    /**
+     * @ORM\Embedded(columnPrefix="order_")
+     * @var OrderEmbeddable
+     */
+    protected OrderEmbeddable $order;
 
     /**
      * @var string
@@ -246,6 +253,7 @@ class Invoice
         $this->totalNoTaxes = new MoneyEmbeddable();
         $this->customer = new CustomerEmbeddable();
         $this->seller = new SellerEmbeddable();
+        $this->order = new OrderEmbeddable();
     }
 
     /**
@@ -346,6 +354,16 @@ class Invoice
     public function setPeriodOfPerformance(PeriodEmbeddable $periodOfPerformance): void
     {
         $this->periodOfPerformance = $periodOfPerformance;
+    }
+
+    public function getOrder(): OrderEmbeddable
+    {
+        return $this->order;
+    }
+
+    public function setOrder(OrderEmbeddable $order): void
+    {
+        $this->order = $order;
     }
 
     /**

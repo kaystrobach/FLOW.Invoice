@@ -1,6 +1,52 @@
 # add defaults here with the namespace key and then the actual key
 # only comes in effect, when no value and no fallback are given
 #
+
+# angebots und auftragsnummer optional
+# @todo Korrekturrechnung
+# Kundennummer als Pflichtfeld markieren
+# @todo rechnungsnummer
+# info an buchhaltung@, wenn neue Kundennumer vergeben wurde
+# Untertitel erstmal raus
+# Angebot nicht oben rechts
+# Ersteller oben rechts automatisch aus dem System
+#  Ersteller feld sperren --> Hier kommt der der Fertigstellt
+# Pflichtfelder
+# * Leistungszeitraum
+# * Angaen Kunde
+#* Kunde seite komplett sperren
+# UStId des Kunden als Label in Kunde
+# Zusatztext. Generell raus
+# Menge als Decimal mit 2 Nahckommastellen
+# ME -> 1: Anzahl, 2: Stunden, 3: Pauschal, 4: Optional
+# Einheiten werden in Zusatztext nach der Rechnung erklärt
+#*  ME = Mengeneinheit (1 - pauschal, 2 - Anzahl, 3 - optional)
+#▪ ME = Mengeneinheit (1 - pauschal, 2 - Anzahl, 3 - optional)
+#▪ wir empfehlen ihnen den Abschluss eines Servicevertrages
+# Einzelpreis bekommt schalter für verstecken
+# CRM.Kunde
+# - keine Kundennumer, wenn die die UstId fehlt
+# - SafeGuar, wenn UstId beim Kunden fehlt, fehler werfen
+# - ist bezahlt als schalter
+
+# Rechnung bezahlt - ja / nein
+# Zusatztext für Zahlungsbedingungen in der Registry mit definieren
+# Zahlungsbedingungen mit in den Kunden rein --> auch Sepa beachten
+
+# Zahlungsbedingungen
+#
+#   Ziffer 1	Der Rechnungsbetrag (Brutto) ist zahlbar innerhalb von 14 Kalendertagen nach dem ausgewiesenen Rechnungsdatum.
+#   Ziffer 2	Sepa Mandat
+#   Ziffer 3	freitext?
+#   Damit infos aus Auftrag nehmen
+
+# Konto im Kundenstamm für Sepa Lastschriftmandat
+# Texte in den Dauerrechnungen Bankverbindung etc.
+
+# ab 01.01. eRechnung an LV und Bilddungswerk und DRK Service
+
+# Zwischenschritt vor der Freigabe der Rechnung einführen
+
 fucodo:
   registry:
     defaults:
@@ -9,10 +55,66 @@ fucodo:
           invoice.series:
             type: Textarea
             label: Rechnungskreise (Achtung, braucht JSON als Input)
-            default: '[{"identifier":"default", "name":"Standard", "prefix":"R-%year-", "postfix":"", "type":"KayStrobach\\Invoice\\Domain\\Model\\Invoice", "description":"Standardrechnung, hier werden einige Werte automatisch gesetzt"}, {"identifier":"recurringBilling", "name":"Dauerrechnung", "prefix":"DR-%year-", "postfix":"", "type":"KayStrobach\\Invoice\\Domain\\Model\\Invoice", "description":"Dauerrechnung, hier werden einige Werte automatisch gesetzt, die es ermöglichen die Rechnung als Dauerrechnung zu verwenden"}]'
+            default: 'Default,RecurringBilling'
             description:
-      KayStrobach.Invoice.NormalInvoiceSettings:
+      KayStrobach.Invoice.InvoiceSettings.RecurringBilling:
         items:
+          ################################################################################################################
+          # General Invoice defaults
+          #################################################################################################################
+          numberPrefix:
+            type: Text
+            label:
+            default: 'DR-%year-'
+            description:
+          numberPostfix:
+            type: Text
+            label:
+            default: ''
+            description:
+          title:
+            type: Text
+            label:
+            default: Dauerrechnung
+            description:
+          subTitle:
+            type: Text
+            label:
+            default: ""
+            description:
+          additionalInformation:
+            type: Textarea
+            label:
+            default: |
+              @todo Anpassen mit der Vertragsart etc.
+
+              Diese Rechnung gilt ab 01.01.-31.12.2025,
+              entsprechend dem Auftrag {invoice.order.orderNumber} vom {invoice.order.commissioningDate} und den Allgemeinen
+              Geschäftsbedingungen (Stand: Oktober 2024).
+              Die Gültigkeit erlischt, ab dem die vorliegende Rechnung durch eine neu ausgestellte
+              Rechnung ersetzt wird oder wenn das Vertragsverhältnis beendet wird.
+
+              Leistungszeitraum monatlich
+            description:
+
+      KayStrobach.Invoice.InvoiceSettings.Default:
+        items:
+          class:
+            type: Text
+            label:
+            default: 'KayStrobach\Invoice\Domain\Model\Invoice'
+            description:
+          numberPrefix:
+            type: Text
+            label:
+            default: 'R-%year-'
+            description:
+          numberPostfix:
+            type: Text
+            label:
+            default: ''
+            description:
+
           ################################################################################################################
           # General Invoice defaults
           #################################################################################################################
@@ -21,7 +123,6 @@ fucodo:
             label:
             default: Rechnung
             description:
-
           subTitle:
             type: Text
             label:

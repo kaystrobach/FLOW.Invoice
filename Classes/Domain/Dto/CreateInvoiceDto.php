@@ -3,6 +3,7 @@
 namespace KayStrobach\Invoice\Domain\Dto;
 
 use fucodo\registry\Domain\Repository\RegistryEntryRepository;
+use KayStrobach\Invoice\Domain\Factory\InvoiceFactory;
 use Neos\Flow\Annotations as Flow;
 
 class CreateInvoiceDto
@@ -14,24 +15,55 @@ class CreateInvoiceDto
     protected RegistryEntryRepository $registryEntryRepository;
 
     /**
+     * @Flow\Validate(type="NotEmpty")
      * @var string
      */
     public string $type = '';
 
     /**
+     * @Flow\Validate(type="NotEmpty")
      * @var string
      */
     protected string $offerNumber = '';
 
     /**
+     * @Flow\Validate(type="NotEmpty")
+     * @var string
+     */
+    protected string $orderNumber = '';
+
+    /**
+     * @Flow\Validate(type="NotEmpty")
      * @var string
      */
     protected string $customerNumber = '';
 
     public function getPossibleTypes(): array
     {
-        $registryValue = $this->registryEntryRepository->getValue('KayStrobach.Invoice.General', 'invoice.series');
-        return json_decode($registryValue, true, 512, JSON_THROW_ON_ERROR || JSON_OBJECT_AS_ARRAY) ?? [];
+        $entryList = explode(',', $this->registryEntryRepository->getValue('KayStrobach.Invoice.General', 'invoice.series'));
+        $entries = [];
+        foreach($entryList as $entry) {
+            $namespace = InvoiceFactory::REGISTRY_NAMESPACE_PREFIX . $entry;
+            $entries[] = [
+                'identifier' => $entry,
+                'description' => $this->getValue($namespace, 'description'),
+                'name' => $this->getValue($namespace, 'title'),
+                'prefix' => $this->getValue($namespace, 'numberPrefix'),
+                'postfix' => $this->getValue($namespace, 'numberPostfix'),
+                'namespace' => $namespace,
+            ];
+        }
+
+        return $entries;
+    }
+
+    protected function getValue(string $namespace, string $prop): mixed
+    {
+        $v = $this->registryEntryRepository->getValue($namespace, $prop);
+        if ($v !== null) {
+            return $v;
+        }
+        return $this->registryEntryRepository->getValue(InvoiceFactory::REGISTRY_NAMESPACE_DEFAULT, $prop);
     }
 
     public function getType(): string
@@ -54,6 +86,16 @@ class CreateInvoiceDto
         $this->offerNumber = $offerNumber;
     }
 
+    public function getOrderNumber(): string
+    {
+        return $this->orderNumber;
+    }
+
+    public function setOrderNumber(string $orderNumber): void
+    {
+        $this->orderNumber = $orderNumber;
+    }
+
     public function getCustomerNumber(): string
     {
         return $this->customerNumber;
@@ -70,6 +112,7 @@ class CreateInvoiceDto
         $t->setType($array['type'] ?? '');
         $t->setOfferNumber($array['offerNumber'] ?? '');
         $t->setCustomerNumber($array['customerNumber'] ?? '');
+        $t->setOrderNumber($array['orderNumber'] ?? '');
         return $t;
     }
 

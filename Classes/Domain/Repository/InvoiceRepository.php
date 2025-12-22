@@ -7,6 +7,7 @@ namespace KayStrobach\Invoice\Domain\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
+use KayStrobach\Invoice\Domain\Factory\InvoiceFactory;
 use KayStrobach\Invoice\Domain\Model\Invoice;
 use KayStrobach\VisualSearch\Domain\Repository\SearchableRepository;
 use Neos\Flow\Annotations as Flow;
@@ -34,6 +35,12 @@ class InvoiceRepository extends SearchableRepository
         'number.combinedNumber' => QueryInterface::ORDER_DESCENDING
     ];
 
+    /**
+     * @Flow\Inject
+     * @var InvoiceFactory
+     */
+    protected InvoiceFactory $invoiceFactory;
+
     public function newWithPrefix(string $prefix): Invoice
     {
         $invoice = new Invoice();
@@ -55,6 +62,9 @@ class InvoiceRepository extends SearchableRepository
 
         if ($object instanceof Invoice) {
             $object->calculateTotal();
+            if (!$object->isChangeable()) {
+                $this->invoiceFactory->setInvoiceNumber($object);
+            }
             $object->prePersistHandler();
         }
         parent::update($object);

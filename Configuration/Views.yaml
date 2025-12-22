@@ -1,4 +1,9 @@
 -
+  requestFilter: 'mainRequest.isPackage("KayStrobach.Invoice") && isPackage("Neos.FluidAdaptor") && isSubPackage("ViewHelpers\Widget") && isController("Paginate") && isAction("index")'
+  options:
+    templatePathAndFilename: 'resource://KayStrobach.Invoice/Private/Templates/ViewHelpers/Widget/Paginate/Index.html'
+
+-
   requestFilter: 'isPackage("KayStrobach.Invoice") && isFormat("html")'
   options:
     layoutRootPaths:

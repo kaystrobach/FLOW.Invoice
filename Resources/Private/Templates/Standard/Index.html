@@ -32,6 +32,18 @@
                         Datum
                     </th>
                     <th>
+                        Angebot
+                    </th>
+                    <th>
+                        Auftrag
+                    </th>
+                    <th>
+                        Summe
+                    </th>
+                    <th>
+                        Fälligkeiten
+                    </th>
+                    <th>
                         Stornorechnung
                     </th>
                     <th>
@@ -55,11 +67,31 @@
                             </f:link.action>
                         </td>
                         <td>
-                            {object.deptor}
-                            <f:render partial="Domain/Model/Tags/Display" arguments="{tags:object.tags}" />
+                            <div>
+                                {object.customer.name} ({object.customer.deptorNumber})
+                            </div>
+                            <div>
+                                <f:render partial="Domain/Model/Tags/Display" arguments="{tags:object.tags}" />
+                            </div>
                         </td>
                         <td>
                             {object.date -> f:format.date(format: 'd.m.Y')}
+                        </td>
+                        <td>
+                            {object.offerNumber}
+                        </td>
+                        <td>
+                            {object.order.orderNumber}
+                        </td>
+                        <td class="text-end">
+                            <pre>{object.total}</pre>
+                        </td>
+                        <td>
+                            <f:if condition="{object.settlementDates}">
+                                <f:for each="{object.settlementDates}" as="settlementDate">
+                                    {settlementDate.dueDate -> f:format.date(format: 'd.m.Y')} - {settlementDate.amount}
+                                </f:for>
+                            </f:if>
                         </td>
                         <td>
                             <f:if condition="{object.stornoInvoice}">

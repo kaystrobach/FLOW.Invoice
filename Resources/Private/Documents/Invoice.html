@@ -83,7 +83,7 @@
     </table>
 
     <f:if condition="{invoice.additionalInformation}">
-        {invoice.additionalInformation -> inv:format.markdown()}
+        {invoice.additionalInformation -> inv:renderString() -> inv:format.markdown()}
     </f:if>
     <f:if condition="{invoice.periodOfPerformance.start}">
         Leistungzeitraum:

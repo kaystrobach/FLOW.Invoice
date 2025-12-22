@@ -31,16 +31,15 @@
 				</th>
                 <th>
                     Artikel-Nr.
-                    <span>@todo neue Spalte Umsatzerlösschlüssel</span>
                 </th>
 				<th>
-					Artikel / Beschreibung
+					Artikelbezeichnung
 				</th>
 				<th class="text-right">
 					Menge
 				</th>
 				<th>
-					Einheit
+					Mengeneinheit
 				</th>
 				<th class="text-right">
 					Steuersatz
@@ -83,7 +82,7 @@
 						<f:render partial="Form/Text" arguments="{property:'invoiceItems.{iteration.index}.name', decimals:0, noEdit:object.notChangeable}"/>
 						<details {f:if(condition:invoiceItem.description, then:'open')}>
 							<summary>
-								Beschreibung
+								Artikelzusatztext
 							</summary>
 							<f:render partial="Form/TextareaMarkdown" arguments="{property:'invoiceItems.{iteration.index}.description', decimals:0, noEdit:object.notChangeable}"/>
 						</details>
@@ -92,7 +91,7 @@
 						<f:render partial="Form/Number" arguments="{property:'invoiceItems.{iteration.index}.amount', decimals:0, noEdit:object.notChangeable}"/>
 					</td>
 					<td>
-						<f:render partial="Form/Text" arguments="{property:'invoiceItems.{iteration.index}.unit', decimals:0, noEdit:object.notChangeable}"/>
+                        <f:render partial="Form/SelectSingle" arguments="{property:'invoiceItems.{iteration.index}.unit', options:invoiceItem.possibleUnits, noEdit:object.notChangeable}"/>
 					</td>
 					<td>
 						<f:render partial="Form/Number" arguments="{property:'invoiceItems.{iteration.index}.tax', decimals:2, noEdit:object.notChangeable}"/>

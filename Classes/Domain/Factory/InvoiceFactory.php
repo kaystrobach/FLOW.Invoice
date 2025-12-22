@@ -15,7 +15,9 @@ use Neos\Utility\ObjectAccess;
 
 class InvoiceFactory
 {
-    const REGISTRY_NAMESPACE = 'KayStrobach.Invoice.NormalInvoiceSettings';
+    const REGISTRY_NAMESPACE_DEFAULT = 'KayStrobach.Invoice.InvoiceSettings.Default';
+
+    const REGISTRY_NAMESPACE_PREFIX = 'KayStrobach.Invoice.InvoiceSettings.';
 
     /**
      * @Flow\Inject
@@ -29,15 +31,17 @@ class InvoiceFactory
      */
     protected RegistryEntryRepository $registryEntryRepository;
 
-    public function setInvoiceDefaultsFromEnv(Invoice $invoice)
+    public function setInvoiceDefaultsFromEnv(Invoice $invoice, string $type = 'Default')
     {
-        $this->setNumberDefaults($invoice);
-        $this->setDefaultTexts($invoice);
-        $this->setSellerDefaultsFromEnv($invoice);
+        $namespace = self::REGISTRY_NAMESPACE_PREFIX . $type;
+
+        $this->setNumberDefaults($invoice, $namespace);
+        $this->setDefaultTexts($invoice, $namespace);
+        $this->setSellerDefaultsFromEnv($invoice, $namespace);
         $this->setInvoiceNumber($invoice);
     }
 
-    protected function setInvoiceNumber(Invoice $invoice)
+    public function setInvoiceNumber(Invoice $invoice)
     {
         if ($invoice->isChangeable()) {
             return;
@@ -55,6 +59,7 @@ class InvoiceFactory
                     $maxId = $query
                         ->getSingleScalarResult();
                     $invoice->getNumber()->setNumber(1 + (int)$maxId);
+                    // throw new \Exception((string)$invoice->getNumber()->getNumber());
                 } catch (NoResultException $exception) {
                     $invoice->getNumber()->setNumber(1);
                 }
@@ -64,14 +69,16 @@ class InvoiceFactory
         );
     }
 
-    protected function setNumberDefaults(Invoice $invoice)
+    protected function setNumberDefaults(Invoice $invoice, string $namespace)
     {
-        if ($invoice->getNumber()->getPrefix() === '') {
-            $invoice->getNumber()->setPrefix('R-' . date('Y') . '-');
-        }
+        $prefix = $this->getRegistryValue($namespace, 'numberPrefix') ?? 'R-%year';
+        $invoice->getNumber()->setPrefix($prefix);
+
+        $postfix = $this->getRegistryValue($namespace, 'numberPostfix') ?? '';
+        $invoice->getNumber()->setPostfix($postfix);
     }
 
-    protected function setDefaultTexts(Invoice $invoice)
+    protected function setDefaultTexts(Invoice $invoice, string $namespace)
     {
         $props = [
             'title',
@@ -79,12 +86,11 @@ class InvoiceFactory
             'additionalInformation',
         ];
         foreach ($props as $prop) {
-            $v = $this->registryEntryRepository->getValue(self::REGISTRY_NAMESPACE, $prop);
-            $this->setProperty($invoice, $prop, $v);
+            $this->setProperty($invoice, $prop, $this->getRegistryValue($namespace, $prop));
         }
     }
 
-    protected function setSellerDefaultsFromEnv(Invoice $invoice)
+    protected function setSellerDefaultsFromEnv(Invoice $invoice, string $namespace)
     {
         $props = [
             'seller.name',
@@ -102,9 +108,17 @@ class InvoiceFactory
         ];
 
         foreach ($props as $prop) {
-            $v = $this->registryEntryRepository->getValue(self::REGISTRY_NAMESPACE, $prop);
-            $this->setProperty($invoice, $prop, $v);
+            $this->setProperty($invoice, $prop, $this->getRegistryValue($namespace, $prop));
         }
+    }
+
+    protected function getRegistryValue(string $namespace, $prop): mixed
+    {
+        $v = $this->registryEntryRepository->getValue($namespace, $prop);
+        if ($v !== null) {
+            return $v;
+        }
+        return $this->registryEntryRepository->getValue(self::REGISTRY_NAMESPACE_DEFAULT, $prop);
     }
 
     protected function setProperty(Invoice $invoice, string $property, $value)

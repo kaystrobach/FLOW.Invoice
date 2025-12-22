@@ -22,14 +22,10 @@
 <pre>
     * @todo standard mail text
     * @todo Zahlungsbedinung vom Kunden auslesen
-    * @todo Beauftragungsdatum
-    * @todo Kundenreferenz
     * @todo Fälligkeitautomatisch erstellen und dann mit dem Rechnungsbetrag befüllen, das Fälligkeitsdatum wird mit dem Rechnungsdatum erstellt
     * kopie an ausgangsrechnungsjournal@4viewture.de
     * reply-to an?
-    * Bei Typ Dauerrechnung auch den Ersatz angeben
     * todo text dauerrechnungen
-    * auftragsnummer und co noch ergänzen
 </pre>
 
 <bs:tab.tabWrapper>
@@ -48,6 +44,23 @@
         </f:render>
         <f:render partial="Components/Panel" arguments="{heading:'Auftrag'}" contentAs="body">
             <div class="row">
+                <div class="col">
+                    <f:render partial="Form/Text"
+                              arguments="{label:'Auftragsnummer', property:'order.orderNumber', noEdit:object.notChangeable}"/>
+                </div>
+                <div class="col">
+                    <f:render partial="Form/Text"
+                              arguments="{label:'Projektname', property:'order.customerReference', noEdit:object.notChangeable}"/>
+                </div>
+                <div class="col">
+                    <f:render partial="Form/Date"
+                              arguments="{label:'Beauftragungsdatum', property:'order.commissioningDate', noEdit:object.notChangeable}"/>
+                </div>
+            </div>
+        </f:render>
+
+        <f:render partial="Components/Panel" arguments="{heading:'Leistungszeitraum'}" contentAs="body">
+            <div class="row">
                 <div class="col-sm-6">
                     <f:render partial="Form/Date"
                               arguments="{label: 'Start', property:'periodOfPerformance.start', noEdit:object.notChangeable}"/>
@@ -64,21 +77,27 @@
         <f:render partial="Domain/Embeddable/AddressEmbeddable" arguments="{prefix:'customer'}" />
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Zusatztexte">
-        <f:render partial="Components/Panel" arguments="{heading:'Generel'}" contentAs="body">
+        <f:render partial="Components/Panel" arguments="{heading:'Generell'}" contentAs="body">
             <f:render partial="Form/TextareaMarkdown"
                      arguments="{label:'Zusatztext', property:'additionalText', noEdit:object.notChangeable, hint:'@todo wird aus der Registry befüllt, ggf. auch auswahl erlauben'}"/>
         </f:render>
         <f:render partial="Components/Panel" arguments="{heading:'Rechnungspositionen'}" contentAs="body">
-            <f:render partial="Form/TextareaMarkdown" arguments="{label:'Zusatzttext vor der Produktliste', property:'preText', noEdit:object.notChangeable}"/>
-            <f:render partial="Form/TextareaMarkdown" arguments="{label:'Zusatzttext nach der Produktliste', property:'postText', noEdit:object.notChangeable}"/>
+            <f:render partial="Form/TextareaMarkdown" arguments="{label:'Vorlauftext (Zusatzttext vor der Rechnungspositionen)', property:'preText', noEdit:object.notChangeable}"/>
+            <f:render partial="Form/TextareaMarkdown" arguments="{label:'Nachlauftext (Zusatzttext nach der Rechnungspositionen)', property:'postText', noEdit:object.notChangeable}"/>
         </f:render>
     </bs:tab.tabPane>
-    <bs:tab.tabPane title="Verkäufer">
-        <f:render partial="Domain/Embeddable/AddressEmbeddable" arguments="{prefix:'seller', noEdit:1}" />
-    </bs:tab.tabPane>
+    <f:comment>
+        <bs:tab.tabPane title="Verkäufer">
+            <f:render partial="Domain/Embeddable/AddressEmbeddable" arguments="{prefix:'seller', noEdit:1}" />
+        </bs:tab.tabPane>
+    </f:comment>
     <bs:tab.tabPane title="Statusinformationen">
+        <f:comment>
+            <f:render partial="Form/Checkbox"
+                      arguments="{label:'Rechnung ist komplett bezahlt', property:'paid', noEdit:1}"/>
+        </f:comment>
         <f:render partial="Form/Textarea"
-                  arguments="{label:'Versandstatus', property:'additionalText', noEdit:object.notChangeable, noEdit:1}"/>
+                  arguments="{label:'Versandstatus der Rechnung', property:'additionalText', noEdit:object.notChangeable, noEdit:1}"/>
     </bs:tab.tabPane>
 </bs:tab.tabWrapper>
 

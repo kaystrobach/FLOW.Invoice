@@ -37,10 +37,9 @@ class InvoiceWizardController extends AbstractPageRendererController
         // we need to determine the type here  ...
         $invoice = new Invoice();
 
-        $this->invoiceFactory->setInvoiceDefaultsFromEnv($invoice);
+        $this->invoiceFactory->setInvoiceDefaultsFromEnv($invoice, $dto->getType());
 
-        $invoice->getNumber()->setPrefix($dto->getOption('prefix') ?? '');
-        $invoice->getNumber()->setPostfix($dto->getOption('postfix') ?? '');
+        $invoice->getOrder()->setOrderNumber($dto->getOrderNumber());
 
         $invoice->getCustomer()->setDeptorNumber($dto->getCustomerNumber());
         $invoice->setOfferNumber($dto->getOfferNumber());
