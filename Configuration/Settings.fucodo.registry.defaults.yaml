@@ -50,14 +50,14 @@
 fucodo:
   registry:
     defaults:
-      KayStrobach.Invoice.General:
+      KayStrobach_Invoice_General:
         items:
           invoice.series:
             type: Textarea
             label: Rechnungskreise (Achtung, braucht JSON als Input)
             default: 'Default,RecurringBilling'
             description:
-      KayStrobach.Invoice.InvoiceSettings.RecurringBilling:
+      KayStrobach_Invoice_InvoiceSettings_RecurringBilling:
         items:
           ################################################################################################################
           # General Invoice defaults
@@ -97,7 +97,7 @@ fucodo:
               Leistungszeitraum monatlich
             description:
 
-      KayStrobach.Invoice.InvoiceSettings.Default:
+      KayStrobach_Invoice_InvoiceSettings_Default:
         items:
           class:
             type: Text

@@ -15,9 +15,9 @@ use Neos\Utility\ObjectAccess;
 
 class InvoiceFactory
 {
-    const REGISTRY_NAMESPACE_DEFAULT = 'KayStrobach.Invoice.InvoiceSettings.Default';
+    const REGISTRY_NAMESPACE_DEFAULT = 'KayStrobach_Invoice_InvoiceSettings_Default';
 
-    const REGISTRY_NAMESPACE_PREFIX = 'KayStrobach.Invoice.InvoiceSettings.';
+    const REGISTRY_NAMESPACE_PREFIX = 'KayStrobach_Invoice_InvoiceSettings.';
 
     /**
      * @Flow\Inject
