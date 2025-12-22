@@ -27,7 +27,7 @@
                         <f:render partial="Form/Checkbox" arguments="{property:'settlementDates.{iteration.index}.paid', checked:settlementDate.paid}"/>
                     </td>
                     <td class="text-right">
-                        {settlementDate.amount -> f:format.number(decimalSeparator: ',', decimals: '2', thousandsSeparator: '.')} €
+                        {settlementDate.amount} €
                     </td>
                 </tr>
             </f:for>
@@ -38,7 +38,7 @@
                     Gesamtsumme
                 </th>
                 <th class="text-right">
-                    {object.total -> f:format.number(decimalSeparator: ',', decimals: '2', thousandsSeparator: '.')} €
+                    {object.total}
                 </th>
             </tr>
             </tfoot>

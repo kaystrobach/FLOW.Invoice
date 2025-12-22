@@ -16,12 +16,15 @@ use Doctrine\ORM\Mapping as ORM;
 class InvoiceItem
 {
     /**
+     * @Flow\Validate(type="NotEmpty")
      * @ORM\ManyToOne(cascade={"persist"}, inversedBy="invoiceItems")
      * @var Invoice
      */
     protected $invoice;
 
     /**
+     * @Flow\Validate(type="NotEmpty")
+     * @Flow\Validate(type="Integer")
      * @var int
      */
     protected int $sort = 0;
@@ -33,6 +36,7 @@ class InvoiceItem
     protected $amount;
 
     /**
+     * @Flow\Validate(type="NotEmpty")
      * @ORM\Column(nullable=true)
      * @var string
      */
@@ -40,6 +44,7 @@ class InvoiceItem
 
 
     /**
+     * @Flow\Transient
      * @Flow\InjectConfiguration(path="CodeTables.UnitOfMeasure", package="KayStrobach.Invoice")
      * @var array
      */

@@ -1,0 +1,42 @@
+fucodo:
+  registry:
+    defaults:
+      KayStrobach_Invoice_InvoiceSettings_StornoBilling:
+        items:
+          ################################################################################################################
+          # General Invoice defaults
+          #################################################################################################################
+          numberPrefix:
+            type: Text
+            label:
+            default: 'KR-%year-'
+            description:
+          numberPostfix:
+            type: Text
+            label:
+            default: ''
+            description:
+          title:
+            type: Text
+            label:
+            default: Storno Rechnung
+            description:
+          subTitle:
+            type: Text
+            label:
+            default: ""
+            description:
+          additionalInformation:
+            type: Textarea
+            label:
+            default: |
+              @todo Anpassen mit der Vertragsart etc.
+
+              Diese Rechnung gilt ab 01.01.-31.12.2025,
+              entsprechend dem Auftrag {invoice.order.orderNumber} vom {invoice.order.commissioningDate} und den Allgemeinen
+              Geschäftsbedingungen (Stand: Oktober 2024).
+              Die Gültigkeit erlischt, ab dem die vorliegende Rechnung durch eine neu ausgestellte
+              Rechnung ersetzt wird oder wenn das Vertragsverhältnis beendet wird.
+
+              Leistungszeitraum monatlich
+            description:

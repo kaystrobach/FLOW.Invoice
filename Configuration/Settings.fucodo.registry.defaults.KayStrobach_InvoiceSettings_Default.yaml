@@ -1,0 +1,125 @@
+fucodo:
+  registry:
+    defaults:
+      KayStrobach_Invoice_InvoiceSettings_Default:
+        items:
+          class:
+            type: Text
+            label:
+            default: 'KayStrobach\Invoice\Domain\Model\Invoice'
+            description:
+          numberPrefix:
+            type: Text
+            label:
+            default: 'R-%year-'
+            description:
+          numberPostfix:
+            type: Text
+            label:
+            default: ''
+            description:
+
+          ################################################################################################################
+          # General Invoice defaults
+          #################################################################################################################
+          title:
+            type: Text
+            label:
+            default: Rechnung
+            description:
+          subTitle:
+            type: Text
+            label:
+            default: ""
+            description:
+          additionalInformation:
+            type: Text
+            label:
+            default: |
+              Für die nachfolgende aufgeführten Leistungen berechnen wir Ihnen analog zum Angebot Nr. {invoice.offerNumber}
+              und den Allgemeinen Geschäftsbedingungen (Stand: Oktober 2024)
+            description:
+          ################################################################################################################
+          # All Seller Related defaults
+          ################################################################################################################
+          seller.name:
+            type: Text
+            label:
+            default: Rechnung
+            description:
+          seller.personName:
+            type: Text
+            label:
+            default: Rechnung
+            description:
+          seller.street:
+            type: Text
+            label:
+            default: Rechnung
+            description:
+          seller.houseNumber:
+            type: Text
+            label:
+            default: Rechnung
+            description:
+          seller.addressAddon:
+            type: Text
+            label:
+            default: Rechnung
+            description:
+          seller.roomNumber:
+            type: Text
+            label:
+            default: Rechnung
+            description:
+          seller.zipCode:
+            type: Text
+            label:
+            default: Rechnung
+            description:
+          seller.city:
+            type: Text
+            label:
+            default: Rechnung
+            description:
+          seller.country:
+            type: Text
+            label:
+            default: Rechnung
+            description:
+          seller.countryCode:
+            type: Text
+            label:
+            default: Rechnung
+            description:
+          seller.vatID:
+            type: Text
+            label:
+            default: Rechnung
+            description:
+          seller.email:
+            type: Text
+            label:
+            default: Rechnung
+            description:
+          seller.receiverBank:
+            type: Text
+            label: Überweisungsempfänger Bankname
+            default:
+            description:
+          seller.receiverName:
+            type: Text
+            label: Überweisungsempfänger Name
+            default:
+            description:
+          seller.receiverBic:
+            type: Text
+            label: Überweisungsempfänger BIC
+            default:
+            description:
+          seller.receiverIban:
+            type: Text
+            label: Überweisungsempfänger IBAN
+            default:
+            description:
+

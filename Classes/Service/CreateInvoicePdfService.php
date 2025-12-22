@@ -3,6 +3,7 @@
 namespace KayStrobach\Invoice\Service;
 
 use DateTime;
+use fucodo\registry\Domain\Repository\RegistryEntryRepository;
 use Neos\Flow\Annotations as Flow;
 use KayStrobach\Invoice\Domain\Model\Invoice;
 use KayStrobach\Pdf\View\PdfTemplateView;
@@ -15,6 +16,12 @@ class CreateInvoicePdfService
      * @var ResourceManager
      */
     protected $resourceManager;
+
+    /**
+     * @Flow\Inject
+     * @var RegistryEntryRepository
+     */
+    protected RegistryEntryRepository $registryEntryRepository;
 
     public function render(Invoice $invoice, bool $hideSinglePrice = false)
     {
@@ -47,18 +54,27 @@ class CreateInvoicePdfService
     public function renderPdf(Invoice $invoice, bool $hideSinglePrice = false, ?string $watermark = null): string
     {
         $view = new PdfTemplateView();
-        $view->setTemplatePathAndFilename('resource://KayStrobach.Invoice/Private/Documents/Invoice.html');
+        // $view->setTemplatePathAndFilename('resource://KayStrobach.Invoice/Private/Documents/Invoice.html');
         if ($watermark !== null) {
             $view->setOption('watermarkText', $watermark);
         }
-        $view->setLayoutRootPaths(
-            ['resource://KayStrobach.Invoice/Private/Layouts']
-        );
         $view->setTemplateRootPaths(
-            ['resource://KayStrobach.Invoice/Private/Templates']
+            [
+                'resource://KayStrobach.Invoice/Private/Templates',
+                $this->registryEntryRepository->getValue('KayStrobach_Invoice_General', 'fluidInvoiceTemplateRootPaths')
+            ]
+        );
+        $view->setLayoutRootPaths(
+            [
+                'resource://KayStrobach.Invoice/Private/Layouts',
+                $this->registryEntryRepository->getValue('KayStrobach_Invoice_General', 'fluidInvoiceLayoutRootPaths')
+            ]
         );
         $view->setPartialRootPaths(
-            ['resource://KayStrobach.Invoice/Private/Partials']
+            [
+                'resource://KayStrobach.Invoice/Private/Partials',
+                $this->registryEntryRepository->getValue('KayStrobach_Invoice_General', 'fluidInvoicePartialRootPaths')
+            ]
         );
         $view->assign(
             'hideSinglePrice',
@@ -73,7 +89,7 @@ class CreateInvoicePdfService
             $this->getEpcQrCodeData($invoice)
         );
 
-        return $view->render();
+        return $view->render('Invoice');
     }
 
     /**
@@ -86,9 +102,9 @@ class CreateInvoicePdfService
             '002', // Version
             '1',   // Zeichenkodierung UTF-8
             'SCT', // Sepa Credit Transfer
-            $invoice->getReceiverBic(),  // Empfänger BIX
-            $invoice->getReceiverName(), // Empfänger Name
-            $invoice->getReceiverIban(), // Empfänger IBAN
+            $invoice->getSeller()->getReceiverBic(),  // Empfänger BIX
+            $invoice->getSeller()->getReceiverName(), // Empfänger Name
+            $invoice->getSeller()->getReceiverIban(), // Empfänger IBAN
             'EUR' . number_format($amount ?? $invoice->getTotal()->getValue(), 2, '.', ''), // Komplett Betrag für die Überweisung
             '',                   // Zweck vierstelliger Code
             '',

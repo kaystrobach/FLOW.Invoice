@@ -107,7 +107,11 @@ class InvoiceFactory
             'seller.country',
             'seller.countryCode',
             'seller.vatID',
-            'seller.email'
+            'seller.email',
+            'seller.receiverBank',
+            'seller.receiverBic',
+            'seller.receiverName',
+            'seller.receiverIban',
         ];
 
         foreach ($props as $prop) {

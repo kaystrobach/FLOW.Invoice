@@ -9,7 +9,7 @@
                 Kontoempfänger:
             </td>
             <td>
-                {invoice.receiverName}
+                {invoice.seller.receiverName}
             </td>
             <td rowspan="4" class="text-right">
                 &nbsp;
@@ -20,7 +20,7 @@
                 IBAN
             </td>
             <td>
-                {invoice.receiverIban}
+                {invoice.seller.receiverIban}
             </td>
         </tr>
         <tr>
@@ -28,7 +28,7 @@
                 BIC
             </td>
             <td>
-                {invoice.receiverBic}
+                {invoice.seller.receiverBic}
             </td>
         </tr>
         <tr>

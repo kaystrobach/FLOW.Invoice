@@ -12,6 +12,7 @@ use KayStrobach\Invoice\Domain\Model\Invoice\BankTransferDocument;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\CustomerEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\MoneyEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\NumberingEmbeddable;
+use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\OptionsEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\OrderEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\PeriodEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\SellerEmbeddable;
@@ -185,25 +186,12 @@ class Invoice
     protected $totalNoTaxes;
 
     /**
-     * @Flow\Transient()
-     * @Flow\InjectConfiguration(path="Default.Invoice.receiverBic", package="KayStrobach.Invoice")
-     * @var string
+     * @ORM\Embedded(columnPrefix="options_")
+     * @var OptionsEmbeddable
      */
-    protected $receiverBic;
+    protected $options;
 
-    /**
-     * @Flow\Transient()
-     * @Flow\InjectConfiguration(path="Default.Invoice.receiverName", package="KayStrobach.Invoice")
-     * @var string
-     */
-    protected $receiverName;
 
-    /**
-     * @Flow\Transient()
-     * @Flow\InjectConfiguration(path="Default.Invoice.receiverIban", package="KayStrobach.Invoice")
-     * @var string
-     */
-    protected $receiverIban;
 
     /**
      * @Flow\Inject()
@@ -254,6 +242,7 @@ class Invoice
         $this->customer = new CustomerEmbeddable();
         $this->seller = new SellerEmbeddable();
         $this->order = new OrderEmbeddable();
+        $this->options = new OptionsEmbeddable();
     }
 
     /**
@@ -617,30 +606,6 @@ class Invoice
     public function setOriginalResource(PersistentResource $originalResource): void
     {
         $this->originalResource = $originalResource;
-    }
-
-    /**
-     * @return string
-     */
-    public function getReceiverBic(): string
-    {
-        return $this->receiverBic;
-    }
-
-    /**
-     * @return string
-     */
-    public function getReceiverName(): string
-    {
-        return $this->receiverName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getReceiverIban(): string
-    {
-        return $this->receiverIban;
     }
 
     /**
