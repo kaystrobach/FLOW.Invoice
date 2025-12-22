@@ -46,6 +46,9 @@ class InvoiceFactory
         if ($invoice->isChangeable()) {
             return;
         }
+        if($invoice->getNumber()->getNumber() !== null) {
+            return;
+        }
         $this->entityManager->wrapInTransaction(
             static function (EntityManager $em) use ($invoice) {
                 try {

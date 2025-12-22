@@ -65,7 +65,9 @@ class InvoiceRepository extends SearchableRepository
             if (!$object->isChangeable()) {
                 $this->invoiceFactory->setInvoiceNumber($object);
             }
-            $object->prePersistHandler();
+            if ($object->isChangeable()) {
+                $object->prePersistHandler();
+            }
         }
         parent::update($object);
     }
