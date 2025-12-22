@@ -17,7 +17,7 @@ class InvoiceFactory
 {
     const REGISTRY_NAMESPACE_DEFAULT = 'KayStrobach_Invoice_InvoiceSettings_Default';
 
-    const REGISTRY_NAMESPACE_PREFIX = 'KayStrobach_Invoice_InvoiceSettings.';
+    const REGISTRY_NAMESPACE_PREFIX = 'KayStrobach_Invoice_InvoiceSettings_';
 
     /**
      * @Flow\Inject
