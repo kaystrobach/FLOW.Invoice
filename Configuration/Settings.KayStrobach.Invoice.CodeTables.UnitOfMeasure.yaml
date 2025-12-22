@@ -1,0 +1,89 @@
+KayStrobach:
+  Invoice:
+    CodeTables:
+      UnitOfMeasure:
+        C62:
+          label: Stück
+          enable: true
+        DAY:
+          label: Tag
+          enable: true
+        HAR:
+          label: Hektar
+          enable: true
+        HUR:
+          label: Stunde
+          enable: true
+        KGM:
+          label: Kilogramm
+          enable: true
+        KTM:
+          label: Kilometer
+          enable: true
+        KWH:
+          label: Kilowattstunde
+          enable: true
+        LS:
+          label: Pauschale
+          enable: true
+        LTR:
+          label: Liter
+          enable: true
+        MIN:
+          label: Minute
+          enable: true
+        MMK:
+          label: Quadratmillimeter
+          enable: true
+        MMT:
+          label: Millimeter
+          enable: true
+        MTK:
+          label: Quadratmeter
+          enable: true
+        MTQ:
+          label: Kubikmeter
+          enable: true
+        MTR:
+          label: Meter
+          enable: true
+        NAR:
+          label: Anzahl Artikel
+          enable: true
+        NPR:
+          label: Anzahl Paare
+          enable: true
+        P1:
+          label: Prozent
+          enable: true
+        SET:
+          label: Set
+          enable: true
+        TNE:
+          label: Tonne (metrisch)
+          enable: true
+        WEE:
+          label: Woche
+          enable: true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

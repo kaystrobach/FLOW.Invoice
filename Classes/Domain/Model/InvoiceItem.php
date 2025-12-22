@@ -38,6 +38,13 @@ class InvoiceItem
      */
     protected $unit;
 
+
+    /**
+     * @Flow\InjectConfiguration(path="CodeTables.UnitOfMeasure", package="KayStrobach.Invoice")
+     * @var array
+     */
+    protected $possibleUnitsConfig = [];
+
     /**
      * @ORM\Column(nullable=true)
      * @var float
@@ -150,6 +157,24 @@ class InvoiceItem
     public function setUnit($unit = null)
     {
         $this->unit = $unit;
+    }
+
+    public function getPossibleUnits(): array
+    {
+        $found = [];
+
+        foreach ($this->possibleUnitsConfig as $key => $unit) {
+            if ((empty($unit['enable'])) || !$unit['enable']) {
+                continue;
+            }
+            $found[$key] = $unit['label'] ?? $key;
+        }
+
+        if (empty($found[$this->getUnit()])) {
+            $found[$this->getUnit()] = $this->getUnit();
+        }
+
+        return $found;
     }
 
     /**
