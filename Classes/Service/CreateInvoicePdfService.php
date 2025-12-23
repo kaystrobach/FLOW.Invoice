@@ -60,20 +60,20 @@ class CreateInvoicePdfService
         }
         $view->setTemplateRootPaths(
             [
-                'resource://KayStrobach.Invoice/Private/Templates',
-                $this->registryEntryRepository->getValue('KayStrobach_Invoice_General', 'fluidInvoiceTemplateRootPaths')
+                $this->registryEntryRepository->getValue('KayStrobach_Invoice_General', 'fluidInvoiceTemplateRootPaths'),
+                'resource://KayStrobach.Invoice/Private/Templates'
             ]
         );
         $view->setLayoutRootPaths(
             [
+                $this->registryEntryRepository->getValue('KayStrobach_Invoice_General', 'fluidInvoiceLayoutRootPaths'),
                 'resource://KayStrobach.Invoice/Private/Layouts',
-                $this->registryEntryRepository->getValue('KayStrobach_Invoice_General', 'fluidInvoiceLayoutRootPaths')
             ]
         );
         $view->setPartialRootPaths(
             [
+                $this->registryEntryRepository->getValue('KayStrobach_Invoice_General', 'fluidInvoicePartialRootPaths'),
                 'resource://KayStrobach.Invoice/Private/Partials',
-                $this->registryEntryRepository->getValue('KayStrobach_Invoice_General', 'fluidInvoicePartialRootPaths')
             ]
         );
         $view->assign(

@@ -77,3 +77,19 @@ fucodo:
             label: StornoRechnungseinstellungen
             default: 'StornoBilling'
             description:
+          mailTextInvoiceSending:
+            type: Textarea
+            label: Default Text, beim Senden von E-Mails
+            default: |
+              Sehr geehrte Damen und Herren,
+
+              anbei finden Sie unsere Rechnung {invoice.number} vom {invoice.date -> f:format.date(format: 'd.m.Y')}.
+
+              Mit freundlichen Grüßen
+
+              Ihr Partner
+
+              Diese E-Mail einschließlich aller Anlagen ist vertraulich. Sie ist nur dem Empfänger zugedacht, an den sie adressiert ist. Sollten Sie diese E-Mail irrtümlich erhalten haben, benachrichtigten Sie bitte den Absender und löschen Sie sie einschließlich der Anlagen vollständig von Ihrem Computer-System. Diese E-Mail oder deren Anlagen dürfen weder kopiert noch an Dritte weitergeleitet werden.
+
+              This email, including any attachments, is confidential and may be legally privileged or otherwise protected from disclosure. It is intended solely for the use of the individual or entity to it is addressed. If you have received this email in error please notify the sender and delete this message and any attachment from your system; you must not copy or disclose the contents of this message or any attachment to any other person.
+            description:
