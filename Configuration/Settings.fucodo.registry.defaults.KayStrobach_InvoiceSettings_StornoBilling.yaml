@@ -19,7 +19,7 @@ fucodo:
           title:
             type: Text
             label:
-            default: Storno Rechnung
+            default: Korrekturrechnung
             description:
           subTitle:
             type: Text

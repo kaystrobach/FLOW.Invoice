@@ -264,6 +264,7 @@ class InvoiceItem
 
     public function calculateTotal()
     {
+        // 1595,36 * 19 > 313,1184 --> runden kaufmännisch ab 5 aufrunden --> 303,12
         $this->total->setValue($this->getAmount() * $this->getSinglePrice()->getValue());
     }
 
