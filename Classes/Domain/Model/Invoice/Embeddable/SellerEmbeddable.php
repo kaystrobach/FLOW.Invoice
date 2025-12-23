@@ -31,9 +31,9 @@ class SellerEmbeddable extends AddressEmbeddable
         return $this->receiverBic;
     }
 
-    public function setReceiverBic(string $receiverBic): void
+    public function setReceiverBic(?string $receiverBic): void
     {
-        $this->receiverBic = $receiverBic;
+        $this->receiverBic = $receiverBic ?? '';
     }
 
     public function getReceiverName(): string
@@ -41,9 +41,9 @@ class SellerEmbeddable extends AddressEmbeddable
         return $this->receiverName;
     }
 
-    public function setReceiverName(string $receiverName): void
+    public function setReceiverName(?string $receiverName): void
     {
-        $this->receiverName = $receiverName;
+        $this->receiverName = $receiverName ?? '';
     }
 
     public function getReceiverIban(): string
@@ -51,8 +51,8 @@ class SellerEmbeddable extends AddressEmbeddable
         return $this->receiverIban;
     }
 
-    public function setReceiverIban(string $receiverIban): void
+    public function setReceiverIban(?string $receiverIban): void
     {
-        $this->receiverIban = $receiverIban;
+        $this->receiverIban = $receiverIban ?? '';
     }
 }
