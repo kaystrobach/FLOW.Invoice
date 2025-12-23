@@ -74,7 +74,7 @@
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Kunde">
         <f:render partial="Form/Text" arguments="{property:'customer.deptorNumber', label:'Kundennummer'}" />
-        <f:render partial="Domain/Embeddable/AddressEmbeddable" arguments="{prefix:'customer'}" />
+        <f:render partial="Domain/Embeddable/AddressEmbeddable" arguments="{prefix:'customer', noEdit:1}" />
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Zusatztexte">
         <f:render partial="Components/Panel" arguments="{heading:'Generell'}" contentAs="body">
