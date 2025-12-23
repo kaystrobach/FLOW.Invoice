@@ -45,10 +45,15 @@ class Invoice
     protected ?NumberingEmbeddable $number = null;
 
     /**
+     * @var string
+     */
+    protected string $type = 'Default';
+
+    /**
      * @ORM\Column(nullable=true)
      * @var string
      */
-    protected $title = 'Rechnung';
+    protected $title = '';
 
     /**
      * @ORM\Column(nullable=true)
@@ -269,6 +274,16 @@ class Invoice
     {
         $this->number = $number;
         $this->number->updateCombinedNumber();
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
     }
 
     /**

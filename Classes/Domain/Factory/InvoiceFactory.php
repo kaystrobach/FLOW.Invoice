@@ -31,11 +31,17 @@ class InvoiceFactory
      */
     protected RegistryEntryRepository $registryEntryRepository;
 
-    public function setInvoiceDefaultsFromEnv(Invoice $invoice, string $type = 'Default')
+    public function setInvoiceDefaultsFromEnv(Invoice $invoice, ?string $type = null)
     {
+        if ($type === null) {
+            $type = $invoice->getType();
+        }
+
         $namespace = self::REGISTRY_NAMESPACE_PREFIX . $type;
 
+        $invoice->setType($type);
         $this->setNumberDefaults($invoice, $namespace);
+
         $this->setDefaultTexts($invoice, $namespace);
         $this->setSellerDefaultsFromEnv($invoice, $namespace);
         $this->setInvoiceNumber($invoice);
