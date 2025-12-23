@@ -46,7 +46,7 @@ class InvoiceFactory
         if ($invoice->isChangeable()) {
             return;
         }
-        if($invoice->getNumber()->getNumber() !== null) {
+        if ($invoice->getNumber()->getNumber() !== null) {
             return;
         }
         $this->entityManager->wrapInTransaction(
@@ -89,7 +89,9 @@ class InvoiceFactory
             'additionalInformation',
         ];
         foreach ($props as $prop) {
-            $this->setProperty($invoice, $prop, $this->getRegistryValue($namespace, $prop));
+            if (ObjectAccess::getPropertyPath($invoice, $prop) === '') {
+                $this->setProperty($invoice, $prop, $this->getRegistryValue($namespace, $prop));
+            }
         }
     }
 
@@ -115,7 +117,9 @@ class InvoiceFactory
         ];
 
         foreach ($props as $prop) {
-            $this->setProperty($invoice, $prop, $this->getRegistryValue($namespace, $prop));
+            if (ObjectAccess::getPropertyPath($invoice, $prop) === '') {
+                $this->setProperty($invoice, $prop, $this->getRegistryValue($namespace, $prop));
+            }
         }
     }
 
