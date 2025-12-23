@@ -10,6 +10,13 @@
 >
 
 <b:be.setTitle>Rechnung {object.number}</b:be.setTitle>
+<b:be.setTitleInfo raw="1">
+    <span title="{object.customer.name} ({object.customer.deptorNumber})"><f:format.crop maxCharacters="50">{object.customer.name}</f:format.crop> ({object.customer.deptorNumber})</span>
+    <br>
+    {object.periodOfPerformance.start -> f:format.date(format: 'd.m.Y')} - {object.periodOfPerformance.end -> f:format.date(format: 'd.m.Y')}
+</b:be.setTitleInfo>
+
+<b:be.button.addButton label="Prüfen" icon="bootstrap-card-checklist" action="checkInvoice" arguments="{object:object}" type="submit"/>
 
 <b:be.button.closeButton />
 
@@ -35,11 +42,18 @@
 <f:if condition="{object.changeable}">
 	<div class="mb-3">
 		<fucodo-class-toggle target="body" toggle-class="module-edit-mode">
-			<button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+			<button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPreview" aria-controls="offcanvasPreview">
 				<i:icon name="bootstrap-ui-checks" />
 				<f:translate>Vorschau</f:translate>
 			</button>
 		</fucodo-class-toggle>
+
+        <fucodo-class-toggle target="body" toggle-class="module-edit-mode">
+            <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFinalize" aria-controls="offcanvasFinalize">
+                <i:icon name="bootstrap-ui-checks" />
+                <f:translate>Festschreiben</f:translate>
+            </button>
+        </fucodo-class-toggle>
 	</div>
 </f:if>
 
@@ -70,10 +84,11 @@
     <f:render partial="Domain/Model/Invoice/Fields" arguments="{_all}"/>
 </f:form>
 
-<f:render section="offcanvas" arguments="{_all}"/>
+<f:render section="offcanvas-preview" arguments="{_all}"/>
+<f:render section="offcanvas-finalize" arguments="{_all}"/>
 
-<f:section name="offcanvas">
-	<div class="offcanvas w-75 offcanvas-end" data-bs-backdrop="static"  tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" data-bs-scroll="true">
+<f:section name="offcanvas-preview">
+	<div class="offcanvas w-75 offcanvas-end" data-bs-backdrop="static"  tabindex="-1" id="offcanvasPreview" aria-labelledby="offcanvasRightLabel" data-bs-scroll="true">
 		<div class="offcanvas-header">
 			<h5 class="offcanvas-title" id="offcanvasRightLabel">
 				<f:translate>Vorschau Rechnung</f:translate>
@@ -83,12 +98,27 @@
 			</fucodo-class-toggle>
 		</div>
 		<div class="offcanvas-body">
-			<div class="alert alert-info">
-				Werte werden erst nach dem Speichern aktualisiert
-			</div>
 			<fucodo-lazy-load url="{f:uri.action(action: 'renderInvoice', arguments: {object:object})}" selectors="main .invoice">
 				<span>Lade Entwurf</span>
 			</fucodo-lazy-load>
 		</div>
 	</div>
+</f:section>
+
+<f:section name="offcanvas-finalize">
+    <div class="offcanvas w-75 offcanvas-end" data-bs-backdrop="static"  tabindex="-1" id="offcanvasFinalize" aria-labelledby="offcanvasRightLabel" data-bs-scroll="true">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">
+                <f:translate>Vorschau Rechnung</f:translate>
+            </h5>
+            <fucodo-class-toggle target="body" toggle-class="module-edit-mode" class="btn-close" style="display: contents;">
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </fucodo-class-toggle>
+        </div>
+        <div class="offcanvas-body">
+            <fucodo-lazy-load url="{f:uri.action(action: 'renderFinalize', arguments: {object:object})}" selectors="main .invoice">
+                <span>Lade Entwurf</span>
+            </fucodo-lazy-load>
+        </div>
+    </div>
 </f:section>

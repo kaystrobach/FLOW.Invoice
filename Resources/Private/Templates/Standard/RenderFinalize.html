@@ -1,0 +1,33 @@
+<html lang="de" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+      xmlns:="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+      xmlns:custom="http://typo3.org/ns/KayStrobach/Custom/ViewHelpers"
+      xmlns:media="http://typo3.org/ns/Neos/Media/ViewHelpers"
+      xmlns:b="http://typo3.org/ns/KayStrobach/Backend/ViewHelpers"
+      xmlns:i="http://typo3.org/ns/KayStrobach/IconRegistry/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/FourViewture/KIS/CRM/Backend/ViewHelpers"
+      xmlns:search="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
+
+<b:be.setTitle>Rechnung {object.numberPrefix}</b:be.setTitle>
+
+<main class="invoice">
+    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group me-2" role="group" aria-label="Actions for the invoice">
+            <f:link.action action="renderInvoice" arguments="{object:object}" class="btn btn-primary" format="zugpferd.xml" additionalAttributes="{disabled:'disabled'}">
+                <i:icon name="bootstrap-receipt" />
+                Rechnung festschreiben
+            </f:link.action>
+        </div>
+        <div class="btn-group me-2" role="group" aria-label="Actions for the invoice">
+            <f:link.action action="renderInvoice" arguments="{object:object}" class="btn btn-primary" format="zugpferd.xml" target="_blank">
+                <i:icon name="bootstrap-receipt" />
+                Zugpferd Rechnung herunterladen (nur XML)
+            </f:link.action>
+        </div>
+    </div>
+    <div class="alert alert-info">
+        Werte werden erst nach dem Speichern aktualisiert
+    </div>
+    <iframe src="{f:uri.action(action: 'renderInvoice', arguments: {object:object}, format:'pdf')}" style="width: 100%; height: calc(100% - 5rem);"></iframe>
+</main>

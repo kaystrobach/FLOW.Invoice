@@ -176,7 +176,28 @@ class StandardController extends AbstractPageRendererController
         );
     }
 
+    /**
+     * @Flow\ValidationGroups(validationGroups={"finalizeInvoice"})
+     */
+    public function checkInvoiceAction(Invoice $object)
+    {
+       $this->redirect(
+           'edit',
+           null,
+           null,
+           ['object' => $object]
+       );
+    }
+
     public function renderInvoiceAction(Invoice $object)
+    {
+        $this->view->assign('object', $object);
+    }
+
+    /**
+     * @Flow\ValidationGroups(validationGroups={"finalizeInvoice"})
+     */
+    public function renderFinalizeAction(Invoice $object)
     {
         $this->view->assign('object', $object);
     }
