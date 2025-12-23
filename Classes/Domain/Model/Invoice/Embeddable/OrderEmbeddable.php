@@ -13,11 +13,18 @@ use Neos\Flow\Annotations as Flow;
  */
 class OrderEmbeddable
 {
+    /**
+     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
+     */
     protected string $orderNumber = '';
 
+    /**
+     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
+     */
     protected string $customerReference = '';
 
     /**
+     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
      * @ORM\Column(nullable=true)
      * @var DateTimeImmutable
      */

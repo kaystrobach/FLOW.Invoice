@@ -50,6 +50,7 @@ class Invoice
     protected string $type = 'Default';
 
     /**
+     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
      * @ORM\Column(nullable=true)
      * @var string
      */

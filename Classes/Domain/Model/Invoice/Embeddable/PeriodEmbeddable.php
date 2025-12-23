@@ -14,12 +14,14 @@ use Neos\Flow\Annotations as Flow;
 class PeriodEmbeddable
 {
     /**
+     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
      * @ORM\Column(nullable=true)
      * @var DateTimeImmutable
      */
     protected ?DateTimeImmutable $start = null;
 
     /**
+     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
      * @ORM\Column(nullable=true)
      * @var ?DateTimeImmutable DateTimeImmutable = null
      */

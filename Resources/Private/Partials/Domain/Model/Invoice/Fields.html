@@ -30,9 +30,16 @@
 
 <bs:tab.tabWrapper>
     <bs:tab.tabPane title="Allgemein">
-        <f:render partial="Form/Text" arguments="{label:'Titel', property:'title', noEdit:object.notChangeable}"/>
-        <f:render partial="Form/Text"
-                  arguments="{label:'Untertitel', property:'subTitle', noEdit:object.notChangeable}"/>
+        <div class="row">
+            <div class="col">
+                <f:render partial="Form/Text" arguments="{label:'Titel', property:'title', noEdit:object.notChangeable, required:1}"/>
+            </div>
+            <div class="col">
+                <f:render partial="Form/Text"
+                          arguments="{label:'Untertitel', property:'subTitle', noEdit:object.notChangeable}"/>
+            </div>
+        </div>
+
         <f:render partial="Form/TextareaMarkdown"
                   arguments="{label:'Zusatzinformationen u.a. für Dauerrechnungen etc.', property:'additionalInformation', noEdit:object.notChangeable}"/>
         <f:render partial="Domain/Model/Tags/Edit" arguments="{tags:tags}" />
@@ -46,28 +53,26 @@
             <div class="row">
                 <div class="col">
                     <f:render partial="Form/Text"
-                              arguments="{label:'Auftragsnummer', property:'order.orderNumber', noEdit:object.notChangeable}"/>
+                              arguments="{label:'Auftragsnummer *', property:'order.orderNumber', noEdit:object.notChangeable}"/>
                 </div>
                 <div class="col">
                     <f:render partial="Form/Text"
-                              arguments="{label:'Projektname', property:'order.customerReference', noEdit:object.notChangeable}"/>
+                              arguments="{label:'Projektname *', property:'order.customerReference', noEdit:object.notChangeable}"/>
                 </div>
                 <div class="col">
                     <f:render partial="Form/Date"
-                              arguments="{label:'Beauftragungsdatum', property:'order.commissioningDate', noEdit:object.notChangeable}"/>
+                              arguments="{label:'Beauftragungsdatum *', property:'order.commissioningDate', noEdit:object.notChangeable}"/>
                 </div>
             </div>
-        </f:render>
-
-        <f:render partial="Components/Panel" arguments="{heading:'Leistungszeitraum'}" contentAs="body">
+            <hr>
             <div class="row">
                 <div class="col-sm-6">
                     <f:render partial="Form/Date"
-                              arguments="{label: 'Start', property:'periodOfPerformance.start', noEdit:object.notChangeable}"/>
+                              arguments="{label: 'Leistungszeitraum Von *', property:'periodOfPerformance.start', noEdit:object.notChangeable}"/>
                 </div>
                 <div class="col-sm-6">
                     <f:render partial="Form/Date"
-                              arguments="{label: 'Ende', property:'periodOfPerformance.end', noEdit:object.notChangeable}"/>
+                              arguments="{label: 'Leistungszeitraum Bis *', property:'periodOfPerformance.end', noEdit:object.notChangeable}"/>
                 </div>
             </div>
         </f:render>
