@@ -70,7 +70,7 @@ class StandardController extends AbstractPageRendererController
     {
         $invoiceItem = new InvoiceItem();
         $invoiceItem->setInvoice($object);
-        $invoiceItem->setUnit('Pcs');
+        $invoiceItem->setUnit('C62');
         $invoiceItem->setSort($object->getInvoiceItems()->count() + 1);
         $invoiceItem->setAmount(1);
         $invoiceItem->setTax(19);
