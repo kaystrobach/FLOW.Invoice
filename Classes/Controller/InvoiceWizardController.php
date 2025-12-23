@@ -7,6 +7,7 @@ use KayStrobach\Invoice\Domain\Dto\CreateInvoiceDto;
 use KayStrobach\Invoice\Domain\Factory\InvoiceFactory;
 use KayStrobach\Invoice\Domain\Model\Invoice;
 use KayStrobach\Invoice\Domain\Repository\InvoiceRepository;
+use Neos\Error\Messages\Message;
 use Neos\Flow\Annotations as Flow;
 
 class InvoiceWizardController extends AbstractPageRendererController
@@ -47,7 +48,13 @@ class InvoiceWizardController extends AbstractPageRendererController
         $invoice->setChangeable(true);
 
         // emit the signal, maybe used by crm to add even more data to the invoice
-        $this->invoiceFactory->triggerThirdPartyProcessesOnUpdate($invoice);
+        try {
+            $this->invoiceFactory->triggerThirdPartyProcessesOnUpdate($invoice);
+        } catch (\Exception $e) {
+            $this->addFlashMessage('Es gab ein Problem: ' . $e->getMessage(), 'Fehler', Message::SEVERITY_ERROR);
+            $this->errorAction();
+        }
+
 
         $this->invoiceRepository->add($invoice);
         $this->redirect(
