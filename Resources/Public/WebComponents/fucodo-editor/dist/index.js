@@ -27856,8 +27856,7 @@ ${element.innerHTML}
 
   // packages/fucodo-editor/style.scss
   var style_default = `:host {
-  width: 600px;
-  height: 200px;
+  width: 100%;
 }
 
 #editor {
