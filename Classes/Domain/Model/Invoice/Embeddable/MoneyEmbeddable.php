@@ -20,7 +20,7 @@ class MoneyEmbeddable implements Stringable
     /**
      * @var string
      */
-    protected string $currency = '€';
+    protected string $currency = 'EUR';
 
     public function getValue(): int
     {

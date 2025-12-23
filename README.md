@@ -87,3 +87,7 @@ Hinweise für Integrationen:
 #### Support & Lizenz
 - Maintainer: Kay Strobach / 4viewture
 - Lizenz: entsprechend Projektlizenz (siehe Wurzel‑`composer.json` bzw. Paketlizenz)
+
+#### Testsystem der Länder:
+
+* https://test.xrechnung-bdr.de/edi/auth/login

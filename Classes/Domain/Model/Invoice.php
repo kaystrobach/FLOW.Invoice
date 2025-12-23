@@ -65,7 +65,7 @@ class Invoice
     /**
      * @var string
      */
-    protected $currency = '€';
+    protected $currency = 'EUR';
 
     /**
      * @ORM\Embedded(columnPrefix="customer_")

@@ -12,5 +12,19 @@
 <b:be.setTitle>Rechnung {object.numberPrefix}</b:be.setTitle>
 
 <main class="invoice">
+    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group me-2" role="group" aria-label="Actions for the invoice">
+            <f:link.action action="renderInvoice" arguments="{object:object}" class="btn btn-primary" format="zugpferd.xml" additionalAttributes="{disabled:'disabled'}">
+                <i:icon name="bootstrap-receipt" />
+                Rechnung festschreiben
+            </f:link.action>
+        </div>
+        <div class="btn-group me-2" role="group" aria-label="Actions for the invoice">
+            <f:link.action action="renderInvoice" arguments="{object:object}" class="btn btn-primary" format="zugpferd.xml" target="_blank">
+                <i:icon name="bootstrap-receipt" />
+                Zugpferd Rechnung herunterladen (nur XML)
+            </f:link.action>
+        </div>
+    </div>
 	<iframe src="{f:uri.action(action: 'renderInvoice', arguments: {object:object}, format:'pdf')}" style="width: 100%; height: calc(100% - 5rem);"></iframe>
 </main>

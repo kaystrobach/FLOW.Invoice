@@ -13,6 +13,7 @@ use KayStrobach\Invoice\Domain\Model\InvoiceItem;
 use KayStrobach\Invoice\Domain\Model\SettlementDate;
 use KayStrobach\Invoice\Messenger\Message\InvoiceFinalizedMessage;
 use KayStrobach\Invoice\View\InvoiceView;
+use KayStrobach\Invoice\View\InvoiceZugpferdView;
 use KayStrobach\Tags\Traits\TagsControllerTrait;
 use Neos\Flow\Annotations as Flow;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -41,7 +42,8 @@ class StandardController extends AbstractPageRendererController
      * @var array
      */
     protected $viewFormatToObjectNameMap = [
-        'pdf' => InvoiceView::class
+        'zugpferd.xml' => InvoiceZugpferdView::class,
+        'pdf' => InvoiceView::class,
     ];
 
     public function getModelClassName()
