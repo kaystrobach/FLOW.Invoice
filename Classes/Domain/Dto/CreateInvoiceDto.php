@@ -21,14 +21,12 @@ class CreateInvoiceDto
     public string $type = '';
 
     /**
-     * @Flow\Validate(type="NotEmpty")
      * @var string
      */
     protected string $offerNumber = '';
 
     /**
-     * @Flow\Validate(type="NotEmpty")
-     * @var string
+w     * @var string
      */
     protected string $orderNumber = '';
 

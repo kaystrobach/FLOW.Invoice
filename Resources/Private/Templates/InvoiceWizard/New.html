@@ -16,12 +16,12 @@
 
 
 <f:form action="create" object="{dto}" objectName="dto" id="globalForm" method="post" enctype="multipart/form-data">
-    <f:render partial="Components/Panel" contentAs="body" arguments="{_all}">
+    <f:render partial="Components/Panel" contentAs="body" arguments="{heading:'Pflichtangaben'}">
         <div class="list-group mb-3">
             <f:for each="{dto.possibleTypes}" as="type">
                 <label class="list-group-item d-flex align-items-center">
                     <div class="flex-shrink-0 me-3">
-                        <f:form.radio value="{type.identifier}" property="type"/>
+                        <f:form.radio value="{type.identifier}" property="type" additionalAttributes="{required:'required'}"/>
                     </div>
                     <div>
                         <span class="h5">{type.name}</span>
@@ -37,11 +37,13 @@
                 </label>
             </f:for>
         </div>
+
+        <f:render partial="Form/Text" arguments="{property:'customerNumber', label:'Kundennummer', required:1}" />
     </f:render>
-    <f:render partial="Components/Panel" contentAs="body" arguments="{_all}">
+
+    <f:render partial="Components/Panel" contentAs="body"  arguments="{heading:'Optionale Angaben'}">
         <f:render partial="Form/Text" arguments="{property:'offerNumber', label:'Angebotsnummer'}" />
         <f:render partial="Form/Text" arguments="{property:'orderNumber', label:'Auftragsnummer'}" />
-        <f:render partial="Form/Text" arguments="{property:'customerNumber', label:'Kundennummer'}" />
     </f:render>
 </f:form>
 
