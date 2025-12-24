@@ -23,14 +23,23 @@ class TaxRecord
     protected $taxRate;
 
     /**
+     * Is the summed up amount for the taxes
      * @ORM\Embedded(columnPrefix="sum_")
      * @var Invoice\Embeddable\MoneyEmbeddable
      */
     protected $sum;
 
+    /**
+     * sum over all the items with this tax rate
+     * @ORM\Embedded(columnPrefix="sumnetbase_")
+     * @var Invoice\Embeddable\MoneyEmbeddable
+     */
+    protected $sumNetBase;
+
     public function __construct()
     {
         $this->sum = new Invoice\Embeddable\MoneyEmbeddable();
+        $this->sumNetBase = new Invoice\Embeddable\MoneyEmbeddable();
     }
 
     /**
@@ -80,6 +89,17 @@ class TaxRecord
     {
         $this->sum = $sum;
     }
+
+    public function getSumNetBase(): Embeddable\MoneyEmbeddable
+    {
+        return $this->sumNetBase;
+    }
+
+    public function setSumNetBase(Embeddable\MoneyEmbeddable $sumNetBaseValue): void
+    {
+        $this->sumNetBase = $sumNetBaseValue;
+    }
+
 
 
 }

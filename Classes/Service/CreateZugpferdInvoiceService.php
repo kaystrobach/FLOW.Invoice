@@ -64,8 +64,8 @@ class CreateZugpferdInvoiceService
                 ->addDocumentTax(
                     'S',
                     'VAT',
-                    $taxRecord->getSum()->getValue() / 100,
-                    ($taxRecord->getSum()->getValue() / 100) * ($taxRecord->getTaxRate() / 100) ,
+                    $taxRecord->getSumNetBase()->getValue() / 100,
+                    $taxRecord->getSum()->getValue() / 100 ,
                     $taxRecord->getTaxRate()
                 ); // Wenn wir mehrere Steuersätze haben, brauchen wir einen Eintrag pro Steuersatz
         }
@@ -74,7 +74,7 @@ class CreateZugpferdInvoiceService
             ->setDocumentSummation(
                 $invoice->getTotal()->getValue() / 100, // Gesamtbetrag (Gesamtbetrag der Position + Gebühren - Freibeträge + Steuern)
                 $invoice->getTotal()->getValue() / 100, // Final amount due for payment
-                $invoice->getTotal()->getValue() / 100, // Total amount for all line items before charges, allowances, and taxes
+                $invoice->getTotalNoTaxes()->getValue() / 100, // Total amount for all line items before charges, allowances, and taxes
                 0.0, // Summe aller zusätzlichen Kosten (z.B. Versand)
                 0.0, // Summe der Rabatte oder Nachlässe
                 $invoice->getTotalNoTaxes()->getValue() / 100, // Steuerpflichtiger Gesamtbetrag (Basisbetrag für die Steuerberechnung)
@@ -95,7 +95,7 @@ class CreateZugpferdInvoiceService
             $document
                 ->addNewPosition($item->getSort())
                 ->setDocumentPositionProductDetails($item->getName(), $item->getDescription(), $item->getArticleReference())
-                ->setDocumentPositionNetPrice($item->getSinglePrice()->getValue())
+                ->setDocumentPositionNetPrice($item->getSinglePrice()->getValue() / 100)
                 ->setDocumentPositionQuantity($item->getAmount(), $item->getUnit())
                 ->addDocumentPositionTax('S', 'VAT', $item->getTax()) //Code 'S' für 'Standard Rate'
                 ->setDocumentPositionLineSummation(($item->getSinglePrice()->getValue() / 100) * $item->getAmount())

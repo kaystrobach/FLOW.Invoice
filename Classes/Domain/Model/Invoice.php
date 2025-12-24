@@ -729,12 +729,13 @@ class Invoice
         $this->taxRecords = $taxRecords;
     }
 
-    public function createTaxRecord($sum, $rate): TaxRecord
+    public function createTaxRecord($sum, $rate, $sumNetBase): TaxRecord
     {
         $tr = new TaxRecord();
         $tr->setInvoice($this);
         $tr->getSum()->setValue($sum);
         $tr->setTaxRate($rate);
+        $tr->getSumNetBase()->setValue($sumNetBase);
         $this->getTaxRecords()->add($tr);
 
         return $tr;
@@ -751,14 +752,16 @@ class Invoice
             if (!isset($taxRecords[$tax])) {
                 $taxRecords[$tax] = 0;
             }
-            $taxRecords[$tax] += $invoiceItem->getTotal()->getValue() * ($tax/100);
+            $taxRecords[$tax] += $invoiceItem->getTotal()->getValue();
             $this->totalNoTaxes->setCurrency($invoiceItem->getTotal()->getCurrency() ?? 'EUR');
         }
 
         $this->taxRecords->clear();
         foreach ($taxRecords as $rate => $sum) {
             if ($sum !== 0) {
-                $this->createTaxRecord(round($sum, 0), $rate);
+                $baseNet = $sum;
+                $taxes = round($sum * ($rate / 100), 0);
+                $this->createTaxRecord($taxes, $rate, $baseNet);
             }
         }
     }
