@@ -758,7 +758,7 @@ class Invoice
         $this->taxRecords->clear();
         foreach ($taxRecords as $rate => $sum) {
             if ($sum !== 0) {
-                $this->createTaxRecord($sum, $rate);
+                $this->createTaxRecord(round($sum, 0), $rate);
             }
         }
     }
