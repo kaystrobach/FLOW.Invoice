@@ -9,15 +9,6 @@
       xmlns:i="http://typo3.org/ns/KayStrobach/IconRegistry/ViewHelpers"
       data-namespace-typo3-fluid="true"
 >
-<f:if condition="{object.changeable}">
-    <b:be.button.saveButton/>
-    <f:if condition="!{objectIsNew}">
-        <b:be.button.addButton type="submit" action="finalize" icon="bootstrap-check" label="Rechnung festschreiben"
-                               arguments="{object:object}"/>
-        <f:form.hidden property="changeable"/>
-        <f:form.hidden property="number.prefix"/>
-    </f:if>
-</f:if>
 
 <pre>
     * @todo standard mail text
@@ -25,8 +16,14 @@
     * @todo Fälligkeitautomatisch erstellen und dann mit dem Rechnungsbetrag befüllen, das Fälligkeitsdatum wird mit dem Rechnungsdatum erstellt
     * kopie an ausgangsrechnungsjournal@4viewture.de
     * reply-to an?
-    * todo text dauerrechnungen
 </pre>
+
+<f:if condition="!{objectIsNew}">
+    <f:comment>Ugly Workaround for doctrine hydration problems</f:comment>
+    <f:form.hidden property="changeable"/>
+    <f:form.hidden property="number.prefix"/>
+</f:if>
+
 
 <bs:tab.tabWrapper>
     <bs:tab.tabPane title="Allgemein">
