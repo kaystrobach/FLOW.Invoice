@@ -17,30 +17,28 @@
             <f:render section="finalize" arguments="{_all}"/>
         </f:then>
         <f:else>
-            <div class="alert alert-danger">
-                Es gibt ein Problem mit der Rechnung, die bitte mit der Prüfen Funktion prüfen
+            <div class="alert alert-danger d-flex justify-content-between">
+                <div>
+                    Es gibt ein Problem mit der Rechnung, die bitte mit der Prüfen Funktion prüfen
+                </div>
+                <f:form.button form="globalForm" formaction="{f:uri.action(action: 'checkInvoice')}" class="btn btn-danger">
+                    <i:icon name="bootstrap-2-circle" />
+                    Prüfen
+                </f:form.button>
             </div>
         </f:else>
     </f:if>
 </main>
 
 <f:section name="finalize">
-    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
-        <div class="btn-group me-2" role="group" aria-label="Actions for the invoice">
-            <f:link.action action="renderInvoice" arguments="{object:object}" class="btn btn-primary" format="zugpferd.xml" additionalAttributes="{disabled:'disabled'}">
-                <i:icon name="bootstrap-receipt" />
-                Rechnung festschreiben
-            </f:link.action>
+    <div class="alert alert-success d-flex justify-content-between">
+        <div>
+            Die Rechnung kann festgeschrieben werden. Nach dem Festschreiben kann diese nicht mehr verändert werden.
         </div>
-        <div class="btn-group me-2" role="group" aria-label="Actions for the invoice">
-            <f:link.action action="renderInvoice" arguments="{object:object}" class="btn btn-primary" format="zugpferd.xml" target="_blank">
-                <i:icon name="bootstrap-receipt" />
-                Zugpferd Rechnung herunterladen (nur XML)
-            </f:link.action>
-        </div>
-    </div>
-    <div class="alert alert-info">
-        Werte werden erst nach dem Speichern aktualisiert
+        <f:form.button form="globalForm" formaction="{f:uri.action(action: 'renderInvoice')}" class="btn btn-success">
+            <i:icon name="bootstrap-2-circle" />
+            Rechnung Festschreiben
+        </f:form.button>
     </div>
     <iframe src="{f:uri.action(action: 'renderInvoice', arguments: {object:object}, format:'pdf')}" style="width: 100%; height: calc(100% - 5rem);"></iframe>
 </f:section>

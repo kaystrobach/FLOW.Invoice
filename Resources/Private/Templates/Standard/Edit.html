@@ -25,7 +25,7 @@
     <div class="mb-3">
         <b:be.button.addCustomButton label="Vorschau" position="100">
             <fucodo-class-toggle target="body" toggle-class="module-edit-mode">
-                <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPreview" aria-controls="offcanvasPreview">
+                <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPreview" aria-controls="offcanvasPreview">
                     <i:icon name="bootstrap-1-circle" />
                     <f:translate>Vorschau</f:translate>
                 </button>
@@ -36,7 +36,7 @@
 
         <b:be.button.addCustomButton label="Festschreiben overlay" position="300">
             <fucodo-class-toggle target="body" toggle-class="module-edit-mode">
-                <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFinalize" aria-controls="offcanvasFinalize">
+                <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFinalize" aria-controls="offcanvasFinalize">
                     <i:icon name="bootstrap-3-circle" />
                     <f:translate>Festschreiben</f:translate>
                 </button>
@@ -102,7 +102,7 @@
 	<div class="offcanvas w-75 offcanvas-end" data-bs-backdrop="static"  tabindex="-1" id="offcanvasPreview" aria-labelledby="offcanvasRightLabel" data-bs-scroll="true">
 		<div class="offcanvas-header">
 			<h5 class="offcanvas-title" id="offcanvasRightLabel">
-				<f:translate>Vorschau Rechnung</f:translate>
+				<f:translate>Vorschau</f:translate>
 			</h5>
 			<fucodo-class-toggle target="body" toggle-class="module-edit-mode" class="btn-close" style="display: contents;">
 				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -120,7 +120,7 @@
     <div class="offcanvas w-75 offcanvas-end" data-bs-backdrop="static"  tabindex="-1" id="offcanvasFinalize" aria-labelledby="offcanvasRightLabel" data-bs-scroll="true">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasRightLabel">
-                <f:translate>Vorschau Rechnung</f:translate>
+                <f:translate>Finalisieren</f:translate>
             </h5>
             <fucodo-class-toggle target="body" toggle-class="module-edit-mode" class="btn-close" style="display: contents;">
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
