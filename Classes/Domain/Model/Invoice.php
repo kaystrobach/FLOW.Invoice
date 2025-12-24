@@ -155,6 +155,13 @@ class Invoice
     protected $settlementDates;
 
     /**
+     * @var string
+     * @Flow\Validate(type="text")
+     * @ORM\Column(type="text", length=65532, nullable=true)
+     */
+    protected $paymentTermText = '';
+
+    /**
      * @var @ORM\OneToMany(cascade={"all"}, mappedBy="invoice")
      * @var @ORM\OrderBy({"dueDate" = "ASC", "account"="DESC", "offsetAccount"="DESC"})
      * @var \Doctrine\Common\Collections\ArrayCollection<\KayStrobach\Invoice\Domain\Model\AccountingRecord>
@@ -417,7 +424,7 @@ class Invoice
      */
     public function getAdditionalInformation(): ?string
     {
-        return $this->additionalInformation;
+        return $this->additionalInformation ?? '';
     }
 
     /**
@@ -457,9 +464,9 @@ class Invoice
     /**
      * @return string
      */
-    public function getAdditionalText()
+    public function getAdditionalText(): string
     {
-        return $this->additionalText;
+        return $this->additionalText ?? '';
     }
 
     /**
@@ -530,6 +537,16 @@ class Invoice
                 $accountingRecord->setPaid($paid);
             }
         }
+    }
+
+    public function getPaymentTermText(): string
+    {
+        return $this->paymentTermText ?? '';
+    }
+
+    public function setPaymentTermText(string $paymentTermText): void
+    {
+        $this->paymentTermText = $paymentTermText;
     }
 
     /**

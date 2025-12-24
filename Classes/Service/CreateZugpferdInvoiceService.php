@@ -86,6 +86,36 @@ class CreateZugpferdInvoiceService
             ->addDocumentPaymentTerm(null, new \DateTime(' + 30 days')) // ...das Fälligkeitsdatum der Zahlung
         ;
 
+        if ($invoice->getAdditionalInformation() !== '') {
+            $document->addDocumentNote($invoice->getAdditionalInformation(), null, 'REG');
+        }
+        if ($invoice->getAdditionalText() !== '') {
+            $document->addDocumentNote($invoice->getAdditionalText(), null, 'REG');
+        }
+
+        if ($invoice->getPreText() !== '') {
+            $document->addDocumentNote($invoice->getPreText(), null, 'REG');
+        }
+        if ($invoice->getPostText() !== '') {
+            $document->addDocumentNote($invoice->getPostText(), null, 'REG');
+        }
+
+        if ($invoice->getPaymentTermText() !== '') {
+            $document->addDocumentPaymentTerm(
+                $invoice->getPaymentTermText()
+            );
+        }
+
+        foreach($invoice->getSettlementDates() as $settlementDate) {
+            $document->addDocumentPaymentTerm(
+                '',
+                $settlementDate->getDueDate(),
+                null, // hier kann später das SEPA Mandat eingefügt werden!!!,
+                round($settlementDate->getAmount()->getValue() / 100, 2)
+            );
+        }
+
+
         // Add items
         $i = 0;
         foreach ($invoice->getInvoiceItems() as $item) {

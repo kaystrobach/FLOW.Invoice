@@ -37,8 +37,18 @@
             </div>
         </div>
 
-        <f:render partial="Form/TextareaMarkdown"
-                  arguments="{label:'Zusatzinformationen u.a. für Dauerrechnungen etc.', property:'additionalInformation', noEdit:object.notChangeable}"/>
+        <div class="row">
+            <div class="col">
+                <f:render partial="Form/TextareaMarkdown"
+                          arguments="{label:'Zahlungsbedingungen in Textform', property:'paymentTermText', noEdit:object.notChangeable}"/>
+            </div>
+            <div class="col">
+                <f:render partial="Form/TextareaMarkdown"
+                          arguments="{label:'Zusatzinformationen u.a. für Dauerrechnungen etc.', property:'additionalInformation', noEdit:object.notChangeable}"/>
+            </div>
+        </div>
+
+
         <f:render partial="Domain/Model/Tags/Edit" arguments="{tags:tags}" />
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Auftrag">
