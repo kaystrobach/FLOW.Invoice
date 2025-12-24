@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 class InvoiceItem
 {
     /**
+     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
      * @Flow\Validate(type="NotEmpty")
      * @ORM\ManyToOne(cascade={"persist"}, inversedBy="invoiceItems")
      * @var Invoice
@@ -23,6 +24,7 @@ class InvoiceItem
     protected $invoice;
 
     /**
+     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
      * @Flow\Validate(type="NotEmpty")
      * @Flow\Validate(type="Integer")
      * @var int
@@ -30,12 +32,14 @@ class InvoiceItem
     protected int $sort = 0;
 
     /**
+     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
      * @ORM\Column(nullable=true)
      * @var int
      */
     protected $amount;
 
     /**
+     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
      * @Flow\Validate(type="NotEmpty")
      * @ORM\Column(nullable=true)
      * @var string
@@ -51,12 +55,14 @@ class InvoiceItem
     protected $possibleUnitsConfig = [];
 
     /**
+     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
      * @ORM\Column(nullable=true)
      * @var float
      */
     protected $tax;
 
     /**
+     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
      * @ORM\Embedded(columnPrefix="singleprice_")
      * @var MoneyEmbeddable
      */
@@ -69,6 +75,7 @@ class InvoiceItem
     protected $articleReference = '';
 
     /**
+     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
      * @ORM\Column(nullable=true)
      * @var string
      */
@@ -82,6 +89,7 @@ class InvoiceItem
     protected $description = '';
 
     /**
+     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
      * @ORM\Embedded(columnPrefix="total_")
      * @var MoneyEmbeddable
      */

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KayStrobach\Invoice\Service;
 
 use DateTime;
@@ -17,7 +19,12 @@ class CreateZugpferdInvoiceService
 {
     public const ZUGPFERD_CODE_INVOICE = '380';  // Code '380' für 'invoice'
 
-    public function render(Invoice $invoice)
+    public function render(Invoice $invoice): string
+    {
+        return $this->renderDocument($invoice)->getContent();
+    }
+
+    public function renderDocument(Invoice $invoice): ZugferdDocumentBuilder
     {
         $document = ZugferdDocumentBuilder::CreateNew(ZugferdProfiles::PROFILE_EN16931);
 
@@ -123,7 +130,7 @@ class CreateZugpferdInvoiceService
                 continue;
             }
             $document
-                ->addNewPosition($item->getSort())
+                ->addNewPosition((string)$item->getSort())
                 ->setDocumentPositionProductDetails($item->getName(), $item->getDescription(), $item->getArticleReference())
                 ->setDocumentPositionNetPrice($item->getSinglePrice()->getValue() / 100)
                 ->setDocumentPositionQuantity($item->getAmount(), $item->getUnit())
@@ -131,7 +138,6 @@ class CreateZugpferdInvoiceService
                 ->setDocumentPositionLineSummation(($item->getSinglePrice()->getValue() / 100) * $item->getAmount())
             ;
         }
-
-        return $document->getContent();
+        return $document;
     }
 }

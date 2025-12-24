@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace KayStrobach\Invoice\View;
 
+use KayStrobach\Invoice\Service\CreateCompleteElectronicInvoiceService;
 use KayStrobach\Invoice\Service\CreateInvoicePdfService;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Flow\Mvc\View\ViewInterface;
@@ -27,9 +28,9 @@ class InvoiceView implements ViewInterface
 
     /**
      * @Flow\Inject
-     * @var CreateInvoicePdfService
+     * @var CreateCompleteElectronicInvoiceService
      */
-    protected CreateInvoicePdfService $createInvoicePdfService;
+    protected CreateCompleteElectronicInvoiceService $completeElectronicInvoiceService;
 
     public function __construct(array $options)
     {
@@ -59,7 +60,7 @@ class InvoiceView implements ViewInterface
     public function render()
     {
         $this->controllerContext->getResponse()->setContentType('application/pdf');
-        return $this->createInvoicePdfService->renderPdf(
+        return $this->completeElectronicInvoiceService->render(
             $this->variables['object'],
             false,
             'Entwurf - ' . (new \DateTime('now'))->format('d.m.Y')
