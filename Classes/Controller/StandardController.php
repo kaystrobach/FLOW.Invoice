@@ -5,6 +5,7 @@ namespace KayStrobach\Invoice\Controller;
  * This file is part of the KayStrobach.Invoice package.
  */
 
+use DateTime;
 use KayStrobach\Backend\Controller\AbstractPageRendererController;
 use KayStrobach\Crud\Controller\Traits\CrudTrait;
 use KayStrobach\Invoice\Domain\Factory\InvoiceFactory;
@@ -143,6 +144,7 @@ class StandardController extends AbstractPageRendererController
     public function finalizeAction(Invoice $object)
     {
         $object->setChangeable(false);
+        $object->setDate(new DateTime('now'));
         $this->invoiceFactory->setInvoiceNumber($object);
         $this->getRepository()->update($object);
         $this->messageBus->dispatch(new InvoiceFinalizedMessage($object));
