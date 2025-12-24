@@ -12,6 +12,19 @@
 <b:be.setTitle>Rechnung {object.numberPrefix}</b:be.setTitle>
 
 <main class="invoice">
+    <f:if condition="{isValid}">
+        <f:then>
+            <f:render section="finalize" arguments="{_all}"/>
+        </f:then>
+        <f:else>
+            <div class="alert alert-danger">
+                Es gibt ein Problem mit der Rechnung, die bitte mit der Prüfen Funktion prüfen
+            </div>
+        </f:else>
+    </f:if>
+</main>
+
+<f:section name="finalize">
     <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
         <div class="btn-group me-2" role="group" aria-label="Actions for the invoice">
             <f:link.action action="renderInvoice" arguments="{object:object}" class="btn btn-primary" format="zugpferd.xml" additionalAttributes="{disabled:'disabled'}">
@@ -30,4 +43,4 @@
         Werte werden erst nach dem Speichern aktualisiert
     </div>
     <iframe src="{f:uri.action(action: 'renderInvoice', arguments: {object:object}, format:'pdf')}" style="width: 100%; height: calc(100% - 5rem);"></iframe>
-</main>
+</f:section>

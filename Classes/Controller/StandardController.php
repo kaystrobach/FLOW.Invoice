@@ -12,10 +12,13 @@ use KayStrobach\Invoice\Domain\Model\Invoice;
 use KayStrobach\Invoice\Domain\Model\InvoiceItem;
 use KayStrobach\Invoice\Domain\Model\SettlementDate;
 use KayStrobach\Invoice\Messenger\Message\InvoiceFinalizedMessage;
+use KayStrobach\Invoice\Service\ObjectValidationService;
 use KayStrobach\Invoice\View\InvoiceView;
 use KayStrobach\Invoice\View\InvoiceZugpferdView;
 use KayStrobach\Tags\Traits\TagsControllerTrait;
+use Neos\Error\Messages\Message;
 use Neos\Flow\Annotations as Flow;
+use Neos\Utility\ObjectAccess;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class StandardController extends AbstractPageRendererController
@@ -45,6 +48,12 @@ class StandardController extends AbstractPageRendererController
         'zugpferd.xml' => InvoiceZugpferdView::class,
         'pdf' => InvoiceView::class,
     ];
+
+    /**
+     * @Flow\Inject
+     * @var ObjectValidationService
+     */
+    protected ObjectValidationService $objectValidationService;
 
     public function getModelClassName()
     {
@@ -181,12 +190,33 @@ class StandardController extends AbstractPageRendererController
      */
     public function checkInvoiceAction(Invoice $object)
     {
-       $this->redirect(
+        $this->addFlashMessage('Prüfung erfolgreich');
+        $this->redirect(
            'edit',
            null,
            null,
            ['object' => $object]
-       );
+        );
+    }
+
+    public function updateCustomerDataAction(Invoice $object)
+    {
+        try {
+            $this->invoiceFactory->triggerThirdPartyProcessesOnUpdate($object);
+        } catch (\Exception $e) {
+            $this->addFlashMessage('Es gab ein Problem: ' . $e->getMessage(), 'Fehler', Message::SEVERITY_ERROR);
+            $this->errorAction();
+        }
+
+        $this->getRepository()->update($object);
+        $this->redirect(
+            'edit',
+            null,
+            null,
+            [
+                'object' => $object
+            ]
+        );
     }
 
     public function renderInvoiceAction(Invoice $object)
@@ -194,11 +224,9 @@ class StandardController extends AbstractPageRendererController
         $this->view->assign('object', $object);
     }
 
-    /**
-     * @Flow\ValidationGroups(validationGroups={"finalizeInvoice"})
-     */
     public function renderFinalizeAction(Invoice $object)
     {
+        $this->view->assign('isValid', $this->objectValidationService->isValid($object, ['finalizeInvoice']));
         $this->view->assign('object', $object);
     }
 }

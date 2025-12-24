@@ -10,10 +10,26 @@
 
 <div class="row">
     <div class="col-sm-6">
+        <f:comment>This is a shitty fix for doctrine loosing data, when the fields are disabled. This hits all embeddables ...</f:comment>
+        <f:form.hidden property="{prefix}.name" />
+        <f:form.hidden property="{prefix}.personName" />
+        <f:form.hidden property="{prefix}.street" />
+        <f:form.hidden property="{prefix}.houseNumber" />
+        <f:form.hidden property="{prefix}.addressAddon" />
+        <f:form.hidden property="{prefix}.roomNumber" />
+        <f:form.hidden property="{prefix}.zipCode" />
+        <f:form.hidden property="{prefix}.city" />
+        <f:form.hidden property="{prefix}.country" />
+        <f:form.hidden property="{prefix}.countryCode" />
+        <f:form.hidden property="{prefix}.combinedAddress" />
+        <f:form.hidden property="{prefix}.vatID" />
+        <f:form.hidden property="{prefix}.email" />
+
         <f:render partial="Form/Text" arguments="{property:'{prefix}.name', noEdit:noEdit, label:'Name'}" />
         <f:render partial="Form/Text" arguments="{property:'{prefix}.personName', noEdit:noEdit, label:'Ansprechpartner'}" />
         <div class="row">
             <div class="col">
+
                 <f:render partial="Form/Text" arguments="{property:'{prefix}.street', noEdit:noEdit, label:'Straße'}" />
             </div>
             <div class="col">

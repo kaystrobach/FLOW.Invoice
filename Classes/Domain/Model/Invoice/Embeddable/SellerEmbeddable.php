@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Embeddable()
  *
  */
-class SellerEmbeddable extends AddressEmbeddable
+class SellerEmbeddable extends AddressEmbeddable implements \JsonSerializable
 {
     /**
      * @var string
@@ -54,5 +54,19 @@ class SellerEmbeddable extends AddressEmbeddable
     public function setReceiverIban(?string $receiverIban): void
     {
         $this->receiverIban = $receiverIban ?? '';
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
+
+    public function fromArray(array $data)
+    {
+        foreach ($data as $key => $value) {
+            if (property_exists($this, $key)) {
+                $this->$key = $value;
+            }
+        }
     }
 }

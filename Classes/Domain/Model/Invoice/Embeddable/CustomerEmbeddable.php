@@ -13,6 +13,7 @@ class CustomerEmbeddable extends AddressEmbeddable
 {
     /**
      * @Flow\Validate(type="notEmpty", validationGroups={"deptor"})
+     * @ORM\Column()
      * @var string
      */
     protected $deptorNumber = '';

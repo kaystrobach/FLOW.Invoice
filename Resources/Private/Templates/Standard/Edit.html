@@ -11,14 +11,41 @@
 
 <b:be.setTitle>Rechnung {object.number}</b:be.setTitle>
 <b:be.setTitleInfo raw="1">
-    <span title="{object.customer.name} ({object.customer.deptorNumber})"><f:format.crop maxCharacters="50">{object.customer.name}</f:format.crop> ({object.customer.deptorNumber})</span>
+    <small><span title="{object.customer.name} ({object.customer.deptorNumber})"><f:format.crop maxCharacters="50">{object.customer.name}</f:format.crop> ({object.customer.deptorNumber})</span></small>
     <br>
-    {object.periodOfPerformance.start -> f:format.date(format: 'd.m.Y')} - {object.periodOfPerformance.end -> f:format.date(format: 'd.m.Y')}
+    <f:if condition="{object.periodOfPerformance.start}">
+        <small>Leistungszeitraum {object.periodOfPerformance.start -> f:format.date(format: 'd.m.Y')}<f:if condition="{object.periodOfPerformance.end}"> - {object.periodOfPerformance.end -> f:format.date(format: 'd.m.Y')}</f:if></small>
+    </f:if>
 </b:be.setTitleInfo>
 
-<b:be.button.addButton label="Prüfen" icon="bootstrap-card-checklist" action="checkInvoice" arguments="{object:object}" type="submit"/>
 
 <b:be.button.closeButton />
+
+<f:if condition="{object.changeable}">
+    <div class="mb-3">
+        <b:be.button.addCustomButton label="Vorschau" position="100">
+            <fucodo-class-toggle target="body" toggle-class="module-edit-mode">
+                <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPreview" aria-controls="offcanvasPreview">
+                    <i:icon name="bootstrap-1-circle" />
+                    <f:translate>Vorschau</f:translate>
+                </button>
+            </fucodo-class-toggle>
+        </b:be.button.addCustomButton>
+
+        <b:be.button.addButton label="Prüfen" icon="bootstrap-2-circle" action="checkInvoice" arguments="{object:object}" type="submit" position="200"/>
+
+        <b:be.button.addCustomButton label="Festschreiben overlay" position="300">
+            <fucodo-class-toggle target="body" toggle-class="module-edit-mode">
+                <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFinalize" aria-controls="offcanvasFinalize">
+                    <i:icon name="bootstrap-3-circle" />
+                    <f:translate>Festschreiben</f:translate>
+                </button>
+            </fucodo-class-toggle>
+        </b:be.button.addCustomButton>
+
+        <b:be.button.removeButton arguments="{object:object}" action="remove"/>
+    </div>
+</f:if>
 
 <f:if condition="{object.stornoInvoice}">
 	<b:be.button.addButton action="edit" arguments="{object:object.stornoInvoice}"
@@ -39,23 +66,7 @@
 		</div>
 </f:if>
 
-<f:if condition="{object.changeable}">
-	<div class="mb-3">
-		<fucodo-class-toggle target="body" toggle-class="module-edit-mode">
-			<button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPreview" aria-controls="offcanvasPreview">
-				<i:icon name="bootstrap-ui-checks" />
-				<f:translate>Vorschau</f:translate>
-			</button>
-		</fucodo-class-toggle>
 
-        <fucodo-class-toggle target="body" toggle-class="module-edit-mode">
-            <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFinalize" aria-controls="offcanvasFinalize">
-                <i:icon name="bootstrap-ui-checks" />
-                <f:translate>Festschreiben</f:translate>
-            </button>
-        </fucodo-class-toggle>
-	</div>
-</f:if>
 
 <f:if condition="!{object.changeable}">
 		<div class="alert alert-danger">

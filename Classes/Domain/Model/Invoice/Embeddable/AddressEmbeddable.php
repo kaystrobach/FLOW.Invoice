@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use KayStrobach\Invoice\Service\AddressEmbeddableConversionService;
 use Neos\Flow\Annotations as Flow;
 
-abstract class AddressEmbeddable
+abstract class AddressEmbeddable implements \JsonSerializable
 {
     /**
      * @ORM\Column(type="text")
@@ -30,6 +30,7 @@ abstract class AddressEmbeddable
     protected string $combinedAddress = '';
 
     /**
+     * @ORM\Column()
      * @var string
      * @Flow\Validate(type="String")
      * @Flow\Validate(type="StringLength")
@@ -37,6 +38,7 @@ abstract class AddressEmbeddable
     protected string $street = '';
 
     /**
+     * @ORM\Column()
      * @var string
      * @Flow\Validate(type="String")
      * @Flow\Validate(type="StringLength")
@@ -44,18 +46,21 @@ abstract class AddressEmbeddable
     protected string $houseNumber = '';
 
     /**
+     * @ORM\Column()
      * @var string
      * @Flow\Validate(type="StringLength")
      */
     protected string $addressAddon = '';
 
     /**
+     * @ORM\Column()
      * @var string
      * @Flow\Validate(type="String")
      */
     protected string $roomNumber = '';
 
     /**
+     * @ORM\Column()
      * @var string
      * @Flow\Validate(type="Number")
      * @Flow\Validate(type="StringLength", options={ "minimum"=5, "maximum"=5},validationGroups={"ContactAddress"})
@@ -63,6 +68,7 @@ abstract class AddressEmbeddable
     protected string $zipCode = '';
 
     /**
+     * @ORM\Column()
      * @Flow\Validate(type="String")
      * @Flow\Validate(type="StringLength", options={ "minimum"=1, "maximum"=255},validationGroups={"ContactAddress"})
      * @var string
@@ -70,6 +76,7 @@ abstract class AddressEmbeddable
     protected string $city = '';
 
     /**
+     * @ORM\Column()
      * @Flow\Validate(type="String")
      * @Flow\Validate(type="StringLength", options={ "minimum"=1, "maximum"=255},validationGroups={"ContactAddress"})
      * @var string
@@ -80,6 +87,7 @@ abstract class AddressEmbeddable
      * https://de.wikipedia.org/wiki/ISO-3166-1-Kodierliste
      * Only Alpha 2 is allowed
      *
+     * @ORM\Column()
      * @Flow\Validate(type="String")
      * @Flow\Validate(type="StringLength", options={ "minimum"=1, "maximum"=2},validationGroups={"ContactAddress"})
      * @var string
@@ -87,12 +95,14 @@ abstract class AddressEmbeddable
     protected $countryCode = 'DE';
 
     /**
+     * @ORM\Column()
      * @Flow\Validate(type="String")
      * @var string
      */
     protected string $vatID = '';
 
     /**
+     * @ORM\Column()
      * @Flow\Validate(type="String")
      * @Flow\Validate(type="StringLength", options={"minimum"=1, "maximum"=255},validationGroups={"ContactAddress"})
      * @var string
@@ -282,5 +292,19 @@ abstract class AddressEmbeddable
     public function setEmail(string $email): void
     {
         $this->email = $email;
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
+
+    public function jsonUnserialize(array $data)
+    {
+        foreach ($data as $key => $value) {
+            if (property_exists($this, $key)) {
+                $this->$key = $value;
+            }
+        }
     }
 }
