@@ -33,10 +33,14 @@
 <f:section name="finalize">
     <div class="alert alert-success d-flex justify-content-between">
         <div>
-            Die Rechnung kann festgeschrieben werden. Nach dem Festschreiben kann diese nicht mehr verändert werden.
+            Die Rechnung kann festgeschrieben werden.
+            <ul>
+                <li>Nach dem Festschreiben kann diese nicht mehr verändert werden.</li>
+                <li>Korrekturen sind nur noch mit einer Korrekturrechnung möglich</li>
+            </ul>
         </div>
         <f:form.button form="globalForm" formaction="{f:uri.action(action: 'renderInvoice')}" class="btn btn-success">
-            <i:icon name="bootstrap-2-circle" />
+            <i:icon name="bootstrap-3-circle" />
             Rechnung Festschreiben
         </f:form.button>
     </div>

@@ -93,6 +93,10 @@ class InvoiceFactory
             'title',
             'subTitle',
             'additionalInformation',
+            'paymentTermText',
+            'additionalText',
+            'preText',
+            'postText'
         ];
         foreach ($props as $prop) {
             if (ObjectAccess::getPropertyPath($invoice, $prop) === '') {

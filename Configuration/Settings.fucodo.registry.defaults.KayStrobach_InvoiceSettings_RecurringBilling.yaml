@@ -40,3 +40,10 @@ fucodo:
 
               Leistungszeitraum monatlich
             description:
+          paymentTermText:
+            type: TextArea
+            label: Zahlungsbedingungen
+            default: |
+              Der Rechnungsbetrag (Brutto) ist zahlbar innerhalb von 14 Kalendertagen nach dem ausgewiesenen Rechnungsdatum.
+
+              Wie mit Ihnen vereinbart, werden wir den obigen Rechnungsbetrag (Brutto) innerhalb der nächsten 3 Werktage von der uns benannten Bankverbindung einziehen.

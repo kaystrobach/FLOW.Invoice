@@ -34,6 +34,7 @@ class RenderStringViewHelper extends AbstractViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('value', 'string', 'value', false, null);
+        $this->registerArgument('replaceQuotes', 'bool', 'replace &quot etc to ensure we vean render fluid correctly', false, false);
     }
 
     public function render()
@@ -42,6 +43,10 @@ class RenderStringViewHelper extends AbstractViewHelper
             $value = $this->arguments['value'];
             if ($value === null) {
                 $value = $this->renderChildren();
+            }
+
+            if ($this->arguments['replaceQuotes']) {
+                $value = str_replace('-&gt;', '->', $value);
             }
 
             $templateParser = $this->renderingContext->getTemplateParser();
