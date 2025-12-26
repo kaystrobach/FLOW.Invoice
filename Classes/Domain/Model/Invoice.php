@@ -144,14 +144,15 @@ class Invoice
     /**
      * @ORM\OrderBy({"sort":"ASC"})
      * @ORM\OneToMany(cascade={"all"}, mappedBy="invoice")
-     * @var \Doctrine\Common\Collections\ArrayCollection<\KayStrobach\Invoice\Domain\Model\InvoiceItem>
+     * @var \Doctrine\Common\Collections\Collection<\KayStrobach\Invoice\Domain\Model\InvoiceItem>
      */
     protected $invoiceItems;
 
     /**
+     * @Flow\Validate(type="Collection")
      * @ORM\OneToMany(cascade={"all"}, mappedBy="invoice")
      * @ORM\OrderBy({"dueDate" = "ASC"})
-     * @var \Doctrine\Common\Collections\ArrayCollection<\KayStrobach\Invoice\Domain\Model\SettlementDate>
+     * @var \Doctrine\Common\Collections\Collection<\KayStrobach\Invoice\Domain\Model\SettlementDate>
      */
     protected $settlementDates;
 
