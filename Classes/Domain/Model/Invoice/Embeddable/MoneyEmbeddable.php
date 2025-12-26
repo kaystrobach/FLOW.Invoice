@@ -50,4 +50,9 @@ class MoneyEmbeddable implements Stringable
             $this->getCurrency()
         );
     }
+
+    public function getFloatValue(): float
+    {
+        return $this->getValue() / 100;
+    }
 }
