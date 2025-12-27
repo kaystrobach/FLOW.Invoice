@@ -139,3 +139,12 @@ fucodo:
             label: Nachtext
             default: |
 
+          eMailText:
+            type: TextArea
+            label: 'E-Mail: Text für die E-Mail an den Kunden'
+            default: |
+
+          eMailSignature:
+            type: TextArea
+            label: 'E-Mail: für die E-Mail an den Kunden'
+            default: |
