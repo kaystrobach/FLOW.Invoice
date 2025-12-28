@@ -14,7 +14,7 @@ use Neos\Flow\Annotations as Flow;
 class OrderEmbeddable
 {
     /**
-     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
+     *
      */
     protected string $orderNumber = '';
 
