@@ -31,10 +31,12 @@
             <div class="col">
                 <f:render partial="Form/Text" arguments="{label:'Titel', property:'title', noEdit:object.notChangeable, required:1}"/>
             </div>
-            <div class="col">
-                <f:render partial="Form/Text"
-                          arguments="{label:'Untertitel', property:'subTitle', noEdit:object.notChangeable}"/>
-            </div>
+            <f:comment>
+                <div class="col">
+                    <f:render partial="Form/Text"
+                              arguments="{label:'Untertitel', property:'subTitle', noEdit:object.notChangeable}"/>
+                </div>
+            </f:comment>
         </div>
 
         <div class="row">
