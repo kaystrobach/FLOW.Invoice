@@ -41,7 +41,7 @@ class Invoice
     use TagableTrait;
 
     /**
-     * @ORM\Embedded(columnPrefix="number_")
+     * @ORM\Embedded(columnPrefix="number_", class="KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\NumberingEmbeddable")
      */
     protected ?NumberingEmbeddable $number = null;
 
@@ -283,7 +283,7 @@ class Invoice
     public function setNumber(NumberingEmbeddable $number)
     {
         $this->number = $number;
-        $this->number->updateCombinedNumber();
+        // $this->number->updateCombinedNumber();
     }
 
     public function getType(): string

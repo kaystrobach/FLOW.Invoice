@@ -14,6 +14,7 @@ use KayStrobach\Invoice\Domain\Model\InvoiceItem;
 use KayStrobach\Invoice\Domain\Model\SettlementDate;
 use KayStrobach\Invoice\Messenger\Message\InvoiceFinalizedMessage;
 use KayStrobach\Invoice\Service\ObjectValidationService;
+use KayStrobach\Invoice\Service\SendInvoiceService;
 use KayStrobach\Invoice\View\InvoiceView;
 use KayStrobach\Invoice\View\InvoiceZugpferdView;
 use KayStrobach\Tags\Traits\TagsControllerTrait;
@@ -29,6 +30,12 @@ class StandardController extends AbstractPageRendererController
 
     #[Flow\Inject]
     protected MessageBusInterface $messageBus;
+
+    /**
+     * @Flow\Inject
+     * @var SendInvoiceService
+     */
+    protected SendInvoiceService $sendInvoiceService;
 
     /**
      * @Flow\InjectConfiguration(path="Default.Invoice.numberPrefix")
@@ -230,5 +237,18 @@ class StandardController extends AbstractPageRendererController
     {
         $this->view->assign('isValid', $this->objectValidationService->isValid($object, ['finalizeInvoice']));
         $this->view->assign('object', $object);
+    }
+
+    public function sendMessageAction(Invoice $object)
+    {
+        $this->sendInvoiceService->emitInvoiceShouldBeSendNow($object);
+        $this->redirect(
+            'edit',
+            null,
+            null,
+            [
+                'object' => $object
+            ]
+        );
     }
 }

@@ -10,20 +10,22 @@ use Neos\Flow\Annotations as Flow;
 /**
  * @ORM\Embeddable()
  */
-class NumberingEmbeddable
+class NumberingEmbeddable implements \JsonSerializable
 {
     /**
+     * @ORM\Column(type="string", nullable=false)
      * @var string
      */
     protected string $prefix = '';
 
     /**
-     * @ORM\Column(nullable=true)
-     * @var ?int
+     * @ORM\Column(type="integer", nullable=true)
+     * @var int|null
      */
     protected ?int $number = null;
 
     /**
+     * @ORM\Column(type="string", nullable=false)
      * @var string
      */
     protected string $postfix = '';
@@ -84,11 +86,19 @@ class NumberingEmbeddable
 
     public function updateCombinedNumber(): void
     {
+        if ($this->combinedNumber !== '') {
+            return;
+        }
         $this->combinedNumber = trim($this->prefix) . $this->number . trim($this->postfix);
     }
 
     public function __toString(): string
     {
         return $this->combinedNumber;
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 }
