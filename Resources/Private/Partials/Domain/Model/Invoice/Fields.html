@@ -94,6 +94,9 @@
         <f:render partial="Form/Text" arguments="{property:'customer.deptorNumber', label:'Kundennummer', contentAfter:buttonRefresh, noEdit:0}" />
 
         <f:render partial="Domain/Embeddable/AddressEmbeddable" arguments="{prefix:'customer', noEdit:1}" />
+        <f:comment>Hydration workaround</f:comment>
+        <f:form.hidden property="customer.additionalEmail" />
+        <f:render partial="Form/Text" arguments="{property:'customer.additionalEmail', label:'Zusätzliche E-Mail-Empfänger', noEdit:1}" />
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Zusatztexte">
         <f:render partial="Components/Panel" arguments="{heading:'Generell'}" contentAs="body">

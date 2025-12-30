@@ -16,7 +16,13 @@ class CustomerEmbeddable extends AddressEmbeddable
      * @ORM\Column()
      * @var string
      */
-    protected $deptorNumber = '';
+    protected string $deptorNumber = '';
+
+    /**
+     * @ORM\Column(type="string", length=1000)
+     * @var string
+     */
+    protected string $additionalEmail = '';
 
     public function getDeptorNumber(): string
     {
@@ -26,5 +32,15 @@ class CustomerEmbeddable extends AddressEmbeddable
     public function setDeptorNumber(string $deptorNumber): void
     {
         $this->deptorNumber = $deptorNumber;
+    }
+
+    public function getAdditionalEmail(): string
+    {
+        return $this->additionalEmail;
+    }
+
+    public function setAdditionalEmail(string $additionalEmail): void
+    {
+        $this->additionalEmail = $additionalEmail;
     }
 }
