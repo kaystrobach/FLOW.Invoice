@@ -123,7 +123,7 @@ abstract class AddressEmbeddable implements \JsonSerializable
     {
         return sprintf(
             '%s · %s %s · %s %s · %s',
-            $this->name,
+            $this->getName(),
             $this->getStreet(),
             $this->getHouseNumber(),
             $this->getZipCode(),
