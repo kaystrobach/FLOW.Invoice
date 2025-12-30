@@ -154,17 +154,20 @@ class AddressEmbeddableConversionService
             return;
         }
 
-        $country =  $addressEmbeddable->getCountry() ?  ' - ' . $addressEmbeddable->getCountry() : '';
+        $country =  $addressEmbeddable->getCountry();
         $countryCode = $addressEmbeddable->getCountryCode() ? ' (' . $addressEmbeddable->getCountryCode() . ')' : '';
+        $person = $addressEmbeddable->getPersonName() ? 'Ansprechpartner: ' . $addressEmbeddable->getPersonName() : '';
 
         $data = [
             $addressEmbeddable->getName(),
-            $addressEmbeddable->getPersonName(),
-            '',
+            $person,
+            'FORCE_PHP_EOL',
             $addressEmbeddable->getStreet() . ' ' . $addressEmbeddable->getHouseNumber(),
             $addressEmbeddable->getRoomNumber(),
             $addressEmbeddable->getAddressAddon(),
-            $addressEmbeddable->getZipCode() . ' ' . $addressEmbeddable->getCity() . $country . $countryCode
+            'FORCE_PHP_EOL',
+            $addressEmbeddable->getZipCode() . ' ' . $addressEmbeddable->getCity(),
+            $country
         ];
 
         // Trimme alle Zeilen und filtere leere Zeilen heraus
@@ -174,10 +177,15 @@ class AddressEmbeddableConversionService
                 return $value !== '';
             }
         );
+
         $addressEmbeddable->setCombinedAddress(
-            implode(
-                PHP_EOL,
-                $filteredData
+            str_replace(
+                'FORCE_PHP_EOL',
+                '',
+                implode(
+                    PHP_EOL,
+                    $filteredData
+                )
             )
         );
     }
