@@ -143,7 +143,7 @@ class Invoice
 
     /**
      * @ORM\OrderBy({"sort":"ASC"})
-     * @ORM\OneToMany(cascade={"all"}, mappedBy="invoice")
+     * @ORM\OneToMany(cascade={"all"}, mappedBy="invoice", fetch="EAGER")
      * @var \Doctrine\Common\Collections\Collection<\KayStrobach\Invoice\Domain\Model\InvoiceItem>
      */
     protected $invoiceItems;
