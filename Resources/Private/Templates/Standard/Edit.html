@@ -71,11 +71,12 @@
 				Die Rechnung kann nicht mehr bearbeitet werden.
 		</div>
 
-		<f:form action="update" enctype="multipart/form-data" object="{object}" objectName="object">
-				<f:render partial="Domain/Model/SettlementDates" arguments="{_all}"/>
-				<f:render partial="Domain/Model/BankTransferdocuments" arguments="{_all}"/>
-		</f:form>
-
+        <f:comment>
+            <f:form action="update" enctype="multipart/form-data" object="{object}" objectName="object">
+                    <f:render partial="Domain/Model/SettlementDates" arguments="{_all}"/>
+                    <f:render partial="Domain/Model/BankTransferdocuments" arguments="{_all}"/>
+            </f:form>
+        </f:comment>
 		<f:if condition="{object.accountingRecords}">
 				<f:render partial="Components/Panel" arguments="{heading:'Buchungssätze', object:object}" contentAs="direct">
 						<f:render partial="Domain/Model/AccountingRecordTable" arguments="{objects:object.accountingRecords}" />
