@@ -84,9 +84,9 @@ class NumberingEmbeddable implements \JsonSerializable
         return str_replace(array('%year', '%month'), array($now->format('Y'), $now->format('m')), $string);
     }
 
-    public function updateCombinedNumber(): void
+    public function updateCombinedNumber(bool $force = false): void
     {
-        if ($this->combinedNumber !== '') {
+        if (($this->combinedNumber !== $this->prefix) && !$force) {
             return;
         }
         $this->combinedNumber = trim($this->prefix) . $this->number . trim($this->postfix);

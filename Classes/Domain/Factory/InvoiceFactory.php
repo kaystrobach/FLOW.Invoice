@@ -49,12 +49,13 @@ class InvoiceFactory
 
     public function setInvoiceNumber(Invoice $invoice)
     {
-        if ($invoice->isChangeable()) {
+        if (!$invoice->isChangeable()) {
             return;
         }
         if ($invoice->getNumber()->getNumber() !== null) {
             return;
         }
+
         $this->entityManager->wrapInTransaction(
             static function (EntityManager $em) use ($invoice) {
                 try {
@@ -68,10 +69,13 @@ class InvoiceFactory
                     $maxId = $query
                         ->getSingleScalarResult();
                     $invoice->getNumber()->setNumber(1 + (int)$maxId);
+                    $invoice->getNumber()->updateCombinedNumber(true);
                     // throw new \Exception((string)$invoice->getNumber()->getNumber());
                 } catch (NoResultException $exception) {
                     $invoice->getNumber()->setNumber(1);
+                    $invoice->getNumber()->updateCombinedNumber(true);
                 }
+                $invoice->setChangeable(false);
                 $em->persist($invoice);
                 $em->flush($invoice);
             }
