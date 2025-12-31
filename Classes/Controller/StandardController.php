@@ -150,14 +150,24 @@ class StandardController extends AbstractPageRendererController
 
     public function finalizeAction(Invoice $object)
     {
-        $object->setChangeable(false);
+        if (!$object->isChangeable()) {
+            $this->redirect(
+                'edit',
+                null,
+                null,
+                [
+                    'object' => $object
+                ]
+            );
+        }
+
         $object->setDate(new DateTime('now'));
         $this->invoiceFactory->setInvoiceNumber($object);
         $this->getRepository()->update($object);
         $this->messageBus->dispatch(new InvoiceFinalizedMessage($object));
         $this->getRepository()->update($object);
         $this->redirect(
-            'edit',
+            'sendMessage',
             null,
             null,
             [
