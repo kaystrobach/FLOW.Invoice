@@ -41,10 +41,8 @@ class CreateCompleteElectronicInvoiceService
     {
         $now = new DateTime('now');
         $filename = sprintf(
-            '%s vom %s.pdf',
-            $invoice->getNumber(),
-            $now->format('Y-m-d'),
-
+            '%s.pdf',
+            $invoice->getNumber()
         );
 
         $content = $this->render($invoice);
