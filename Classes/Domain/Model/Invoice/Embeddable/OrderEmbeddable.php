@@ -24,7 +24,6 @@ class OrderEmbeddable
     protected string $customerReference = '';
 
     /**
-     * @Flow\Validate(type="NotEmpty", validationGroups={"finalizeInvoice"})
      * @ORM\Column(nullable=true)
      * @var DateTimeImmutable
      */
