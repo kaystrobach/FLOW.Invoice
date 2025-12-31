@@ -3,6 +3,7 @@
 namespace KayStrobach\Invoice\Messenger\Handler;
 use KayStrobach\Invoice\Domain\Model\Invoice;
 use KayStrobach\Invoice\Messenger\Message\InvoiceFinalizedMessage;
+use KayStrobach\Invoice\Service\CreateCompleteElectronicInvoiceService;
 use KayStrobach\Invoice\Service\CreateInvoicePdfService;
 use KayStrobach\Invoice\Service\SendInvoiceService;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -13,12 +14,12 @@ class InvoiceFinalizedHandler
 {
     /**
      * @FLow\Inject
-     * @var CreateInvoicePdfService
+     * @var CreateCompleteElectronicInvoiceService
      */
-    protected CreateInvoicePdfService $createPdfInvoiceService;
+    protected CreateCompleteElectronicInvoiceService $createPdfInvoiceService;
 
     public function __invoke(InvoiceFinalizedMessage $message)
     {
-        $this->createPdfInvoiceService->render($message->getInvoice());
+        $this->createPdfInvoiceService->addRenderedPdfToInvoice($message->getInvoice());
     }
 }
