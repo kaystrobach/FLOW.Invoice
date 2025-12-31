@@ -17,15 +17,8 @@ class InvoiceFinalizedHandler
      */
     protected CreateInvoicePdfService $createPdfInvoiceService;
 
-    /**
-     * @Flow\Inject
-     * @var SendInvoiceService
-     */
-    protected SendInvoiceService $sendInvoiceService;
-
     public function __invoke(InvoiceFinalizedMessage $message)
     {
         $this->createPdfInvoiceService->render($message->getInvoice());
-        $this->sendInvoiceService->emitInvoiceShouldBeSendNow($message->getInvoice());
     }
 }
