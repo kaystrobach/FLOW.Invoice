@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace KayStrobach\Invoice\Service;
 
+use DateTime;
 use horstoeko\zugferd\ZugferdDocumentPdfBuilder;
 use KayStrobach\Invoice\Domain\Model\Invoice;
 use Neos\Flow\Annotations as Flow;
@@ -40,10 +41,10 @@ class CreateCompleteElectronicInvoiceService
     {
         $now = new DateTime('now');
         $filename = sprintf(
-            'Rechnung.%s.%s.%s.pdf',
-            $invoice->getNumber()->getPrefix(),
+            '%s vom %s.pdf',
+            $invoice->getNumber(),
             $now->format('Y-m-d'),
-            $invoice->getNumber()
+
         );
 
         $content = $this->render($invoice);
