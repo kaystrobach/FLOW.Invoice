@@ -24,6 +24,12 @@ class CustomerEmbeddable extends AddressEmbeddable
      */
     protected string $additionalEmail = '';
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    protected string $shortName = '';
+
     public function getDeptorNumber(): string
     {
         return $this->deptorNumber;
@@ -42,5 +48,15 @@ class CustomerEmbeddable extends AddressEmbeddable
     public function setAdditionalEmail(string $additionalEmail): void
     {
         $this->additionalEmail = $additionalEmail;
+    }
+
+    public function getShortName(): string
+    {
+        return $this->shortName;
+    }
+
+    public function setShortName(string $shortName): void
+    {
+        $this->shortName = $shortName;
     }
 }

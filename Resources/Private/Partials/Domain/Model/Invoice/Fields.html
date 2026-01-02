@@ -80,6 +80,10 @@
         </f:render>
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Kunde">
+        <f:comment>Hydration workaround</f:comment>
+        <f:form.hidden property="customer.additionalEmail" />
+        <f:form.hidden property="customer.shortName" />
+
         <f:variable name="buttonRefresh">
             <f:if condition="{object.changeable}">
                 <button class="btn btn-primary" formaction="{f:uri.action(action:'updateCustomerData', arguments:{object:object})}">
@@ -87,11 +91,16 @@
                 </button>
             </f:if>
         </f:variable>
-        <f:render partial="Form/Text" arguments="{property:'customer.deptorNumber', label:'Kundennummer', contentAfter:buttonRefresh, noEdit:0}" />
+        <div class="row">
+            <div class="col">
+                <f:render partial="Form/Text" arguments="{property:'customer.deptorNumber', label:'Kundennummer', contentAfter:buttonRefresh, noEdit:0}" />
+            </div>
+            <div class="col">
+                <f:render partial="Form/Text" arguments="{property:'customer.shortName', label:'Kundenname kurz', noEdit:1}" />
+            </div>
+        </div>
 
         <f:render partial="Domain/Embeddable/AddressEmbeddable" arguments="{prefix:'customer', noEdit:1}" />
-        <f:comment>Hydration workaround</f:comment>
-        <f:form.hidden property="customer.additionalEmail" />
         <f:render partial="Form/Text" arguments="{property:'customer.additionalEmail', label:'Zusätzliche E-Mail-Empfänger', noEdit:1}" />
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Zusatztexte">
