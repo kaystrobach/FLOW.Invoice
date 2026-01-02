@@ -10,11 +10,12 @@
       data-namespace-typo3-fluid="true"
 >
 
-<f:if condition="!{objectIsNew}">
-    <f:comment>Ugly Workaround for doctrine hydration problems</f:comment>
-    <f:form.hidden property="changeable"/>
-    <f:form.hidden property="number.prefix"/>
-</f:if>
+<f:comment>Ugly Workaround for doctrine hydration problems</f:comment>
+<f:form.hidden property="changeable"/>
+<f:form.hidden property="number.prefix"/>
+<f:form.hidden property="number.postfix"/>
+<f:form.hidden property="number.number"/>
+<f:form.hidden property="number.combinedNumber"/>
 
 
 <bs:tab.tabWrapper state-key="invoice-{object -> f:format.identifier()}">
