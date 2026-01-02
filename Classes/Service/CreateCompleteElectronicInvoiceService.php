@@ -40,9 +40,14 @@ class CreateCompleteElectronicInvoiceService
     public function addRenderedPdfToInvoice(Invoice $invoice)
     {
         $now = new DateTime('now');
+        /**
+         * @todo extract that to a registry setting ...
+         */
         $filename = sprintf(
-            '%s.pdf',
-            $invoice->getNumber()
+            '%s - %s - DebNr. %s.pdf',
+            $invoice->getNumber(),
+            $invoice->getCustomer()->setShortName(),
+            $invoice->getCustomer()->getDeptorNumber()
         );
 
         $content = $this->render($invoice);
