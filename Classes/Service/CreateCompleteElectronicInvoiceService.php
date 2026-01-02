@@ -46,7 +46,7 @@ class CreateCompleteElectronicInvoiceService
         $filename = sprintf(
             '%s - %s - DebNr. %s.pdf',
             $invoice->getNumber(),
-            $invoice->getCustomer()->setShortName(),
+            $invoice->getCustomer()->getShortName(),
             $invoice->getCustomer()->getDeptorNumber()
         );
 
