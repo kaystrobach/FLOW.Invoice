@@ -187,6 +187,9 @@ class StandardController extends AbstractPageRendererController
     public function preUpdateAction(Invoice $object)
     {
         // $this->invoiceFactory->setInvoiceDefaultsFromEnv($object);
+        if ($object->isChangeable()) {
+            $object->setDate(new \DateTime('now'));
+        }
         $this->getRepository()->update($object);
     }
 
