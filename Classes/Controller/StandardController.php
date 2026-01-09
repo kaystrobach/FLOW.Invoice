@@ -166,6 +166,7 @@ class StandardController extends AbstractPageRendererController
         $this->getRepository()->update($object);
         $this->messageBus->dispatch(new InvoiceFinalizedMessage($object));
         $this->getRepository()->update($object);
+
         $this->redirect(
             'sendMessage',
             null,

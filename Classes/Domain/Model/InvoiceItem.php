@@ -295,6 +295,8 @@ class InvoiceItem
     public function makePartialClone(): InvoiceItem
     {
         $clone = new InvoiceItem();
+        $clone->setSort($this->sort);
+        $clone->setArticleReference($this->articleReference);
         $clone->setInvoice($this->invoice);
         $clone->setAmount($this->amount);
         $clone->setUnit($this->unit);

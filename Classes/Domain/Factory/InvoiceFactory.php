@@ -11,6 +11,7 @@ use fucodo\registry\Domain\Repository\RegistryEntryRepository;
 use KayStrobach\Invoice\Domain\Model\Invoice;
 use Neos\Flow\Annotations as Flow;
 use Neos\Utility\ObjectAccess;
+use Psr\Log\LoggerInterface;
 
 
 class InvoiceFactory
@@ -31,6 +32,12 @@ class InvoiceFactory
      */
     protected RegistryEntryRepository $registryEntryRepository;
 
+    /**
+     * @Flow\Inject
+     * @var LoggerInterface
+     */
+    protected $logger;
+
     public function setInvoiceDefaultsFromEnv(Invoice $invoice, ?string $type = null)
     {
         if ($type === null) {
@@ -47,6 +54,10 @@ class InvoiceFactory
         $this->setInvoiceNumber($invoice);
     }
 
+    public function setTitle(Invoice $invoice) {
+        $invoice->setTitle($this->getRegistryValue(self::REGISTRY_NAMESPACE_PREFIX . $invoice->getType(), 'title'));
+    }
+
     public function setInvoiceNumber(Invoice $invoice)
     {
         if (!$invoice->isChangeable()) {
@@ -56,8 +67,10 @@ class InvoiceFactory
             return;
         }
 
+        $logger = $this->logger;
+
         $this->entityManager->wrapInTransaction(
-            static function (EntityManager $em) use ($invoice) {
+            static function (EntityManager $em) use ($invoice, $logger) {
                 try {
                     $query = $em->createQueryBuilder()
                         ->select('MAX(e.number.number)')
@@ -70,10 +83,12 @@ class InvoiceFactory
                         ->getSingleScalarResult();
                     $invoice->getNumber()->setNumber(1 + (int)$maxId);
                     $invoice->getNumber()->updateCombinedNumber(true);
+                    $logger->info('Invoice number set to ' . $invoice->getNumber()->getCombinedNumber());
                     // throw new \Exception((string)$invoice->getNumber()->getNumber());
                 } catch (NoResultException $exception) {
                     $invoice->getNumber()->setNumber(1);
                     $invoice->getNumber()->updateCombinedNumber(true);
+                    $logger->info('Invoice number set to ' . $invoice->getNumber()->getCombinedNumber());
                 }
                 $invoice->setChangeable(false);
                 $em->persist($invoice);
@@ -82,13 +97,18 @@ class InvoiceFactory
         );
     }
 
-    protected function setNumberDefaults(Invoice $invoice, string $namespace)
+    public function setNumberDefaults(Invoice $invoice, ?string $namespace = null)
     {
+        if ($namespace === null) {
+            $namespace = self::REGISTRY_NAMESPACE_PREFIX . $invoice->getType();
+        }
+
         $prefix = $this->getRegistryValue($namespace, 'numberPrefix') ?? 'R-%year';
         $invoice->getNumber()->setPrefix($prefix);
 
         $postfix = $this->getRegistryValue($namespace, 'numberPostfix') ?? '';
         $invoice->getNumber()->setPostfix($postfix);
+        $invoice->getNumber()->updateCombinedNumber(true);
     }
 
     protected function setDefaultTexts(Invoice $invoice, string $namespace)

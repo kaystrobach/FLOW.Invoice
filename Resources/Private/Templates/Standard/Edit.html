@@ -46,6 +46,7 @@
         <b:be.button.removeButton arguments="{object:object}" action="remove"/>
     </f:then>
     <f:else>
+        <b:be.button.addButton action="stornoInvoice" controller="StornoInvoice" arguments="{object:object}" icon="bootstrap-file-earmark-x" label="Rechnung stornieren"/>
         <b:be.button.addButton action="sendMessage" arguments="{object:object}" icon="bootstrap-envelope" label="Rechnung versenden"/>
     </f:else>
 </f:if>
@@ -53,13 +54,13 @@
 <f:if condition="{object.stornoInvoice}">
 	<b:be.button.addButton action="edit" arguments="{object:object.stornoInvoice}"
 												 icon="bootstrap-ban-circle"
-												 label="Stornorechnung: {object.stornoInvoice.numberComplete}"
+												 label="Stornorechnung: {object.stornoInvoice.number}"
 	/>
 </f:if>
 <f:if condition="{object.originalInvoice}">
 	<b:be.button.addButton action="edit" arguments="{object:object.originalInvoice}"
 												 icon="bootstrap-ok-circle"
-												 label="Rechnung: {object.originalInvoice.numberComplete}"
+												 label="Rechnung: {object.originalInvoice.number}"
 	/>
 </f:if>
 

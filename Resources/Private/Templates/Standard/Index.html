@@ -96,12 +96,12 @@
                         <td>
                             <f:if condition="{object.stornoInvoice}">
                                 <f:link.action action="edit" arguments="{object:object.stornoInvoice}">
-                                    Stornorechnung: {object.stornoInvoice.numberComplete}
+                                    Stornorechnung: {object.stornoInvoice.number}
                                 </f:link.action>
                             </f:if>
                             <f:if condition="{object.originalInvoice}">
                                 <f:link.action action="edit" arguments="{object:object.originalInvoice}">
-                                    Originalrechnung: {object.originalInvoice.numberComplete}
+                                    Originalrechnung: {object.originalInvoice.number}
                                 </f:link.action>
                             </f:if>
                         </td>
