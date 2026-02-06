@@ -24,12 +24,12 @@
             <div class="col">
                 <f:render partial="Form/Text" arguments="{label:'Titel', property:'title', noEdit:object.notChangeable, required:1}"/>
             </div>
-            <f:comment>
+            <f:if condition="{object.subTitle}">
                 <div class="col">
                     <f:render partial="Form/Text"
-                              arguments="{label:'Untertitel', property:'subTitle', noEdit:object.notChangeable}"/>
+                              arguments="{label:'Untertitel', property:'subTitle', noEdit:1, hint:'wird u.a. in Korrekturrechnungen verwendet'}"/>
                 </div>
-            </f:comment>
+            </f:if>
         </div>
 
         <div class="row">
