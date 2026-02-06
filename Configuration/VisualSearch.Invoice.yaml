@@ -12,13 +12,20 @@ Searches:
           freeInput: true
         matches:
           like:
-            - number
-            - deptor
-            - deptorNumber
+            - number.combinedNumber
+            - customer.deptorNumber
+            - customer.name
             - additionalInformation
             - additionalText
-            - address
-            - numberComplete
+      number:
+        label: "Rechnungsnummer"
+        selector:
+          conditions:
+            once: true
+          freeInput: true
+        matches:
+          like:
+            - number.combinedNumber
       tags:
         label: "Tag / Markierung"
         selector:
@@ -30,15 +37,6 @@ Searches:
         matches:
           KayStrobach\VisualSearch\Demands\ContainsDemand:
             - tags
-      address:
-        label: "Adresse / Name"
-        selector:
-          conditions:
-            once: true
-          freeInput: true
-        matches:
-          like:
-            - address
       deptor:
         label: "Debitor"
         selector:
@@ -47,8 +45,8 @@ Searches:
           freeInput: true
         matches:
           like:
-            - deptor
-            - deptorNumber
+            - customer.deptorNumber
+            - customer.name
       year:
         label: "Jahr"
         selector:
@@ -68,7 +66,7 @@ Searches:
           dateFormat: 'd.m.Y'
         matches:
           sameday:
-            - periodOfPerformanceStart
+            - periodOfPerformance.start
 
       performanceEnd:
         label: 'Leistungserbringung Ende (dd.mm.YYYY)'
@@ -79,4 +77,4 @@ Searches:
           dateFormat: 'd.m.Y'
         matches:
           sameday:
-            - periodOfPerformanceEnd
+            - periodOfPerformance.end
