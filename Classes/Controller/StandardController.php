@@ -6,6 +6,7 @@ namespace KayStrobach\Invoice\Controller;
  */
 
 use DateTime;
+use fucodo\registry\Domain\Repository\RegistryEntryRepository;
 use KayStrobach\Backend\Controller\AbstractPageRendererController;
 use KayStrobach\Crud\Controller\Traits\CrudTrait;
 use KayStrobach\Invoice\Domain\Factory\InvoiceFactory;
@@ -63,6 +64,12 @@ class StandardController extends AbstractPageRendererController
      */
     protected ObjectValidationService $objectValidationService;
 
+    /**
+     * @Flow\Inject
+     * @var RegistryEntryRepository
+     */
+    protected RegistryEntryRepository $registryEntryRepository;
+
     public function getModelClassName()
     {
         return Invoice::class;
@@ -71,6 +78,18 @@ class StandardController extends AbstractPageRendererController
     protected function renderView(): void
     {
         $this->initializeTagsForView($this->view);
+        try {
+            $articleReferenceList = json_decode(
+                $this->registryEntryRepository->getValue('KayStrobach_Invoice_General', 'articleReferenceList'),
+                true,
+                512,
+                JSON_THROW_ON_ERROR
+            );
+        } catch (\JsonException $e) {
+            $articleReferenceList = [];
+        }
+
+        $this->view->assign('articleReferenceList', $articleReferenceList);
         parent::renderView();
     }
 

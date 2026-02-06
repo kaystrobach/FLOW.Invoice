@@ -76,7 +76,7 @@
                         <f:render partial="Form/Number" arguments="{property:'invoiceItems.{iteration.index}.sort', decimals:0, noEdit:object.notChangeable}"/>
 					</td>
                     <td>
-                        <f:render partial="Form/Text" arguments="{property:'invoiceItems.{iteration.index}.articleReference'}" />
+                        <f:render partial="Form/Text" arguments="{property:'invoiceItems.{iteration.index}.articleReference', datalist:articleReferenceList}" />
                     </td>
 					<td>
 						<f:render partial="Form/Text" arguments="{property:'invoiceItems.{iteration.index}.name', decimals:0, noEdit:object.notChangeable}"/>

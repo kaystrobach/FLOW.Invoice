@@ -52,6 +52,11 @@ fucodo:
     defaults:
       KayStrobach_Invoice_General:
         items:
+          articleReferenceList:
+            type: Textarea
+            label: 'List of article references in json format, the format is defined as following `[{"value":"", "label":""}]`'
+            default: '[]'
+            description:
           fluidInvoiceTemplateRootPaths:
             type: Text
             label: Template file to be used for the invoices
