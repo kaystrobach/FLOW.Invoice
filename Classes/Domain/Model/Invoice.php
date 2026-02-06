@@ -565,6 +565,9 @@ class Invoice
      */
     public function setChangeable(bool $changeable = null): void
     {
+        if ($this->getOriginalResource() !== null) {
+            $this->setChangeable(false);
+        }
         $this->changeable = $changeable;
     }
 
