@@ -123,28 +123,28 @@ fucodo:
             default:
             description:
           paymentTermText:
-            type: TextArea
+            type: Textarea
             label: Zahlungsbedingungen
             default: |
               Der Rechnungsbetrag (Brutto) ist zahlbar innerhalb von 14 Kalendertagen nach dem ausgewiesenen Rechnungsdatum.
 
               Wie mit Ihnen vereinbart, werden wir den obigen Rechnungsbetrag (Brutto) innerhalb der nächsten 3 Werktage von der uns benannten Bankverbindung einziehen.
           preText:
-            type: TextArea
+            type: Textarea
             label: Vorabtext
             default: |
 
           postText:
-            type: TextArea
+            type: Textarea
             label: Nachtext
             default: |
 
           eMailText:
-            type: TextArea
+            type: Textarea
             label: 'E-Mail: Text für die E-Mail an den Kunden'
             default: |
 
           eMailSignature:
-            type: TextArea
+            type: Textarea
             label: 'E-Mail: für die E-Mail an den Kunden'
             default: |
