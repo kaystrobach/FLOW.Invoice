@@ -867,6 +867,9 @@ class Invoice
     {
         $now = new DateTime('now');
         $clone = new Invoice();
+        $clone->setTitle($this->getTitle());
+        $clone->setSubTitle($this->getSubTitle());
+        $clone->setType($this->getType());
         $clone->getNumber()->setPrefix($this->getNumber()->getPrefix());
         $clone->getNumber()->setPostfix($this->getNumber()->getPostfix());
         $clone->getNumber()->updateCombinedNumber(true);

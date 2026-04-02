@@ -1,0 +1,51 @@
+<html lang="de" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+      xmlns:="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+      xmlns:custom="http://typo3.org/ns/KayStrobach/Custom/ViewHelpers"
+      xmlns:media="http://typo3.org/ns/Neos/Media/ViewHelpers"
+      xmlns:b="http://typo3.org/ns/KayStrobach/Backend/ViewHelpers"
+      xmlns:i="http://typo3.org/ns/KayStrobach/IconRegistry/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/FourViewture/KIS/CRM/Backend/ViewHelpers"
+      xmlns:search="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
+
+<b:be.setTitle>Rechnung {dto.invoice.number} clonen</b:be.setTitle>
+<b:be.button.closeButton controller="Standard" action="edit" arguments="{object: dto.invoice}" />
+<b:be.button.saveButton />
+
+<f:form action="clone" enctype="multipart/form-data" object="{dto}" objectName="dto" id="globalForm">
+    <f:form.hidden property="invoice" />
+    <f:render partial="Components/Panel" contentAs="body" arguments="{heading:'Daten bestehende Rechnung'}">
+        <div class="row">
+            <div class="col">
+                <f:render partial="Form/TextOutput" arguments="{label:'Auftragsnummer', property:'invoice.order.orderNumber'}"/>
+            </div>
+            <div class="col">
+                <f:render partial="Form/TextOutput" arguments="{label:'Projektname *', property:'invoice.order.customerReference'}"/>
+            </div>
+            <div class="col">
+                <f:variable name="date" value="{dto.invoice.order.commissioningDate -> f:format.date(format: 'd.m.Y')}" />
+                <f:render partial="Form/TextOutput" arguments="{label:'Beauftragungsdatum', value:date}"/>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-6">
+                <f:render partial="Form/TextOutput" arguments="{label: 'Leistungszeitraum Von *', value:'{dto.invoice.periodOfPerformance.start -> f:format.date(format: \'d.m.Y\')}'}"/>
+            </div>
+            <div class="col-sm-6">
+                <f:render partial="Form/TextOutput" arguments="{label: 'Leistungszeitraum Bis *', value:'{dto.invoice.periodOfPerformance.end -> f:format.date(format: \'d.m.Y\')}'}"/>
+            </div>
+        </div>
+    </f:render>
+    <f:render partial="Components/Panel" contentAs="body" arguments="{heading:'Daten bestehende Rechnung'}">
+        <div class="row">
+            <div class="col">
+                <f:render partial="Form/Date" arguments="{property:'periodOfPerformanceStart', label:' Leistungszeitraum Von * '}"/>
+            </div>
+            <div class="col">
+                <f:render partial="Form/Date" arguments="{property:'periodOfPerformanceEnd', label:'Leistungszeitraum Bis *'}"/>
+            </div>
+        </div>
+    </f:render>
+</f:form>
