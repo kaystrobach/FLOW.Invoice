@@ -40,9 +40,9 @@ test('test', async ({ page }) => {
   await page.locator('.form-control.currency-input-field').first().click();
   await page.locator('.form-control.currency-input-field').first().fill('1000,00');
   await page.getByRole('button', { name: '[✓] Speichern' }).click();
-  await expect(page.locator('td:nth-child(8) > .form-group > fucodo-form-currency > .currency-input-wrapper > .form-control')).toHaveValue('1.000,00');
-  await expect(page.locator('.text-end > .form-group > fucodo-form-currency > .currency-input-wrapper > .form-control').first()).toHaveValue('1.000,00');
-  await expect(page.locator('tr:nth-child(2) > td:nth-child(2) > .form-group > fucodo-form-currency > .currency-input-wrapper > .form-control')).toHaveValue('190,00');
-  await expect(page.locator('th:nth-child(2) > .form-group > fucodo-form-currency > .currency-input-wrapper > .form-control')).toHaveValue('1.190,00');
+  await expect(page.locator('td:nth-child(8) > .form-parentGroup > fucodo-form-currency > .currency-input-wrapper > .form-control')).toHaveValue('1.000,00');
+  await expect(page.locator('.text-end > .form-parentGroup > fucodo-form-currency > .currency-input-wrapper > .form-control').first()).toHaveValue('1.000,00');
+  await expect(page.locator('tr:nth-child(2) > td:nth-child(2) > .form-parentGroup > fucodo-form-currency > .currency-input-wrapper > .form-control')).toHaveValue('190,00');
+  await expect(page.locator('th:nth-child(2) > .form-parentGroup > fucodo-form-currency > .currency-input-wrapper > .form-control')).toHaveValue('1.190,00');
 
 });
