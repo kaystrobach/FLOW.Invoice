@@ -146,7 +146,7 @@
         }
 
         _pretty(norm) {
-            // Keep it simple: just group as CC + rest
+            // Keep it simple: just parentGroup as CC + rest
             if (!norm) return "";
             const cc = norm.slice(0, 2);
             const rest = norm.slice(2);

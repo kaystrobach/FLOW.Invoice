@@ -27,9 +27,9 @@
         this.valueField.type = "hidden";
       }
       const wrapper = document.createElement("div");
-      wrapper.className = "currency-input-wrapper input-group";
+      wrapper.className = "currency-input-wrapper input-parentGroup";
       const prefix = document.createElement("span");
-      prefix.className = "input-group-text";
+      prefix.className = "input-parentGroup-text";
       prefix.textContent = this._currencySymbol(this.currency);
       this.visibleInput = document.createElement("input");
       this.visibleInput.type = "text";

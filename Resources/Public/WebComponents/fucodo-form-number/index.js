@@ -32,12 +32,12 @@ class CurrencyInput extends HTMLElement {
             this.valueField.type = 'hidden';
         }
 
-        // Wrapper (Bootstrap input-group kompatibel)
+        // Wrapper (Bootstrap input-parentGroup kompatibel)
         const wrapper = document.createElement('div');
-        wrapper.className = 'currency-input-wrapper input-group';
+        wrapper.className = 'currency-input-wrapper input-parentGroup';
 
         const prefix = document.createElement('span');
-        prefix.className = 'input-group-text';
+        prefix.className = 'input-parentGroup-text';
         prefix.textContent = this._currencySymbol(this.currency);
 
         this.visibleInput = document.createElement('input');
