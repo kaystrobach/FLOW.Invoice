@@ -647,6 +647,11 @@ class Invoice
         $this->originalResource = $originalResource;
     }
 
+    public function resetOriginalResource(): void
+    {
+        $this->originalResource = null;
+    }
+
     /**
      * @FLow\Inject
      * @var CreateInvoicePdfService

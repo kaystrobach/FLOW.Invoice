@@ -92,6 +92,11 @@ class NumberingEmbeddable implements \JsonSerializable
         $this->combinedNumber = trim($this->prefix) . $this->number . trim($this->postfix);
     }
 
+    public function resetNumber()
+    {
+        $this->combinedNumber = $this->prefix;
+    }
+
     public function __toString(): string
     {
         return $this->combinedNumber;
