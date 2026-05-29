@@ -178,7 +178,6 @@ class Invoice
 
     /**
      * @var PersistentResource
-     * @ORM\OneToOne(cascade={"all"})
      */
     protected $originalResource;
 
@@ -565,9 +564,6 @@ class Invoice
      */
     public function setChangeable(bool $changeable = null): void
     {
-        if ($this->getOriginalResource() !== null) {
-            $this->setChangeable(false);
-        }
         $this->changeable = $changeable;
     }
 
