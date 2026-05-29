@@ -60,14 +60,17 @@ class InvoiceFactory
 
     public function setInvoiceNumber(Invoice $invoice)
     {
+        $logger = $this->logger;
         if (!$invoice->isChangeable()) {
+            $this->logger->debug('Invoice is not changeable');
             return;
         }
         if ($invoice->getNumber()->getNumber() !== null) {
+            $this->logger->debug('Invoice already had a number');
             return;
         }
 
-        $logger = $this->logger;
+        $this->logger->debug('Starting to look for number');
 
         $this->entityManager->wrapInTransaction(
             static function (EntityManager $em) use ($invoice, $logger) {
