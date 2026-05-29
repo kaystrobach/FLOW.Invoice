@@ -94,6 +94,7 @@ class NumberingEmbeddable implements \JsonSerializable
 
     public function resetNumber()
     {
+        $this->number = null;
         $this->combinedNumber = $this->prefix;
     }
 
