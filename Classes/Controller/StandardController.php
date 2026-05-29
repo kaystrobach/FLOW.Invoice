@@ -170,6 +170,9 @@ class StandardController extends AbstractPageRendererController
     public function finalizeAction(Invoice $object)
     {
         if (!$object->isChangeable()) {
+            $this->addFlashMessage(
+                'Rechnung ist bereits festgeschrieben!'
+            );
             $this->redirect(
                 'edit',
                 null,
