@@ -177,6 +177,7 @@ class Invoice
     protected $changeable = true;
 
     /**
+     * @ORM\OneToOne(cascade={"all"})
      * @var PersistentResource
      */
     protected $originalResource;
