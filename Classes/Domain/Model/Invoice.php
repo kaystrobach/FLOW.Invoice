@@ -178,9 +178,9 @@ class Invoice
 
     /**
      * @ORM\OneToOne(cascade={"all"})
-     * @var PersistentResource
+     * @var ?PersistentResource
      */
-    protected $originalResource;
+    protected ?PersistentResource $originalResource;
 
     /**
      * @ORM\OneToMany(orphanRemoval=true, cascade={"all"}, mappedBy="invoice")
@@ -571,6 +571,18 @@ class Invoice
     public function isNotChangeable(): ?bool
     {
         return !$this->isChangeable();
+    }
+
+    public function isLocked(): bool
+    {
+        if ($this->isNotChangeable()) {
+            return true;
+        }
+        if ($this->originalResource !== null) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
