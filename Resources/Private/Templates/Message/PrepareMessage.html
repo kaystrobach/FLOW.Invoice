@@ -1,0 +1,39 @@
+<html lang="de" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+      xmlns:="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+      xmlns:custom="http://typo3.org/ns/KayStrobach/Custom/ViewHelpers"
+      xmlns:b="http://typo3.org/ns/KayStrobach/Backend/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/FourViewture/KIS/CRM/Backend/ViewHelpers"
+      xmlns:search="http://typo3.org/ns/KayStrobach/VisualSearch/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
+
+<b:be.setTitle>Rechnung {object.number}</b:be.setTitle>
+<b:be.setTitleInfo raw="1">
+    <small><span title="{object.customer.name} ({object.customer.deptorNumber})"><f:format.crop maxCharacters="50">{object.customer.name}</f:format.crop> ({object.customer.deptorNumber})</span></small>
+    <br>
+    <f:if condition="{object.periodOfPerformance.start}">
+        <small>Leistungszeitraum {object.periodOfPerformance.start -> f:format.date(format: 'd.m.Y')}<f:if condition="{object.periodOfPerformance.end}"> - {object.periodOfPerformance.end -> f:format.date(format: 'd.m.Y')}</f:if></small>
+    </f:if>
+</b:be.setTitleInfo>
+
+
+<b:be.button.closeButton action="edit" controller="Standard" arguments="{object:object}" />
+<b:be.button.saveButton label="senden" icon="bootstrap-send"/>
+
+<f:form action="sendMessage" enctype="multipart/form-data" object="{dto}" objectName="dto" id="globalForm">
+    <f:form.hidden property="invoice" />
+
+    <f:render partial="Components/Panel" arguments="{heading:'E-Mail'}" contentAs="body">
+        <f:render partial="Form/Text" arguments="{property:'subject', label: 'Betreff'}"/>
+        <f:render partial="Form/Text" arguments="{property:'to', label:'Empfänger', hint:'Genau ein Empfänger erlaubt'}"/>
+        <f:render partial="Form/Text" arguments="{property:'cc', label:'Weitere Empfänger', hint:'Komma separiert'}"/>
+        <f:render partial="Form/Textarea" arguments="{property:'message', label:'Nachricht'}"/>
+        <f:render partial="Form/Textarea" arguments="{property:'signature', label:'Signatur'}"/>
+    </f:render>
+
+    <f:render partial="Components/Panel" arguments="{heading:'Rechnung'}" contentAs="body">
+        <f:if condition="{object.originalResource}">
+            <iframe class="iframe" style="width:100%; height: 600px;" src="{f:uri.resource(resource: object.originalResource)}"></iframe>
+        </f:if>
+    </f:render>
+</f:form>

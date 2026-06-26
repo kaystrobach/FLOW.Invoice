@@ -20,7 +20,7 @@
 
 <b:be.button.closeButton />
 <b:be.button.addButton action="stornoInvoice" controller="StornoInvoice" arguments="{object:object}" icon="bootstrap-file-earmark-x" label="Rechnung stornieren"/>
-<b:be.button.addButton action="sendMessage" arguments="{object:object}" icon="bootstrap-envelope" label="Rechnung versenden"/>
+<b:be.button.addButton action="prepareMessage" controller="Message" arguments="{object:object}" icon="bootstrap-envelope" label="Rechnung versenden"/>
 <b:be.button.addButton action="prepareClone" controller="CloneInvoice" arguments="{invoice:object}" icon="bootstrap-clipboard" label="Rechnung kopieren"/>
 
 

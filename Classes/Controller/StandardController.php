@@ -33,12 +33,6 @@ class StandardController extends AbstractPageRendererController
     protected MessageBusInterface $messageBus;
 
     /**
-     * @Flow\Inject
-     * @var SendInvoiceService
-     */
-    protected SendInvoiceService $sendInvoiceService;
-
-    /**
      * @Flow\InjectConfiguration(path="Default.Invoice.numberPrefix")
      * @var string
      */
@@ -91,6 +85,25 @@ class StandardController extends AbstractPageRendererController
 
         $this->view->assign('articleReferenceList', $articleReferenceList);
         parent::renderView();
+    }
+
+    public function editAction(): void
+    {
+        $object = $this->arguments['object']->getValue();
+        if ($object instanceof Invoice) {
+            if ($object->isLocked()) {
+                $this->redirect(
+                    'show',
+                    null,
+                    null,
+                    [
+                        'object' => $object,
+                    ]
+                );
+            }
+        }
+
+        $this->view->assign('object', $object);
     }
 
     public function preNewAction(): void
@@ -190,8 +203,8 @@ class StandardController extends AbstractPageRendererController
         $this->getRepository()->update($object);
 
         $this->redirect(
-            'sendMessage',
-            null,
+            'prepareMessage',
+            'Message',
             null,
             [
                 'object' => $object
@@ -275,16 +288,8 @@ class StandardController extends AbstractPageRendererController
         $this->view->assign('object', $object);
     }
 
-    public function sendMessageAction(Invoice $object)
+    public function showAction(Invoice $object)
     {
-        $this->sendInvoiceService->emitInvoiceShouldBeSendNow($object);
-        $this->redirect(
-            'edit',
-            null,
-            null,
-            [
-                'object' => $object
-            ]
-        );
+        $this->view->assign('object', $object);
     }
 }

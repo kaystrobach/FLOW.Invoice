@@ -16,7 +16,13 @@ class MessageDto
      * @Flow\Validate(type="NotEmpty")
      * @var string
      */
-    protected string $message;
+    protected string $message = '';
+
+    /**
+     * @Flow\Validate(type="NotEmpty")
+     * @var string
+     */
+    protected string $signature = '';
 
     /**
      * @Flow\Validate(type="NotEmpty")
@@ -29,6 +35,11 @@ class MessageDto
      * @var string
      */
     protected string $cc = '';
+
+    /**
+     * @var string
+     */
+    protected string $subject  = '';
 
     public function getInvoice(): Invoice
     {
@@ -50,6 +61,16 @@ class MessageDto
         $this->message = $message;
     }
 
+    public function getSignature(): string
+    {
+        return $this->signature;
+    }
+
+    public function setSignature(string $signature): void
+    {
+        $this->signature = $signature;
+    }
+
     public function getTo(): string
     {
         return $this->to;
@@ -68,5 +89,15 @@ class MessageDto
     public function setCc(string $cc): void
     {
         $this->cc = $cc;
+    }
+
+    public function getSubject(): string
+    {
+        return $this->subject;
+    }
+
+    public function setSubject(string $subject): void
+    {
+        $this->subject = $subject;
     }
 }

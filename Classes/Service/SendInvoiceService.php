@@ -2,6 +2,7 @@
 
 namespace KayStrobach\Invoice\Service;
 
+use KayStrobach\Invoice\Domain\Dto\MessageDto;
 use KayStrobach\Invoice\Domain\Model\Invoice;
 use Neos\Flow\Annotations as Flow;
 
@@ -16,4 +17,13 @@ class SendInvoiceService
      * will lateron be refactored to use a real message, so that we can do that async ...
      */
     public function emitInvoiceShouldBeSendNow(Invoice $invoice): void {}
+
+    /**
+     * @param Invoice $invoice
+     * @return void
+     * @Flow\Signal
+     *
+     * will lateron be refactored to use a real message, so that we can do that async ...
+     */
+    public function emitInvoiceMessagePrepare(MessageDto $dto): void {}
 }
