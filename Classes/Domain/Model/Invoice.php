@@ -581,6 +581,9 @@ class Invoice
         if ($this->originalResource !== null) {
             return true;
         }
+        if ($this->getNumber()->getNumber() !== null) {
+            return true;
+        }
 
         return false;
     }
