@@ -180,7 +180,7 @@ class Invoice
      * @ORM\OneToOne(cascade={"all"})
      * @var ?PersistentResource
      */
-    protected ?PersistentResource $originalResource;
+    protected ?PersistentResource $originalResource = null;
 
     /**
      * @ORM\OneToMany(orphanRemoval=true, cascade={"all"}, mappedBy="invoice")
