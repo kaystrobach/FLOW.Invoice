@@ -582,7 +582,7 @@ class Invoice
             return true;
         }
 
-        return $this->isChangeable();
+        return $this->isNotChangeable();
     }
 
     /**

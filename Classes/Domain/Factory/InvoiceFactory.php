@@ -51,7 +51,6 @@ class InvoiceFactory
 
         $this->setDefaultTexts($invoice, $namespace);
         $this->setSellerDefaultsFromEnv($invoice, $namespace);
-        $this->setInvoiceNumber($invoice);
     }
 
     public function setTitle(Invoice $invoice) {

@@ -59,17 +59,18 @@ class InvoiceRepository extends SearchableRepository
 
     public function update($object): void
     {
-
         if ($object instanceof Invoice) {
             $object->calculateTotal();
-            if (!$object->isChangeable()) {
-                $this->invoiceFactory->setInvoiceNumber($object);
-            }
-            if ($object->isChangeable()) {
+            if (!$object->isLocked()) {
                 $object->prePersistHandler();
             }
         }
         parent::update($object);
+    }
+
+    public function calculateInvoiceNumber(Invoice $object): string
+    {
+        $this->invoiceFactory->setInvoiceNumber($object);
     }
 
     public function updateAndPersist(Invoice $object)
