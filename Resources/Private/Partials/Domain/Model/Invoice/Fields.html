@@ -44,7 +44,7 @@
         </div>
 
 
-        <f:render partial="Domain/Model/Tags/Edit" arguments="{tags:tags}" />
+        <f:render partial="Domain/Model/Tags/Edit" arguments="{tags:tags, noEdit:object.notChangeable}" />
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Auftrag">
         <f:render partial="Components/Panel" arguments="{heading:'Angebot'}" contentAs="body">
@@ -93,7 +93,7 @@
         </f:variable>
         <div class="row">
             <div class="col">
-                <f:render partial="Form/Text" arguments="{property:'customer.deptorNumber', label:'Kundennummer', contentAfter:buttonRefresh, noEdit:0}" />
+                <f:render partial="Form/Text" arguments="{property:'customer.deptorNumber', label:'Kundennummer', contentAfter:buttonRefresh, noEdit:object.notChangeable}" />
             </div>
             <div class="col">
                 <f:render partial="Form/Text" arguments="{property:'customer.shortName', label:'Kundenname kurz', noEdit:1}" />

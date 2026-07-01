@@ -1,6 +1,6 @@
 <f:if condition="{tags}">
     <f:then>
-        <f:render partial="Form/Select" arguments="{property:'tags', label:'Tags', labelField:'name', options:tags}"/>
+        <f:render partial="Form/Select" arguments="{property:'tags', label:'Tags', labelField:'name', options:tags, noEdit:noEdit}"/>
     </f:then>
     <f:else>
         <div class="alert alert-info">
