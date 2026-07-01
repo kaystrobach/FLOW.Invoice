@@ -52,7 +52,7 @@
 					Gesamtpreis
 				</th>
 				<th class="text-end">
-					<f:if condition="!{object.notChangeable}">
+					<f:if condition="!{noEdit}">
 						<f:if condition="!{objectIsNew}">
 							<f:then>
 								<f:form.button class="btn btn-success btn-xs pull-right" formaction="{f:uri.action(action: 'addInvoiceItem')}">
@@ -73,31 +73,31 @@
 			<f:for each="{object.invoiceItems}" as="invoiceItem" iteration="iteration">
 				<tr class="{f:if(condition: iteration.isOdd, then:'active')}">
 					<td>
-                        <f:render partial="Form/Number" arguments="{property:'invoiceItems.{iteration.index}.sort', decimals:0, noEdit:object.notChangeable}"/>
+                        <f:render partial="Form/Number" arguments="{property:'invoiceItems.{iteration.index}.sort', decimals:0, noEdit:noEdit}"/>
 					</td>
                     <td>
-                        <f:render partial="Form/Text" arguments="{property:'invoiceItems.{iteration.index}.articleReference', datalist:articleReferenceList}" />
+                        <f:render partial="Form/Text" arguments="{property:'invoiceItems.{iteration.index}.articleReference', datalist:articleReferenceList, noEdit:noEdit}" />
                     </td>
 					<td>
-						<f:render partial="Form/Text" arguments="{property:'invoiceItems.{iteration.index}.name', decimals:0, noEdit:object.notChangeable}"/>
+						<f:render partial="Form/Text" arguments="{property:'invoiceItems.{iteration.index}.name', decimals:0, noEdit:noEdit, noEdit:noEdit}"/>
 						<details {f:if(condition:invoiceItem.description, then:'open')}>
 							<summary>
 								Artikelzusatztext
 							</summary>
-							<f:render partial="Form/TextareaMarkdown" arguments="{property:'invoiceItems.{iteration.index}.description', decimals:0, noEdit:object.notChangeable}"/>
+							<f:render partial="Form/TextareaMarkdown" arguments="{property:'invoiceItems.{iteration.index}.description', decimals:0, noEdit:noEdit}"/>
 						</details>
 					</td>
 					<td>
-						<f:render partial="Form/Number" arguments="{property:'invoiceItems.{iteration.index}.amount', decimals:0, noEdit:object.notChangeable}"/>
+						<f:render partial="Form/Number" arguments="{property:'invoiceItems.{iteration.index}.amount', decimals:0, noEdit:noEdit}"/>
 					</td>
 					<td>
-                        <f:render partial="Form/SelectSingle" arguments="{property:'invoiceItems.{iteration.index}.unit', options:invoiceItem.possibleUnits, noEdit:object.notChangeable}"/>
+                        <f:render partial="Form/SelectSingle" arguments="{property:'invoiceItems.{iteration.index}.unit', options:invoiceItem.possibleUnits, noEdit:noEdit}"/>
 					</td>
 					<td>
-						<f:render partial="Form/Number" arguments="{property:'invoiceItems.{iteration.index}.tax', decimals:2, noEdit:object.notChangeable}"/>
+						<f:render partial="Form/Number" arguments="{property:'invoiceItems.{iteration.index}.tax', decimals:2, noEdit:noEdit}"/>
 					</td>
 					<td>
-						<f:render partial="Form/NumberMoney" arguments="{property:'invoiceItems.{iteration.index}.singlePrice', noEdit:object.notChangeable}"/>
+						<f:render partial="Form/NumberMoney" arguments="{property:'invoiceItems.{iteration.index}.singlePrice', noEdit:noEdit}"/>
 					</td>
 					<td>
 						<f:render partial="Form/NumberMoney" arguments="{property:'invoiceItems.{iteration.index}.total', noEdit:1}"/>

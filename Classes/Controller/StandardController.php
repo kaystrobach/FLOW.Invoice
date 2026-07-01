@@ -290,6 +290,7 @@ class StandardController extends AbstractPageRendererController
 
     public function showAction(Invoice $object)
     {
+        $this->view->assign('noEdit', true);
         $this->view->assign('object', $object);
     }
 }

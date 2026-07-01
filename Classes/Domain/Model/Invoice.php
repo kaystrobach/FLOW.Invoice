@@ -575,9 +575,6 @@ class Invoice
 
     public function isLocked(): bool
     {
-        if ($this->isNotChangeable()) {
-            return true;
-        }
         if ($this->originalResource !== null) {
             return true;
         }
@@ -585,7 +582,7 @@ class Invoice
             return true;
         }
 
-        return false;
+        return $this->isChangeable();
     }
 
     /**

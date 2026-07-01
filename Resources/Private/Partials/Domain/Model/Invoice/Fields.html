@@ -22,7 +22,7 @@
     <bs:tab.tabPane title="Allgemein">
         <div class="row">
             <div class="col">
-                <f:render partial="Form/Text" arguments="{label:'Titel', property:'title', noEdit:object.notChangeable, required:1}"/>
+                <f:render partial="Form/Text" arguments="{label:'Titel', property:'title', noEdit:noEdit, required:1}"/>
             </div>
             <f:if condition="{object.subTitle}">
                 <div class="col">
@@ -35,46 +35,46 @@
         <div class="row">
             <div class="col">
                 <f:render partial="Form/TextareaMarkdown"
-                          arguments="{label:'Zahlungsbedingungen in Textform', property:'paymentTermText', noEdit:object.notChangeable}"/>
+                          arguments="{label:'Zahlungsbedingungen in Textform', property:'paymentTermText', noEdit:noEdit}"/>
             </div>
             <div class="col">
                 <f:render partial="Form/TextareaMarkdown"
-                          arguments="{label:'Zusatzinformationen u.a. für Dauerrechnungen etc.', property:'additionalInformation', noEdit:object.notChangeable}"/>
+                          arguments="{label:'Zusatzinformationen u.a. für Dauerrechnungen etc.', property:'additionalInformation', noEdit:noEdit}"/>
             </div>
         </div>
 
 
-        <f:render partial="Domain/Model/Tags/Edit" arguments="{tags:tags, noEdit:object.notChangeable}" />
+        <f:render partial="Domain/Model/Tags/Edit" arguments="{tags:tags, noEdit:noEdit}" />
     </bs:tab.tabPane>
     <bs:tab.tabPane title="Auftrag">
         <f:render partial="Components/Panel" arguments="{heading:'Angebot'}" contentAs="body">
             <f:render partial="Form/Text"
-                      arguments="{label:'Angebotsnummer', property:'offerNumber', noEdit:object.notChangeable}"/>
+                      arguments="{label:'Angebotsnummer', property:'offerNumber', noEdit:noEdit}"/>
         </f:render>
         <f:render partial="Components/Panel" arguments="{heading:'Auftrag'}" contentAs="body">
             <div class="row">
                 <div class="col">
                     <f:render partial="Form/Text"
-                              arguments="{label:'Auftragsnummer', property:'order.orderNumber', noEdit:object.notChangeable}"/>
+                              arguments="{label:'Auftragsnummer', property:'order.orderNumber', noEdit:noEdit}"/>
                 </div>
                 <div class="col">
                     <f:render partial="Form/Text"
-                              arguments="{label:'Projektname *', property:'order.customerReference', noEdit:object.notChangeable}"/>
+                              arguments="{label:'Projektname *', property:'order.customerReference', noEdit:noEdit}"/>
                 </div>
                 <div class="col">
                     <f:render partial="Form/Date"
-                              arguments="{label:'Beauftragungsdatum', property:'order.commissioningDate', noEdit:object.notChangeable}"/>
+                              arguments="{label:'Beauftragungsdatum', property:'order.commissioningDate', noEdit:noEdit}"/>
                 </div>
             </div>
             <hr>
             <div class="row">
                 <div class="col-sm-6">
                     <f:render partial="Form/Date"
-                              arguments="{label: 'Leistungszeitraum Von *', property:'periodOfPerformance.start', noEdit:object.notChangeable}"/>
+                              arguments="{label: 'Leistungszeitraum Von *', property:'periodOfPerformance.start', noEdit:noEdit}"/>
                 </div>
                 <div class="col-sm-6">
                     <f:render partial="Form/Date"
-                              arguments="{label: 'Leistungszeitraum Bis *', property:'periodOfPerformance.end', noEdit:object.notChangeable}"/>
+                              arguments="{label: 'Leistungszeitraum Bis *', property:'periodOfPerformance.end', noEdit:noEdit}"/>
                 </div>
             </div>
         </f:render>
@@ -85,7 +85,7 @@
         <f:form.hidden property="customer.shortName" />
 
         <f:variable name="buttonRefresh">
-            <f:if condition="{object.changeable}">
+            <f:if condition="!{noEdit}">
                 <button class="btn btn-primary" formaction="{f:uri.action(action:'updateCustomerData', arguments:{object:object})}">
                     <f:translate>Kundendaten erneut laden</f:translate>
                 </button>
@@ -93,7 +93,7 @@
         </f:variable>
         <div class="row">
             <div class="col">
-                <f:render partial="Form/Text" arguments="{property:'customer.deptorNumber', label:'Kundennummer', contentAfter:buttonRefresh, noEdit:object.notChangeable}" />
+                <f:render partial="Form/Text" arguments="{property:'customer.deptorNumber', label:'Kundennummer', contentAfter:buttonRefresh, noEdit:noEdit}" />
             </div>
             <div class="col">
                 <f:render partial="Form/Text" arguments="{property:'customer.shortName', label:'Kundenname kurz', noEdit:1}" />
@@ -106,11 +106,11 @@
     <bs:tab.tabPane title="Zusatztexte">
         <f:render partial="Components/Panel" arguments="{heading:'Generell'}" contentAs="body">
             <f:render partial="Form/TextareaMarkdown"
-                     arguments="{label:'Zusatztext', property:'additionalText', noEdit:object.notChangeable, hint:'@todo wird aus der Registry befüllt, ggf. auch auswahl erlauben'}"/>
+                     arguments="{label:'Zusatztext', property:'additionalText', noEdit:noEdit, hint:'@todo wird aus der Registry befüllt, ggf. auch auswahl erlauben'}"/>
         </f:render>
         <f:render partial="Components/Panel" arguments="{heading:'Rechnungspositionen'}" contentAs="body">
-            <f:render partial="Form/TextareaMarkdown" arguments="{label:'Vorlauftext (Zusatzttext vor der Rechnungspositionen)', property:'preText', noEdit:object.notChangeable}"/>
-            <f:render partial="Form/TextareaMarkdown" arguments="{label:'Nachlauftext (Zusatzttext nach der Rechnungspositionen)', property:'postText', noEdit:object.notChangeable}"/>
+            <f:render partial="Form/TextareaMarkdown" arguments="{label:'Vorlauftext (Zusatzttext vor der Rechnungspositionen)', property:'preText', noEdit:noEdit}"/>
+            <f:render partial="Form/TextareaMarkdown" arguments="{label:'Nachlauftext (Zusatzttext nach der Rechnungspositionen)', property:'postText', noEdit:noEdit}"/>
         </f:render>
     </bs:tab.tabPane>
     <f:comment>
@@ -124,7 +124,7 @@
                       arguments="{label:'Rechnung ist komplett bezahlt', property:'paid', noEdit:1}"/>
         </f:comment>
         <f:render partial="Form/Textarea"
-                  arguments="{label:'Versandstatus der Rechnung', property:'additionalText', noEdit:object.notChangeable, noEdit:1}"/>
+                  arguments="{label:'Versandstatus der Rechnung', property:'additionalText', noEdit:noEdit, noEdit:1}"/>
     </bs:tab.tabPane>
 </bs:tab.tabWrapper>
 
@@ -134,7 +134,7 @@
     </f:then>
     <f:else>
         <div class="alert alert-info mt-3">
-            <f:if condition="!{object.notChangeable}">
+            <f:if condition="!{noEdit}">
                 <f:if condition="!{objectIsNew}">
                     <f:then>
                         <f:form.button class="btn btn-success btn-xs pull-right"
@@ -163,7 +163,7 @@
     </f:then>
     <f:else>
         <div class="alert alert-info mt-3">
-            <f:if condition="!{object.notChangeable}">
+            <f:if condition="!{noEdit}">
                 <f:if condition="!{objectIsNew}">
                     <f:then>
                         <f:form.button class="btn btn-success btn-xs pull-right"
