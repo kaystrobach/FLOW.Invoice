@@ -32,9 +32,9 @@ class MessageController extends AbstractPageRendererController
 
     public function sendMessageAction(MessageDto $dto)
     {
+        $this->sendInvoiceService->emitInvoiceMessageShouldBeSendNow($dto);
+
         $this->addFlashMessage('Nachricht wurde zum versenden vorgemerkt');
-
-
 
         $this->redirect(
             'edit',
