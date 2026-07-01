@@ -19,11 +19,16 @@ class SendInvoiceService
     public function emitInvoiceShouldBeSendNow(Invoice $invoice): void {}
 
     /**
-     * @param Invoice $invoice
+     * @param MessageDto $dto
      * @return void
      * @Flow\Signal
-     *
-     * will lateron be refactored to use a real message, so that we can do that async ...
      */
     public function emitInvoiceMessagePrepare(MessageDto $dto): void {}
+
+    /**
+     * @param MessageDto $dto
+     * @return void
+     * @Flow\Signal
+     */
+    public function emitInvoiceMessageShouldBeSendNow(MessageDto $dto): void {}
 }

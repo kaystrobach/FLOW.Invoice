@@ -37,6 +37,7 @@ class MessageDto
     protected string $cc = '';
 
     /**
+     * @Flow\Validate(type="NotEmpty")
      * @var string
      */
     protected string $subject  = '';

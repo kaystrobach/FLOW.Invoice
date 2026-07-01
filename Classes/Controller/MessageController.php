@@ -26,18 +26,22 @@ class MessageController extends AbstractPageRendererController
 
         $this->sendInvoiceService->emitInvoiceMessagePrepare($dto);
 
+
         $this->view->assign('dto', $dto);
     }
 
-    public function sendMessageAction(MessageDto $messageDto)
+    public function sendMessageAction(MessageDto $dto)
     {
-        $this->sendInvoiceService->emitInvoiceShouldBeSendNow($messageDto->getInvoice());
+        $this->addFlashMessage('Nachricht wurde zum versenden vorgemerkt');
+
+
+
         $this->redirect(
             'edit',
-            null,
+            'Standard',
             null,
             [
-                'object' => $messageDto->getInvoice(),
+                'object' => $dto->getInvoice(),
             ]
         );
     }
