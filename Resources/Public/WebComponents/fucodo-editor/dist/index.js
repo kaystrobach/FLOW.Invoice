@@ -27864,6 +27864,9 @@ ${element.innerHTML}
   height: calc(100% - 44px);
   overflow-y: auto;
 }
+#editor.disabled {
+  opacity: 0.5;
+}
 
 .toolbar {
   display: flex;
@@ -28002,6 +28005,9 @@ input[type=file] {
   width: 100%;
   box-sizing: border-box;
   position: relative;
+}
+.markdown-input.disabled {
+  opacity: 0.5;
 }`;
 
   // packages/fucodo-editor/index.js
@@ -28013,44 +28019,44 @@ input[type=file] {
         <div class="toolbar">
             <button class="button" aria-label="bold" @click="${() => {
         this.editor.chain().focus().toggleBold().run();
-      }}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${type_bold_default}></div></button>
+      }}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${type_bold_default}></div></button>
             <button class="button" aria-label="italic" @click="${() => {
         this.editor.chain().focus().toggleItalic().run();
-      }}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${type_italic_default}></div></button>
+      }}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${type_italic_default}></div></button>
             <button class="button" aria-label="strike" @click="${() => {
         this.editor.chain().focus().toggleStrike().run();
-      }}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${type_strikethrough_default}></div></button>
+      }}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${type_strikethrough_default}></div></button>
             <button class="button" aria-label="list unordered" @click="${() => {
         this.editor.chain().focus().toggleBulletList().run();
-      }}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${list_ul_default}></div></button>
+      }}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${list_ul_default}></div></button>
             <button class="button" aria-label="list ordered" @click="${() => {
         this.editor.chain().focus().toggleOrderedList().run();
-      }}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${list_ol_default}></div></button>
+      }}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${list_ol_default}></div></button>
             <button class="button" aria-label="list tasks" @click="${() => {
         this.editor.chain().focus().toggleTaskList().run();
-      }}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${list_check_default}></div></button>
+      }}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${list_check_default}></div></button>
             <span>
-                <input type="file" id="imageUpload" accept="image/*"  aria-label="image upload" @change="${this.handleImageUpload}" ?disabled="${this._markdownMode}">
+                <input type="file" id="imageUpload" accept="image/*"  aria-label="image upload" @change="${this.handleImageUpload}" ?disabled="${this._markdownMode || this._disabled || this._readonly}">
                 <label for="imageUpload" class="button"><div class="icon" .innerHTML=${card_image_default}></div></label>
             </span>
             <button class="button" aria-label="quote" @click="${() => {
         this.editor.chain().focus().toggleBlockquote().run();
-      }}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${quote_default}></div></button>
+      }}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${quote_default}></div></button>
             <button class="button" aria-label="undo" @click="${() => {
         this.editor.chain().focus().undo().run();
-      }}" ?disabled="${!this._canUndo || this._markdownMode}"><div class="icon" .innerHTML=${arrow_counterclockwise_default}></div></button>
+      }}" ?disabled="${!this._canUndo || this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${arrow_counterclockwise_default}></div></button>
             <button class="button" aria-label="redo" @click="${() => {
         this.editor.chain().focus().redo().run();
-      }}" ?disabled="${!this._canRedo || this._markdownMode}"><div class="icon" .innerHTML=${arrow_clockwise_default}></div></button>
+      }}" ?disabled="${!this._canRedo || this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${arrow_clockwise_default}></div></button>
             <button class="button" aria-label="code block" @click="${() => {
         this.editor.chain().focus().toggleCodeBlock().run();
-      }}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${code_default}></div></button>
-            <button class="button" aria-label="link" @click="${this.handleSetLink}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${link_45deg_default}></div></button>
+      }}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${code_default}></div></button>
+            <button class="button" aria-label="link" @click="${this.handleSetLink}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${link_45deg_default}></div></button>
             <button class="button" aria-label="markdown mode" @click="${this.toggleMode}"><div class="icon" .innerHTML=${markdown_default}></div></button>
         </div>
         <span class="divider"></span>
-        <div id="editor" style="${this._markdownMode ? "display: none;" : ""}"></div>
-        ${this._markdownMode ? x`<textarea class="markdown-input" .value="${this._markdownText}" @input="${this.updateFromTextarea}"></textarea>` : null}
+        <div id="editor" class="${this._disabled || this._readonly ? "disabled" : ""}" style="${this._markdownMode ? "display: none;" : ""}"></div>
+        ${this._markdownMode ? x`<textarea class="markdown-input ${this._disabled || this._readonly ? "disabled" : ""}" .value="${this._markdownText}" @input="${this.updateFromTextarea}" ?disabled="${this._disabled || this._readonly}"></textarea>` : null}
     `;
     }
     static get properties() {
@@ -28058,7 +28064,9 @@ input[type=file] {
         _canUndo: { state: true },
         _canRedo: { state: true },
         _markdownMode: { state: true },
-        _markdownText: { state: true }
+        _markdownText: { state: true },
+        _disabled: { state: true },
+        _readonly: { state: true }
       };
     }
     constructor() {
@@ -28067,7 +28075,10 @@ input[type=file] {
       this._canRedo = false;
       this._markdownMode = false;
       this._markdownText = "";
+      this._disabled = false;
+      this._readonly = false;
       this._origin = null;
+      this._observer = null;
     }
     connectedCallback() {
       super.connectedCallback();
@@ -28078,12 +28089,33 @@ input[type=file] {
       this.shadowRoot.querySelector("slot").assignedElements().forEach((element) => {
         if (element.tagName.toLowerCase() === "textarea") {
           content = element.innerHTML.split("\n").map((line) => line.trim()).join("\n");
+          this._disabled = element.disabled;
+          this._readonly = element.readOnly;
         }
         element.style.display = "none";
         this._origin = element;
       });
+      this._observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === "attributes") {
+            if (mutation.attributeName === "disabled") {
+              this._disabled = mutation.target.disabled;
+            } else if (mutation.attributeName === "readonly") {
+              this._readonly = mutation.target.readOnly;
+            }
+            this.editor.setEditable(!this._disabled && !this._readonly);
+          }
+        });
+      });
+      if (this._origin) {
+        this._observer.observe(this._origin, {
+          attributes: true,
+          attributeFilter: ["disabled", "readonly"]
+        });
+      }
       this.editor = new Editor({
         element: this.shadowRoot.querySelector("#editor"),
+        editable: !this._disabled && !this._readonly,
         extensions: [
           StarterKit,
           TaskList,
@@ -28111,6 +28143,9 @@ input[type=file] {
     disconnectedCallback() {
       super.disconnectedCallback();
       this.editor.destroy();
+      if (this._observer) {
+        this._observer.disconnect();
+      }
     }
     handleImageUpload(event) {
       const reader = new FileReader();

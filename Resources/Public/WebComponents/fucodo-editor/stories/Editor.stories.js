@@ -33,3 +33,43 @@ This is a simple markdown editor.
 
   return wrapper;
 };
+
+export const Disabled = () => {
+  const wrapper = document.createElement('main');
+  wrapper.innerHTML = `
+    <fucodo-editor class="custom">
+      <textarea disabled>
+# Disabled Editor
+This editor is disabled because the textarea has the disabled attribute.
+      </textarea>
+    </fucodo-editor>
+    <style>
+      .custom {
+        border: 1px solid black;
+        border-radius: 5px;
+      }
+    </style>
+  `;
+
+  return wrapper;
+};
+
+export const Readonly = () => {
+  const wrapper = document.createElement('main');
+  wrapper.innerHTML = `
+    <fucodo-editor class="custom">
+      <textarea readonly>
+# Readonly Editor
+This editor is readonly because the textarea has the readonly attribute.
+      </textarea>
+    </fucodo-editor>
+    <style>
+      .custom {
+        border: 1px solid black;
+        border-radius: 5px;
+      }
+    </style>
+  `;
+
+  return wrapper;
+};

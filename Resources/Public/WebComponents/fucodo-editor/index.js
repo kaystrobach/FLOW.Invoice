@@ -21,26 +21,26 @@ class MyEditor extends LitElement {
     return html`
         <slot></slot>
         <div class="toolbar">
-            <button class="button" aria-label="bold" @click="${() => {this.editor.chain().focus().toggleBold().run()}}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${icons.boldIcon}></div></button>
-            <button class="button" aria-label="italic" @click="${() => {this.editor.chain().focus().toggleItalic().run()}}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${icons.italicIcon}></div></button>
-            <button class="button" aria-label="strike" @click="${() => {this.editor.chain().focus().toggleStrike().run()}}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${icons.strikeIcon}></div></button>
-            <button class="button" aria-label="list unordered" @click="${() => {this.editor.chain().focus().toggleBulletList().run()}}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${icons.bulletListIcon}></div></button>
-            <button class="button" aria-label="list ordered" @click="${() => {this.editor.chain().focus().toggleOrderedList().run()}}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${icons.orderedListIcon}></div></button>
-            <button class="button" aria-label="list tasks" @click="${() => {this.editor.chain().focus().toggleTaskList().run()}}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${icons.taskListIcon}></div></button>
+            <button class="button" aria-label="bold" @click="${() => {this.editor.chain().focus().toggleBold().run()}}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${icons.boldIcon}></div></button>
+            <button class="button" aria-label="italic" @click="${() => {this.editor.chain().focus().toggleItalic().run()}}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${icons.italicIcon}></div></button>
+            <button class="button" aria-label="strike" @click="${() => {this.editor.chain().focus().toggleStrike().run()}}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${icons.strikeIcon}></div></button>
+            <button class="button" aria-label="list unordered" @click="${() => {this.editor.chain().focus().toggleBulletList().run()}}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${icons.bulletListIcon}></div></button>
+            <button class="button" aria-label="list ordered" @click="${() => {this.editor.chain().focus().toggleOrderedList().run()}}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${icons.orderedListIcon}></div></button>
+            <button class="button" aria-label="list tasks" @click="${() => {this.editor.chain().focus().toggleTaskList().run()}}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${icons.taskListIcon}></div></button>
             <span>
-                <input type="file" id="imageUpload" accept="image/*"  aria-label="image upload" @change="${this.handleImageUpload}" ?disabled="${this._markdownMode}">
+                <input type="file" id="imageUpload" accept="image/*"  aria-label="image upload" @change="${this.handleImageUpload}" ?disabled="${this._markdownMode || this._disabled || this._readonly}">
                 <label for="imageUpload" class="button"><div class="icon" .innerHTML=${icons.imageIcon}></div></label>
             </span>
-            <button class="button" aria-label="quote" @click="${() => {this.editor.chain().focus().toggleBlockquote().run()}}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${icons.quoteIcon}></div></button>
-            <button class="button" aria-label="undo" @click="${() => {this.editor.chain().focus().undo().run()}}" ?disabled="${!this._canUndo || this._markdownMode}"><div class="icon" .innerHTML=${icons.undoIcon}></div></button>
-            <button class="button" aria-label="redo" @click="${() => {this.editor.chain().focus().redo().run()}}" ?disabled="${!this._canRedo || this._markdownMode}"><div class="icon" .innerHTML=${icons.redoIcon}></div></button>
-            <button class="button" aria-label="code block" @click="${() => {this.editor.chain().focus().toggleCodeBlock().run()}}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${icons.codeIcon}></div></button>
-            <button class="button" aria-label="link" @click="${this.handleSetLink}" ?disabled="${this._markdownMode}"><div class="icon" .innerHTML=${icons.linkIcon}></div></button>
+            <button class="button" aria-label="quote" @click="${() => {this.editor.chain().focus().toggleBlockquote().run()}}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${icons.quoteIcon}></div></button>
+            <button class="button" aria-label="undo" @click="${() => {this.editor.chain().focus().undo().run()}}" ?disabled="${!this._canUndo || this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${icons.undoIcon}></div></button>
+            <button class="button" aria-label="redo" @click="${() => {this.editor.chain().focus().redo().run()}}" ?disabled="${!this._canRedo || this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${icons.redoIcon}></div></button>
+            <button class="button" aria-label="code block" @click="${() => {this.editor.chain().focus().toggleCodeBlock().run()}}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${icons.codeIcon}></div></button>
+            <button class="button" aria-label="link" @click="${this.handleSetLink}" ?disabled="${this._markdownMode || this._disabled || this._readonly}"><div class="icon" .innerHTML=${icons.linkIcon}></div></button>
             <button class="button" aria-label="markdown mode" @click="${this.toggleMode}"><div class="icon" .innerHTML=${icons.markdownIcon}></div></button>
         </div>
         <span class="divider"></span>
-        <div id="editor" style="${this._markdownMode ? 'display: none;' : ''}"></div>
-        ${this._markdownMode ? html`<textarea class="markdown-input" .value="${this._markdownText}" @input="${this.updateFromTextarea}"></textarea>` : null}
+        <div id="editor" class="${this._disabled || this._readonly ? 'disabled' : ''}" style="${this._markdownMode ? 'display: none;' : ''}"></div>
+        ${this._markdownMode ? html`<textarea class="markdown-input ${this._disabled || this._readonly ? 'disabled' : ''}" .value="${this._markdownText}" @input="${this.updateFromTextarea}" ?disabled="${this._disabled || this._readonly}"></textarea>` : null}
     `;
   }
 
@@ -50,6 +50,8 @@ class MyEditor extends LitElement {
       _canRedo: { state: true },
       _markdownMode: { state: true },
       _markdownText: { state: true },
+      _disabled: { state: true },
+      _readonly: { state: true },
     };
   }
 
@@ -60,8 +62,11 @@ class MyEditor extends LitElement {
     this._canRedo = false;
     this._markdownMode = false;
     this._markdownText = '';
+    this._disabled = false;
+    this._readonly = false;
 
     this._origin = null;
+    this._observer = null;
   }
 
   connectedCallback() {
@@ -76,6 +81,8 @@ class MyEditor extends LitElement {
     this.shadowRoot.querySelector('slot').assignedElements().forEach((element) => {
       if (element.tagName.toLowerCase() === 'textarea') {
         content = element.innerHTML.split('\n').map(line => line.trim()).join('\n');
+        this._disabled = element.disabled;
+        this._readonly = element.readOnly;
       }
 
       element.style.display = 'none';
@@ -83,8 +90,29 @@ class MyEditor extends LitElement {
       this._origin = element;
     });
 
+    this._observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes') {
+          if (mutation.attributeName === 'disabled') {
+            this._disabled = mutation.target.disabled;
+          } else if (mutation.attributeName === 'readonly') {
+            this._readonly = mutation.target.readOnly;
+          }
+          this.editor.setEditable(!this._disabled && !this._readonly);
+        }
+      });
+    });
+
+    if (this._origin) {
+      this._observer.observe(this._origin, {
+        attributes: true,
+        attributeFilter: ['disabled', 'readonly'],
+      });
+    }
+
     this.editor = new Editor({
       element: this.shadowRoot.querySelector('#editor'),
+      editable: !this._disabled && !this._readonly,
       extensions: [
         StarterKit,
         TaskList,
@@ -115,6 +143,10 @@ class MyEditor extends LitElement {
     super.disconnectedCallback();
 
     this.editor.destroy();
+
+    if (this._observer) {
+      this._observer.disconnect();
+    }
   }
 
   handleImageUpload(event) {
