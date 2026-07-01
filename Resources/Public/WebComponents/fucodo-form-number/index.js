@@ -32,12 +32,12 @@ class CurrencyInput extends HTMLElement {
             this.valueField.type = 'hidden';
         }
 
-        // Wrapper (Bootstrap input-parentGroup kompatibel)
+        // Wrapper (Bootstrap input-group kompatibel)
         const wrapper = document.createElement('div');
-        wrapper.className = 'currency-input-wrapper input-parentGroup';
+        wrapper.className = 'currency-input-wrapper input-group';
 
         const prefix = document.createElement('span');
-        prefix.className = 'input-parentGroup-text';
+        prefix.className = 'input-group-text';
         prefix.textContent = this._currencySymbol(this.currency);
 
         this.visibleInput = document.createElement('input');
@@ -47,6 +47,7 @@ class CurrencyInput extends HTMLElement {
         this.visibleInput.className = 'form-control currency-input-field';
 
         this.visibleInput.disabled = this.currencyField.disabled || this.valueField.disabled;
+        this.visibleInput.readOnly = this.currencyField.readOnly || this.valueField.readOnly;
 
         // rechtsbündig + Monospace
         this.visibleInput.style.textAlign = 'right';
@@ -64,9 +65,30 @@ class CurrencyInput extends HTMLElement {
 
         this.visibleInput.addEventListener('input', this._onInput);
         this.visibleInput.addEventListener('blur', this._onBlur);
+
+        this._setupMutationObserver();
+    }
+
+    _setupMutationObserver() {
+        const observerOptions = {
+            attributes: true,
+            attributeFilter: ['disabled', 'readonly']
+        };
+
+        const callback = () => {
+            this.visibleInput.disabled = this.currencyField.disabled || this.valueField.disabled;
+            this.visibleInput.readOnly = this.currencyField.readOnly || this.valueField.readOnly;
+        };
+
+        this._observer = new MutationObserver(callback);
+        this._observer.observe(this.currencyField, observerOptions);
+        this._observer.observe(this.valueField, observerOptions);
     }
 
     disconnectedCallback() {
+        if (this._observer) {
+            this._observer.disconnect();
+        }
         if (!this.visibleInput) return;
         this.visibleInput.removeEventListener('input', this._onInput);
         this.visibleInput.removeEventListener('blur', this._onBlur);
