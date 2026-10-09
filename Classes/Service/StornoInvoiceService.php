@@ -45,7 +45,8 @@ class StornoInvoiceService
 
         $newInvoice->setChangeable(true);
         if ($keepChangeable !== true) {
-            $newInvoice->setChangeable(false);
+            // finalize like any other invoice: assign the number (locks the invoice), then render
+            $this->invoiceFactory->setInvoiceNumber($newInvoice);
             $newInvoice->createDocument($controllerContext, true);
         }
 
