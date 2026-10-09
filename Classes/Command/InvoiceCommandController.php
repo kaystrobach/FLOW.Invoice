@@ -4,7 +4,9 @@ namespace KayStrobach\Invoice\Command;
 
 use KayStrobach\Invoice\Domain\Model\Invoice;
 use KayStrobach\Invoice\Domain\Repository\InvoiceRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use KayStrobach\Invoice\Service\CreateInvoicePdfService;
+use KayStrobach\Invoice\Service\InvoiceNumberSequenceAnalyzer;
 use Neos\Flow\Cli\CommandController;
 
 use Neos\Flow\Annotations as Flow;
@@ -28,6 +30,9 @@ class InvoiceCommandController extends CommandController
 
     #[Flow\Inject()]
     protected ResourceManager $resourceManager;
+
+    #[Flow\Inject()]
+    protected EntityManagerInterface $entityManager;
 
     public function statusCommand(Invoice $invoice)
     {
@@ -83,5 +88,45 @@ class InvoiceCommandController extends CommandController
         $this->persistenceManager->persistAll();
         $this->outputLine('<success>Process successfull</success>');
         return 0;
+    }
+
+    /**
+     * List gaps and duplicates in the invoice number series
+     *
+     * Every series (prefix + postfix) is expected to run from 1 without gaps. Exit code 1 if a gap
+     * or a duplicate was found.
+     *
+     * @param string|null $prefix only this prefix (e.g. R-2026-)
+     * @return int
+     */
+    public function checkNumbersCommand(?string $prefix = null): int
+    {
+        $sql = 'SELECT number_prefix AS prefix, number_postfix AS postfix, number_number AS number,
+                       CONCAT(number_combinednumber, \' (\', persistence_object_identifier, \')\') AS invoice
+                FROM kaystrobach_invoice_domain_model_invoice
+                WHERE number_number IS NOT NULL' . ($prefix !== null ? ' AND number_prefix = ?' : '');
+        $rows = $this->entityManager->getConnection()->fetchAllAssociative($sql, $prefix !== null ? [$prefix] : []);
+        $result = (new InvoiceNumberSequenceAnalyzer())->analyze($rows);
+
+        $tableRows = [];
+        $problems = false;
+        foreach ($result as $series) {
+            $problems = $problems || $series['gaps'] !== [] || $series['duplicates'] !== [];
+            $tableRows[] = [
+                $series['prefix'] . '…' . $series['postfix'],
+                $series['count'],
+                $series['highest'],
+                $series['gaps'] === [] ? '–' : InvoiceNumberSequenceAnalyzer::compress($series['gaps']),
+                $series['duplicates'] === [] ? '–' : implode(', ', array_keys($series['duplicates'])),
+            ];
+        }
+        $this->output->outputTable($tableRows, ['Series', 'Invoices', 'Highest', 'Gaps', 'Duplicates']);
+
+        foreach ($result as $series) {
+            foreach ($series['duplicates'] as $number => $invoices) {
+                $this->outputLine('<error>Duplicate %s%d%s:</error> %s', [$series['prefix'], $number, $series['postfix'], implode(', ', $invoices)]);
+            }
+        }
+        return $problems ? 1 : 0;
     }
 }
