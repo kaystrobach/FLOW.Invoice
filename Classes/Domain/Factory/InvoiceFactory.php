@@ -6,9 +6,9 @@ namespace KayStrobach\Invoice\Domain\Factory;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NoResultException;
 use fucodo\registry\Domain\Repository\RegistryEntryRepository;
 use KayStrobach\Invoice\Domain\Model\Invoice;
+use KayStrobach\Invoice\Service\InvoiceNumberRangeService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Utility\ObjectAccess;
 use Psr\Log\LoggerInterface;
@@ -37,6 +37,12 @@ class InvoiceFactory
      * @var LoggerInterface
      */
     protected $logger;
+
+    /**
+     * @Flow\Inject
+     * @var InvoiceNumberRangeService
+     */
+    protected $numberRangeService;
 
     public function setInvoiceDefaultsFromEnv(Invoice $invoice, ?string $type = null)
     {
@@ -73,27 +79,24 @@ class InvoiceFactory
 
         $this->logger->debug('Starting to look for number');
 
+        $numberRangeService = $this->numberRangeService;
+        // outside the transaction on purpose, see InvoiceNumberRangeService::ensureSeries()
+        $numberRangeService->ensureSeries(
+            $this->entityManager->getConnection(),
+            $invoice->getNumber()->getPrefix(),
+            $invoice->getNumber()->getPostfix()
+        );
+        // number and finalization are committed together; the series stays locked until then
         $this->entityManager->wrapInTransaction(
-            static function (EntityManager $em) use ($invoice, $logger) {
-                try {
-                    $query = $em->createQueryBuilder()
-                        ->select('MAX(e.number.number)')
-                        ->from(Invoice::class, 'e')
-                        ->where('e.number.prefix = ?1 AND e.number.postfix = ?2')
-                        ->setParameter(1, $invoice->getNumber()->getPrefix())
-                        ->setParameter(2, $invoice->getNumber()->getPostfix())
-                        ->getQuery();
-                    $maxId = $query
-                        ->getSingleScalarResult();
-                    $invoice->getNumber()->setNumber(1 + (int)$maxId);
-                    $invoice->getNumber()->updateCombinedNumber(true);
-                    $logger->info('Invoice number set to ' . $invoice->getNumber()->getCombinedNumber());
-                    // throw new \Exception((string)$invoice->getNumber()->getNumber());
-                } catch (NoResultException $exception) {
-                    $invoice->getNumber()->setNumber(1);
-                    $invoice->getNumber()->updateCombinedNumber(true);
-                    $logger->info('Invoice number set to ' . $invoice->getNumber()->getCombinedNumber());
-                }
+            static function (EntityManager $em) use ($invoice, $logger, $numberRangeService) {
+                $number = $numberRangeService->nextNumber(
+                    $em->getConnection(),
+                    $invoice->getNumber()->getPrefix(),
+                    $invoice->getNumber()->getPostfix()
+                );
+                $invoice->getNumber()->setNumber($number);
+                $invoice->getNumber()->updateCombinedNumber(true);
+                $logger->info('Invoice number set to ' . $invoice->getNumber()->getCombinedNumber());
                 $invoice->setChangeable(false);
                 $em->persist($invoice);
                 $em->flush($invoice);

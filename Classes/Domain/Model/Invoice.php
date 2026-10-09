@@ -33,6 +33,9 @@ use Neos\Flow\ResourceManagement\PersistentResource;
 
 /**
  * @Flow\Entity
+ * @ORM\Table(uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="invoice_number_unique", columns={"number_prefix", "number_number", "number_postfix"})
+ * })
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\HasLifecycleCallbacks()
  */
