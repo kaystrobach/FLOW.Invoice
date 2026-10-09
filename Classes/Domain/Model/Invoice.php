@@ -586,6 +586,14 @@ class Invoice
     }
 
     /**
+     * Only drafts without number and without rendered document may be deleted
+     */
+    public function isDeletable(): bool
+    {
+        return !$this->isLocked();
+    }
+
+    /**
      * @return PersistentResource
      */
     public function getOriginalResource(): ?PersistentResource

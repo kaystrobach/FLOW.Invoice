@@ -34,10 +34,18 @@ class InvoiceCommandController extends CommandController
         $this->outputLine($invoice->isChangeable() ? 1 : 0);
     }
 
+    /**
+     * Unlock a finalized invoice (e.g. after a broken PDF) – the invoice number is kept
+     *
+     * The rendered document is deleted and the invoice becomes changeable again. Finalizing it again
+     * keeps the existing number. Releasing the number is not possible on purpose (gap in the sequence);
+     * to only re-render the PDF use invoice:regenerateinvoicepdf.
+     *
+     * @param Invoice $invoice
+     */
     public function resetCommand(Invoice $invoice)
     {
         $invoice->setChangeable(true);
-        $invoice->getNumber()->resetNumber();
 
         $resource = $invoice->getOriginalResource();
         if ($resource !== null) {
@@ -48,6 +56,10 @@ class InvoiceCommandController extends CommandController
 
         $this->invoiceRepository->update($invoice);
         $this->persistenceManager->persistAll();
+        $this->outputLine(
+            'Invoice %s unlocked, number kept.',
+            [$invoice->getNumber()->getCombinedNumber()]
+        );
     }
 
     public function regenerateInvoicePdfCommand(Invoice $invoice)

@@ -65,7 +65,9 @@ class InvoiceFactory
             return;
         }
         if ($invoice->getNumber()->getNumber() !== null) {
-            $this->logger->debug('Invoice already had a number');
+            // e.g. unlocked with invoice:reset – keep the number, only lock the invoice again
+            $this->logger->debug('Invoice already had a number, keeping it');
+            $invoice->setChangeable(false);
             return;
         }
 

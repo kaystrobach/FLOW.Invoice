@@ -7,6 +7,7 @@ namespace KayStrobach\Invoice\Domain\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
+use KayStrobach\Invoice\Domain\Exception\InvoiceLockedException;
 use KayStrobach\Invoice\Domain\Factory\InvoiceFactory;
 use KayStrobach\Invoice\Domain\Model\Invoice;
 use KayStrobach\VisualSearch\Domain\Repository\SearchableRepository;
@@ -55,6 +56,25 @@ class InvoiceRepository extends SearchableRepository
             $object->calculateTotal();
             parent::add($object);
         }
+    }
+
+    /**
+     * Invoices with a number or a rendered document must not be deleted, otherwise the number
+     * sequence gets a gap (or, for the highest number, the number is assigned a second time).
+     * Use a cancellation invoice instead.
+     */
+    public function remove($object): void
+    {
+        if ($object instanceof Invoice && !$object->isDeletable()) {
+            throw new InvoiceLockedException(
+                sprintf(
+                    'Rechnung %s ist festgeschrieben und kann nicht gelöscht werden – bitte stornieren.',
+                    $object->getNumber()->getCombinedNumber()
+                ),
+                1760000001
+            );
+        }
+        parent::remove($object);
     }
 
     public function update($object): void
