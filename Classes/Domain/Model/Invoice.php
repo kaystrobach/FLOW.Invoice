@@ -911,8 +911,8 @@ class Invoice
         $clone->setPostText($this->postText);
         $clone->setAdditionalText($this->additionalText);
         $clone->setChangeable(false);
-        $clone->setTotal($this->total);
-        $clone->setTotalNoTaxes($this->totalNoTaxes ?? 0.0);
+        $clone->setTotal(clone $this->total);
+        $clone->setTotalNoTaxes(clone $this->totalNoTaxes);
         $clone->setAdditionalText('');
         return $clone;
     }

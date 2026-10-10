@@ -301,10 +301,10 @@ class InvoiceItem
         $clone->setAmount($this->amount);
         $clone->setUnit($this->unit);
         $clone->setTax($this->tax);
-        $clone->setSinglePrice($this->singlePrice);
+        $clone->setSinglePrice(clone $this->singlePrice);
         $clone->setName($this->name);
         $clone->setDescription($this->description);
-        $clone->setTotal($this->total);
+        $clone->setTotal(clone $this->total);
         $clone->setDiscount($this->discount);
         $clone->setTotal(clone $this->total);
         return $clone;
