@@ -53,6 +53,8 @@ class StornoInvoiceService
         $invoice->setStornoInvoice($newInvoice);
         $this->invoiceRepository->updateAndPersist($invoice);
 
+        $newInvoice->calculateTotal();
+
         return $newInvoice;
     }
 

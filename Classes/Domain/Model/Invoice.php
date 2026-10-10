@@ -520,7 +520,7 @@ class Invoice
         $sum = 0;
         /** @var SettlementDate $settlementDate */
         foreach ($this->settlementDates as $settlementDate) {
-            $sum += $settlementDate->getAmount();
+            $sum += $settlementDate->getAmount()->getValue();
         }
         return $sum;
     }

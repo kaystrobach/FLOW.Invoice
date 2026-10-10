@@ -5,6 +5,7 @@ namespace KayStrobach\Invoice\Domain\Model;
  * This file is part of the KayStrobach.Invoice package.
  */
 
+use KayStrobach\Invoice\Doctrine\Types\Money;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\MoneyEmbeddable;
 use Neos\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
@@ -85,17 +86,17 @@ class SettlementDate
     }
 
     /**
-     * @return float
+     * @return MoneyEmbeddable
      */
-    public function getAmount()
+    public function getAmount(): MoneyEmbeddable
     {
         return $this->amount;
     }
 
     /**
-     * @param float $amount
+     * @param MoneyEmbeddable $amount
      */
-    public function setAmount($amount)
+    public function setAmount(MoneyEmbeddable $amount)
     {
         $this->amount = $amount;
     }
