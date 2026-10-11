@@ -91,7 +91,9 @@ class StandardController extends AbstractPageRendererController
     {
         $object = $this->arguments['object']->getValue();
         if ($object instanceof Invoice) {
-            if ($object->isLocked()) {
+            // not isLocked(): an invoice unlocked with invoice:reset keeps its number but must be
+            // editable again to be finalized (with the same number)
+            if (!$object->isChangeable()) {
                 $this->redirect(
                     'show',
                     null,
@@ -113,6 +115,33 @@ class StandardController extends AbstractPageRendererController
         $invoice->getNumber()->setPrefix($this->defaultNumberPrefix);
         $this->view->assign('object', $invoice);
         $this->view->assign('objectIsNew', true);
+    }
+
+    /**
+     * Called by the CRUD RemoveTrait before removing. The trait removes through the persistence
+     * manager and bypasses InvoiceRepository::remove(), so invoices with a number or document are
+     * refused here. Protected on purpose: must not be callable as an action.
+     */
+    protected function preRemoveAction(Invoice $object): void
+    {
+        if ($object->isDeletable()) {
+            return;
+        }
+
+        $this->addFlashMessage(
+            'Rechnung %s ist festgeschrieben und kann nicht gelöscht werden – bitte stornieren.',
+            'Fehler',
+            Message::SEVERITY_ERROR,
+            [$object->getNumber()->getCombinedNumber()]
+        );
+        $this->redirect(
+            'edit',
+            null,
+            null,
+            [
+                'object' => $object
+            ]
+        );
     }
 
     public function addInvoiceItemAction(Invoice $object)

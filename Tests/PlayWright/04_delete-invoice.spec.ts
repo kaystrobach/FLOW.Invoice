@@ -29,7 +29,7 @@ test.describe('delete invoice', () => {
         const show = new InvoiceShowPage(finalizableInvoice.page);
         await show.goto(identity);
         // forge the request the delete button of a draft would send
-        const navigated = show.page.waitForURL((url) => !url.pathname.endsWith('/standard/show'));
+        const navigated = show.page.waitForResponse((response) => response.url().includes('/standard/remove'));
         await show.page.evaluate((identity) => {
             const form = document.createElement('form');
             form.method = 'post';
@@ -42,8 +42,12 @@ test.describe('delete invoice', () => {
             form.submit();
         }, identity);
         await navigated;
+        await show.page.waitForLoadState('load');
 
-        // InvoiceRepository::remove() refuses with an InvoiceLockedException
+        // refused with a flash message on the read-only view of the invoice
+        await expect(show.page).toHaveURL(new RegExp(`/standard/show\\?object%5B__identity%5D=${identity}`));
+        await expect(show.toast(`Rechnung ${number.combined} ist festgeschrieben und kann nicht gelöscht werden`)).toBeVisible();
+
         await show.goto(identity);
         await expect(show.lockedNotice).toBeVisible();
         expect((await show.invoiceNumber()).combined).toBe(number.combined);
