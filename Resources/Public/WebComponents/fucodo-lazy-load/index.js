@@ -24,7 +24,14 @@ export class LazyLoad extends LitElement {
     super.disconnectedCallback();
   }
 
-  handleVisibilityChange() {
+  handleVisibilityChange(entries) {
+    // the observer also reports the initial state, e.g. hidden inside a closed offcanvas:
+    // load only once the element is actually visible, and only once
+    if (!entries.some(entry => entry.isIntersecting)) {
+      return;
+    }
+    this.observer.disconnect();
+
     this.fetchContent(this.url)
       .then(content => {
         const template = new DOMParser().parseFromString(content, 'text/html')

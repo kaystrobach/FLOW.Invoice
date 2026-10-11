@@ -558,7 +558,11 @@
       this.observer.disconnect();
       super.disconnectedCallback();
     }
-    handleVisibilityChange() {
+    handleVisibilityChange(entries) {
+      if (!entries.some((entry) => entry.isIntersecting)) {
+        return;
+      }
+      this.observer.disconnect();
       this.fetchContent(this.url).then((content) => {
         const template = new DOMParser().parseFromString(content, "text/html");
         if (this.selectors) {
