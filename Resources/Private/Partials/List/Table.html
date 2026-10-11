@@ -1,0 +1,36 @@
+<f:comment>
+    Generic responsive list. Arguments:
+      label    accessible name of the table
+      columns  {id, party, date, status, key, amount, actions?} column titles
+      count    number of rows, shows the empty message when 0
+      rows     rendered rows (use contentAs="rows"), each row uses .rl-cols.rl-row and the .rl-c-* cells
+      empty    optional empty message
+</f:comment>
+<link rel="stylesheet" href="{f:uri.resource(path: 'Css/List.css', package: 'KayStrobach.Invoice')}">
+<div class="rl">
+    <div class="rl-frame">
+        <div class="rl-scroll">
+            <div class="rl-table" role="table" aria-label="{label}">
+                <div class="rl-cols rl-head" role="row">
+                    <div role="columnheader">{columns.id}</div>
+                    <div role="columnheader">{columns.party}</div>
+                    <div role="columnheader">{columns.date}</div>
+                    <div role="columnheader">{columns.status}</div>
+                    <div role="columnheader">{columns.key}</div>
+                    <div role="columnheader" class="rl-right">{columns.amount}</div>
+                    <div role="columnheader" class="rl-right">{f:if(condition: columns.actions, then: columns.actions, else: 'Aktionen')}</div>
+                </div>
+                <f:if condition="{count} > 0">
+                    <f:then>
+                        {rows -> f:format.raw()}
+                    </f:then>
+                    <f:else>
+                        <div class="rl-empty" role="row">
+                            <div role="cell">{f:if(condition: empty, then: empty, else: 'Keine Einträge gefunden.')}</div>
+                        </div>
+                    </f:else>
+                </f:if>
+            </div>
+        </div>
+    </div>
+</div>

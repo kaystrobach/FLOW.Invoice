@@ -1,0 +1,108 @@
+<f:comment>
+    One invoice in the responsive list (List/Table). Argument: object (Invoice)
+</f:comment>
+<f:variable name="state" value="{object.listState}" />
+<div class="rl-cols rl-row" role="row" data-state="{state.key}">
+
+    <div role="cell" class="rl-cell rl-c-id">
+        <f:if condition="{state.draft}">
+            <f:then>
+                <f:link.action action="edit" arguments="{object: object}" class="rl-id rl-id-draft">Entwurf</f:link.action>
+            </f:then>
+            <f:else>
+                <f:link.action action="edit" arguments="{object: object}" class="rl-id{f:if(condition: state.cancelled, then: ' rl-strike')}">{object.number.combinedNumber}</f:link.action>
+            </f:else>
+        </f:if>
+        <f:if condition="{object.title}">
+            <div class="rl-sub rl-ellipsis" style="font-size: 13px">{object.title}</div>
+        </f:if>
+        <f:if condition="{object.order.orderNumber} || {object.offerNumber}">
+            <div class="rl-sub rl-num rl-ellipsis">
+                <f:if condition="{object.order.orderNumber}">Auftrag {object.order.orderNumber}</f:if>
+                <f:if condition="{object.order.orderNumber} && {object.offerNumber}"> · </f:if>
+                <f:if condition="{object.offerNumber}">Angebot {object.offerNumber}</f:if>
+            </div>
+        </f:if>
+    </div>
+
+    <div role="cell" class="rl-cell rl-c-party" style="gap: 4px">
+        <div class="rl-ellipsis" style="font-size: 15px; font-weight: 500">{object.customer.name}</div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px">
+            <f:if condition="{object.customer.deptorNumber}">
+                <span class="rl-sub rl-num">{object.customer.deptorNumber}</span>
+            </f:if>
+            <f:render partial="Domain/Model/Tags/Display" arguments="{tags: object.tags}" />
+        </div>
+    </div>
+
+    <div role="cell" class="rl-cell rl-c-date">
+        <span class="rl-lbl">Datum</span>
+        <span class="rl-num" style="font-size: 14px">
+            <f:if condition="{object.date}">
+                <f:then>{object.date -> f:format.date(format: 'd.m.Y')}</f:then>
+                <f:else>—</f:else>
+            </f:if>
+        </span>
+    </div>
+
+    <div role="cell" class="rl-cell rl-c-status">
+        <f:render partial="List/Badge" arguments="{tone: state.tone, icon: state.icon, label: state.label}" />
+        <f:if condition="{object.stornoInvoice}">
+            <f:link.action action="edit" arguments="{object: object.stornoInvoice}" class="rl-sub rl-num">storniert durch {object.stornoInvoice.number.combinedNumber}</f:link.action>
+        </f:if>
+        <f:if condition="{object.originalInvoice}">
+            <f:link.action action="edit" arguments="{object: object.originalInvoice}" class="rl-sub rl-num">zu {object.originalInvoice.number.combinedNumber}</f:link.action>
+        </f:if>
+    </div>
+
+    <div role="cell" class="rl-cell rl-c-key">
+        <span class="rl-lbl">Fällig</span>
+        <f:if condition="{state.dueDate}">
+            <f:then>
+                <span class="rl-num" style="font-size: 14px">{state.dueDate -> f:format.date(format: 'd.m.Y')}</span>
+                <span class="rl-sub">
+                    <f:if condition="{state.paid}">
+                        <f:then>Zahlungsziel · bezahlt</f:then>
+                        <f:else>
+                            <f:if condition="{state.installments}">
+                                <f:then>Rate {state.installment} von {state.installmentCount}</f:then>
+                                <f:else>Zahlungsziel</f:else>
+                            </f:if>
+                        </f:else>
+                    </f:if>
+                </span>
+            </f:then>
+            <f:else>
+                <span class="rl-num" style="font-size: 14px">—</span>
+                <f:if condition="{state.draft}">
+                    <span class="rl-sub">Nummer bei Festschreibung</span>
+                </f:if>
+            </f:else>
+        </f:if>
+    </div>
+
+    <div role="cell" class="rl-cell rl-right rl-c-amount">
+        <span class="rl-lbl">Betrag</span>
+        <span class="rl-num rl-main{f:if(condition: '{object.total.value} < 0', then: ' rl-neg')}">{object.total}</span>
+        <span class="rl-sub rl-num">netto {object.totalNoTaxes}</span>
+    </div>
+
+    <div role="cell" class="rl-c-actions rl-actions">
+        <f:if condition="{object.originalResource}">
+            <f:then>
+                <a href="{f:uri.resource(resource: object.originalResource)}" class="rl-icon-btn" aria-label="PDF von {object.number.combinedNumber} herunterladen" title="PDF herunterladen">
+                    <f:render partial="List/Icon" arguments="{name: 'download'}" />
+                </a>
+            </f:then>
+            <f:else>
+                <span class="rl-icon-btn" aria-disabled="true" title="Noch kein PDF">
+                    <f:render partial="List/Icon" arguments="{name: 'download'}" />
+                    <span class="rl-sr">Noch kein PDF</span>
+                </span>
+            </f:else>
+        </f:if>
+        <f:link.action action="edit" arguments="{object: object}" class="rl-icon-btn" title="Öffnen" additionalAttributes="{'aria-label': 'Rechnung öffnen'}">
+            <f:render partial="List/Icon" arguments="{name: 'open'}" />
+        </f:link.action>
+    </div>
+</div>

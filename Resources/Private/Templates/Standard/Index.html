@@ -62,105 +62,12 @@
     <f:render partial="Visualsearch/Search" arguments="{searchName:'KayStrobach_Invoice_Invoice', objects:objects}" contentAs="value">
         <f:widget.paginate objects="{objects}" as="paginatedObjects" configuration="{itemsPerPage: 50, insertAbove: 1, insertBelow: 1, maximumNumberOfLinks: 15}">
             <small class="pull-right">{objects -> f:count()} Einträge</small>
-
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>
-                        Rechnung
-                    </th>
-                    <th>
-                        Debitor
-                    </th>
-                    <th>
-                        Datum
-                    </th>
-                    <th>
-                        Angebot
-                    </th>
-                    <th>
-                        Auftrag
-                    </th>
-                    <th>
-                        Summe
-                    </th>
-                    <th>
-                        Fälligkeiten
-                    </th>
-                    <th>
-                        Stornorechnung
-                    </th>
-                    <th>
-                        &nbsp;
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
+            <f:variable name="rowCount">{paginatedObjects -> f:count()}</f:variable>
+            <f:render partial="List/Table" arguments="{label: 'Rechnungen', count: rowCount, columns: {id: 'Rechnung', party: 'Kunde', date: 'Datum', status: 'Status', key: 'Fällig', amount: 'Betrag'}}" contentAs="rows">
                 <f:for each="{paginatedObjects}" as="object">
-                    <tr class="{f:if(condition:object.paymentDelayed, then:'danger')}{f:if(condition:object.paid, then:'success')}">
-                        <td>
-                            <f:link.action action="edit" arguments="{object:object}">
-                                <f:if condition="{object.number}">
-                                    <f:then>
-                                        {object.number}
-                                    </f:then>
-                                    <f:else>
-                                        Entwurf
-                                    </f:else>
-                                </f:if>
-                            </f:link.action>
-                        </td>
-                        <td>
-                            <div>
-                                {object.customer.name} ({object.customer.deptorNumber})
-                            </div>
-                            <div>
-                                <f:render partial="Domain/Model/Tags/Display" arguments="{tags:object.tags}" />
-                            </div>
-                        </td>
-                        <td>
-                            {object.date -> f:format.date(format: 'd.m.Y')}
-                        </td>
-                        <td>
-                            {object.offerNumber}
-                        </td>
-                        <td>
-                            {object.order.orderNumber}
-                        </td>
-                        <td class="text-end">
-                            <pre>{object.total}</pre>
-                        </td>
-                        <td>
-                            <f:if condition="{object.settlementDates}">
-                                <f:for each="{object.settlementDates}" as="settlementDate">
-                                    {settlementDate.dueDate -> f:format.date(format: 'd.m.Y')} - {settlementDate.amount}
-                                </f:for>
-                            </f:if>
-                        </td>
-                        <td>
-                            <f:if condition="{object.stornoInvoice}">
-                                <f:link.action action="edit" arguments="{object:object.stornoInvoice}">
-                                    Stornorechnung: {object.stornoInvoice.number}
-                                </f:link.action>
-                            </f:if>
-                            <f:if condition="{object.originalInvoice}">
-                                <f:link.action action="edit" arguments="{object:object.originalInvoice}">
-                                    Originalrechnung: {object.originalInvoice.number}
-                                </f:link.action>
-                            </f:if>
-                        </td>
-                        <td class="text-end">
-                            <f:if condition="{object.originalResource}">
-                                <a href="{f:uri.resource(resource: object.originalResource)}" class="btn btn-success btn-xs">
-                                    <span class="glyphicon glyphicon-download"></span>
-                                    Download
-                                </a>
-                            </f:if>
-                        </td>
-                    </tr>
+                    <f:render partial="Domain/Model/Invoice/ListRow" arguments="{object: object}" />
                 </f:for>
-                </tbody>
-            </table>
+            </f:render>
         </f:widget.paginate>
     </f:render>
 

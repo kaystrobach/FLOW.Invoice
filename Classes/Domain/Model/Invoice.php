@@ -16,6 +16,7 @@ use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\OptionsEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\OrderEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\PeriodEmbeddable;
 use KayStrobach\Invoice\Domain\Model\Invoice\Embeddable\SellerEmbeddable;
+use KayStrobach\Invoice\Domain\Model\Invoice\ListState;
 use KayStrobach\Invoice\Domain\Model\Invoice\TaxRecord;
 use KayStrobach\Invoice\Domain\Repository\InvoiceRepository;
 use KayStrobach\Invoice\Domain\Traits\CollectionBugfixTrait;
@@ -715,6 +716,14 @@ class Invoice
             }
         }
         return $paid;
+    }
+
+    /**
+     * Status for the invoice list, see ListState
+     */
+    public function getListState(): ListState
+    {
+        return ListState::of($this, new \DateTimeImmutable('today'));
     }
 
     /**
