@@ -16,9 +16,53 @@
 <b:be.button.addButton action="index" controller="DailyClosing" label="Tagesjournal" icon="bootstrap-download"/>
 <b:be.button.addButton action="index" controller="AccountingRecordImport" label="Buchungssätze" icon="bootstrap-upload"/>
 
+<f:variable name="currentYear" value="{f:format.date(date: 'now', format: 'Y')}" />
+<f:variable name="lastYear" value="{f:format.date(date: '-1year', format: 'Y')}" />
+
+<div class="btn-group mb-3" role="group" aria-label="Voreinstellungen">
+    <div class="btn-group me-2" role="group" aria-label="Status">
+        <visual-search-preset class="btn-group"
+                              query="{f:format.json(value: {facets: {0: {facet: 'changeable', facetLabel: 'Bearbeitbar', value: 1, valueLabel: 'ja'}}})}"
+                              active-class="active"
+        >
+            <button type="button" class="btn btn-sm btn-outline-primary">Entwürfe</button>
+        </visual-search-preset>
+    </div>
+    <div class="btn-group me-2" role="group" aria-label="Zeitraum">
+        <visual-search-preset class="btn-group"
+                              query="{f:format.json(value: {facets: {0: {facet: 'year', facetLabel: 'Jahr', value: lastYear, valueLabel: lastYear}}})}"
+                              active-class="active"
+        >
+            <button type="button" class="btn btn-sm btn-outline-primary">{lastYear}</button>
+        </visual-search-preset>
+        <visual-search-preset class="btn-group"
+            query="{f:format.json(value: {facets: {0: {facet: 'year', facetLabel: 'Jahr', value: currentYear, valueLabel: currentYear}}})}"
+            active-class="active"
+        >
+            <button type="button" class="btn btn-sm btn-outline-primary">{currentYear}</button>
+        </visual-search-preset>
+    </div>
+    <div class="btn-group" role="group" aria-label="Status">
+        <visual-search-preset class="btn-group"
+            query="{f:format.json(value: {facets: {0: {facet: 'number', facetLabel: 'Rechnungsnummer', value: 'DR-', valueLabel: 'DR-'}}})}"
+            active-class="active"
+        >
+            <button type="button" class="btn btn-sm btn-outline-primary">Dauerrechnungen</button>
+        </visual-search-preset>
+
+        <visual-search-preset class="btn-group"
+            query="{f:format.json(value: {facets: {0: {facet: 'number', facetLabel: 'Rechnungsnummer', value: 'R-', valueLabel: 'R-'}}})}"
+            active-class="active"
+        >
+            <button type="button" class="btn btn-sm btn-outline-primary">Rechnungen</button>
+        </visual-search-preset>
+    </div>
+</div>
+
     <f:render partial="Visualsearch/Search" arguments="{searchName:'KayStrobach_Invoice_Invoice', objects:objects}" contentAs="value">
         <f:widget.paginate objects="{objects}" as="paginatedObjects" configuration="{itemsPerPage: 50, insertAbove: 1, insertBelow: 1, maximumNumberOfLinks: 15}">
             <small class="pull-right">{objects -> f:count()} Einträge</small>
+
             <table class="table">
                 <thead>
                 <tr>

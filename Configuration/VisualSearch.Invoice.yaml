@@ -78,3 +78,15 @@ Searches:
         matches:
           sameday:
             - periodOfPerformance.end
+
+      changeable:
+        label: 'Bearbeitbar'
+        selector:
+          conditions:
+            once: true
+          values:
+            1: ja
+            0: nein
+        matches:
+          equals:
+            - changeable
