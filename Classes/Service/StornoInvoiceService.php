@@ -44,16 +44,21 @@ class StornoInvoiceService
         }
 
         $newInvoice->setChangeable(true);
+        // while still changeable (no-op once locked) and before persisting: the storno action is a
+        // GET request, changes after the persist below are rejected by Flow ("safe request")
+        $newInvoice->calculateTotal();
         if ($keepChangeable !== true) {
             // finalize like any other invoice: assign the number (locks the invoice), then render
             $this->invoiceFactory->setInvoiceNumber($newInvoice);
+            // the accounting records were cloned before the number existed
+            foreach ($newInvoice->getAccountingRecords() as $accountingRecord) {
+                $accountingRecord->setBelegfeld2($newInvoice->getNumber()->getCombinedNumber());
+            }
             $newInvoice->createDocument($controllerContext, true);
         }
 
         $invoice->setStornoInvoice($newInvoice);
         $this->invoiceRepository->updateAndPersist($invoice);
-
-        $newInvoice->calculateTotal();
 
         return $newInvoice;
     }

@@ -27,17 +27,33 @@ class StornoInvoiceController extends AbstractPageRendererController
 {
     public function stornoInvoiceAction(Invoice $object): void
     {
-        if (!$object->getStornoInvoice()) {
+        $cancellationInvoice = $object->getStornoInvoice();
+        if ($cancellationInvoice === null) {
+            if (!$object->isLocked() || $object->getOriginalInvoice() !== null) {
+                $this->addFlashMessage(
+                    'Nur festgeschriebene Rechnungen können storniert werden, Stornorechnungen nicht.',
+                    'Fehler',
+                    Message::SEVERITY_ERROR
+                );
+                $this->redirect('edit', 'Standard', null, ['object' => $object]);
+            }
+
+            // the cancellation invoice is finalized right away: number and document, no draft
             $cancellationInvoice = $object->makeCancellationInvoice(
                 $this->getControllerContext(),
                 null,
-                true
+                false
             );
-            $this->addFlashMessage('Stornorechnung wurde erstellt');
+            $this->addFlashMessage(
+                'Stornorechnung %s wurde erstellt',
+                '',
+                Message::SEVERITY_OK,
+                [$cancellationInvoice->getNumber()->getCombinedNumber()]
+            );
         }
 
         $this->redirect(
-            'edit',
+            'show',
             'Standard',
             null,
             [
